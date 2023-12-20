@@ -15,6 +15,7 @@ class products(models.Model):
     img2 =  models.ImageField(upload_to='images/')
     img3 =  models.ImageField(upload_to='images/')
     img4 =  models.ImageField(upload_to='images/')
+    is_listed = models.BooleanField(default = True)
 
 
 

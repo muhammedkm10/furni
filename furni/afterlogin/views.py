@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from product_manage.models import products
 
 # Create your views here.
 
@@ -7,8 +8,16 @@ from django.shortcuts import render
 
 # shop
 def shop(request):
-    return render(request,'shop.html')
+    obj = products.objects.exclude(is_listed = False)
+    context = {
+        'items' : obj,
+    }
+    return render(request,'shop.html',context)
 
 # product details
-def product_details(request):
-    return render(request,'product_details.html')
+def product_details(request,id):
+    obj = products.objects.get(id = id)
+    context = {
+        'items':obj
+    }
+    return render(request,'product_details.html',context)

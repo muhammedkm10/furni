@@ -121,6 +121,7 @@
 
                 <!-- navbar -->
                          <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark hai " arial-label="Furni navigation bar">
+                         
     
                             <div class="container-fluid text-center">
                                 <h1 class="mr-5 text-white text2">Furni.</h1>
@@ -129,7 +130,15 @@
 
 
                     <!-- inside content-->
+                    
                     <div class="content col-12">
+                      {% if messages %}
+                    <div class="alert alert-success mt-3">
+                    {% for message in messages %}
+                    {{ message }}
+                    {% endfor %}
+                    </div>
+                    {% endif %}
                         
                       <h2>Dash board</h2>
                 
@@ -142,7 +151,7 @@
 		
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form action="" method='POST'>
+                        <form action="/adminlogout/" method='POST'>
                             {% csrf_token%}
                             <div class="modal-header">						
                                 <h4 class="modal-title">Logout</h4>

@@ -13,19 +13,19 @@ from django.views.decorators.cache import never_cache
 # home 
 @never_cache
 def index(request):
-        
-            email1 = request.session.get('email')
-            print(email1)
-            try:
-             user4 = CustomUser1.objects.get(email = email1)
-            except:
-                print("hai")
-                return render(request,'home.html')
-            if user4.is_verified:
-                 return render (request,'home.html')
-            else:
-                CustomUser1.objects.get(email =email1).delete()
+    if 'email' in request.session:
+        email1 = request.session['email']
+        obj = CustomUser1.objects.get(email = email1)
+        if obj.is_blocked:
+            messages.error(request,'you are blocked')
+            request.session.flush()
+            return redirect('userlogin')
+        else:
             return render(request,'home.html')
+    return render(request,'home.html')
+    
+        
+
         
 
 # user login
@@ -37,15 +37,25 @@ def user_login(request):
         email = request.POST['email']
         password = request.POST['pass']
         try:
-           user = CustomUser1.objects.get(email = email,password = password,is_verified=True)
+           user = CustomUser1.objects.get(email = email,password = password)
         except:
             user = None
         if user is not None:
-            request.session['email'] = email
-            messages.success(request, "welcome to our world")
-            return redirect('index')
+            if  user.is_blocked :
+                messages.error(request, "you are blocked")
+                return redirect('userlogin') 
+            if user.is_verified:
+                request.session['email'] = email
+                messages.success(request, "welcome to our world")
+                return redirect('index')
+            else:
+                pass
+
+               
+
         else:
             messages.error(request, "Invalid email or password.or not verified Please try again.")
+        
     return render (request,'user_login.html')
 
 

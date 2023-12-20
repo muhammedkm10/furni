@@ -92,3 +92,33 @@ def delete_product(request,id):
       products.objects.get(id = id).delete()
       messages.success(request, "product deleted successfully")
       return redirect('adminproductmanage')
+
+
+# search for product
+def search_product(request):
+      if request.method  == 'POST':
+        query = request.POST['query']
+        obj = products.objects.filter(name__icontains = query)
+        context = {
+              'items':obj
+        }
+        return render(request,'product.html',context)
+      
+
+
+# list product
+def list_product(request,id):
+      obj = products.objects.get(id = id)
+      obj.is_listed = True
+      obj.save()
+      return redirect('adminproductmanage')
+
+
+# unlist list product
+def un_list_product(request,id):
+      obj = products.objects.get(id = id)
+      obj.is_listed = False
+      obj.save()
+      return redirect('adminproductmanage')
+
+      

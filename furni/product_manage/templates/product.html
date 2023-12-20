@@ -280,8 +280,9 @@
 						<h2>Manage  products</h2>
 					</div>
 					  <div class=" col-6">
-				          <form class="form-inline col-6 my-2 my-lg-0">
-							<input class="form-control mr-sm-2" type="search" placeholder="Search">
+				          <form method="POST" action="/searchforproduct/"class="form-inline col-6 my-2 my-lg-0">
+							{% csrf_token %}
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" name='query'>
 							<button class="butto1" type="submit">Search</button>
 						  </form>
 						</div>
@@ -347,6 +348,13 @@
 								
 							</div>
 						</td>
+						<td>
+							{% if not i.is_listed %}
+                            <a href="/listproduct/{{i.id}}/" class=" btn btn-success"  data-toggle="modal">list</a>
+							{% else %}
+                            <a href="/unlistproduct/{{i.id}}/" class="btn btn-danger " data-toggle="modal">unlist</a>
+                             {% endif %}
+                        </td>
                     </tr>
 					{% endfor %}		
                 </tbody>

@@ -279,8 +279,9 @@
 						<h2>Manage  Users</h2>
 					</div>
 					  <div class=" col-6">
-				          <form class="form-inline col-6 my-2 my-lg-0">
-							<input class="form-control mr-sm-2" type="search" placeholder="Search">
+				          <form class="form-inline col-6 my-2 my-lg-0" method='POST' action="/searchuser/">
+							{% csrf_token %}
+							<input class="form-control mr-sm-2" type="search" placeholder="Search" name="query">
 							<button class="butto1" type="submit">Search</button>
 						  </form>
 						</div>
@@ -300,18 +301,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
+                    {%for i in user %}
                     <tr>
-                        <td>1</td>
-                        <td>muhammed</td>
-						<td>muhamme@gmail.com</td>
-                        <td>7510875454</td>
-						<td>24-3-2020</td>
+                        <td>{{i.id}}</td>
+                        <td>{{i.username}}</td>
+						<td>{{i.email}}</td>
+                        <td>{{i.phone}}</td>
+						<td>{{i.date_joined}}</td>
+						
 						<td>
-                            <a href="" class=" btn p" data-toggle="modal">block</a>
-                            <a href="" class="btn o " data-toggle="modal">unblock</a>
+							{% if not i.is_blocked %}
+                            <a href="/blockuser/{{i.id}}" class=" btn p"  data-toggle="modal">block</a>
+							{% else %}
+                            <a href="/unblockuser/{{i.id}}" class="btn o " data-toggle="modal">unblock</a>
+                             {% endif %}
                         </td>
-                    </tr>		
+                    </tr>
+					{% endfor %}		
                 </tbody>
             </table>
 			<a href="/adminhome/" class="btn btn-danger"><i class="material-icons"></i> <span >back to admin home</span></a>	
