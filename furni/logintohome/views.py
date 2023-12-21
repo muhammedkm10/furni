@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.utils import timezone
 from datetime import datetime
-from . models import CustomUser1,otpverification
+from . models import CustomUser1
 from .import models
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
@@ -46,10 +46,12 @@ def user_login(request):
                 return redirect('userlogin') 
             if user.is_verified:
                 request.session['email'] = email
-                messages.success(request, "welcome to our world")
+                messages.success(request,f"welcome to our world   {user.username}")
                 return redirect('index')
             else:
-                pass
+                p = models.generate_otp(user)
+                models.send_otp_email(user,p)
+                return redirect('otpverification',user.id)
 
                
 
@@ -83,8 +85,8 @@ def user_signup(request):
 def otp_verification(request,id):
      
     if request.method == 'POST': 
-        otp1 = otpverification.objects.get(user_id=id)
-        p = otp1.otp_nuber
+        otp1 = CustomUser1.objects.get(id=id)
+        p = otp1.otp_fld
         print(p)
         entered_otp = request.POST.get('o1')
         print(entered_otp)
@@ -99,7 +101,7 @@ def otp_verification(request,id):
 
         else:
             messages.error(request, "Invalid OTP. Please try again.")
-            return render(request, 'user_signup.html')
+            return render('login')
 
     
     return render (request,'otp_verification.html')
