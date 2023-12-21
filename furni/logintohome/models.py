@@ -59,7 +59,7 @@ def generate_and_send_otp(sender, instance, created, **kwargs):
         send_otp_email(instance, otp_code)
 
 
-
+    
 
         
 

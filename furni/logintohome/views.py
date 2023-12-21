@@ -56,7 +56,7 @@ def user_login(request):
                
 
         else:
-            messages.error(request, "Invalid email or password.or not verified Please try again.")
+            messages.error(request, "Invalid email or password.")
         
     return render (request,'user_login.html')
 
@@ -116,8 +116,49 @@ def logout(request):
     return redirect('userlogin')
    
 
+# reset password
+def reset_password(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        try:
+         user = CustomUser1.objects.get(email = email)
+        except:
+            user = None
+        if user is not None:
+            p = models.generate_otp(user)
+            models.send_otp_email(user,p)
+            return redirect('resetpassotp',p,user.id)
+        else:
+            messages.error(request,'you have no account.....please signup')
+            return redirect('usersignup')
+
+    return render(request,'reset_password.html')
 
 
+# otp verification for reset password
+def reset_pass_otp(request,otp,id):
+    user_id = id
+    if request.method == 'POST':
+        entrd_otp = request.POST['o1']
+        if otp == entrd_otp:
+            return redirect('confirmpassword',user_id)
+        else:
+            messages.error(request,'enter correct otp')
+    return render(request,'reset_password_otp.html')
 
 
+# reset your password here
+def confirm_password(request,id):
+    if request.method == 'POST':
+        pass1 = request.POST['pass1']
+        pass2 = request.POST['pass2']
+        if pass1 == pass2:
+            obj = CustomUser1.objects.get(id = id)
+            obj.password = pass1
+            obj.save()
+            messages.success(request,'password changed successfully')
+            return redirect('userlogin')
+        else:
+            messages.error(request,'the password should be same')
 
+    return render(request,'confirm_password.html')

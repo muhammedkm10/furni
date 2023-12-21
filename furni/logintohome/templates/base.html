@@ -10,107 +10,64 @@
 
   <meta name="description" content="" />
   <meta name="keywords" content="bootstrap, bootstrap4" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Bootstrap CSS -->
-                
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <link rel="stylesheet" href="">
 		<link href="{% static 'css/bootstrap.min.css'%}" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="{%static "css/tiny-slider.css" %}" rel="stylesheet">
 		<link href="{%static "css/style.css"%}" rel="stylesheet">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
-         
-        <style>
-            .bg-image-vertical {
-                position: relative;
-                overflow: hidden;
-                background-repeat: no-repeat;
-                background-position: right center;
-                background-size: auto 100%;
-                }
-                
-                @media (min-width: 1025px) {
-                .h-custom-2 {
-                height: 100%;
-                }
-                }
-        </style>  
 	</head>
 
 	<body>
 
 		<!-- Start Header/Navigation -->
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark " arial-label="Furni navigation bar">
+		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
-			<div class="container ">
-				<a class="navbar-brand mx-auto" href="/">Furni<span>.</span></a>
+			<div class="container">
+				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<div class="collapse navbar-collapse" id="navbarsFurni">
+					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+						<li class="nav-item active">
+							<a class="nav-link" href="/">Home</a>
+						</li>
+						
+						<li><a class="nav-link" href="about.html">About us</a></li>
+						
+					    <li><a class="nav-link" href="contact.html">Contact us</a></li>
+						
+						
+					</ul>
+
+					
+				</div>
 			</div>
 				
 		</nav>
 		<!-- End Header/Navigation -->
-  
-            
-            <body>
-				
-                <section class="vh-100">
-                    <div class="container-fluid">
-                      <div class="row">
-                        <div class="col-sm-6 text-black">
-                  
-                          
-                          <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-                  
-                            <form style="width: 23rem;"  method='POST' action='/userlogin/'>
-								{% csrf_token %}
-								{% if messages %}
-								<div class="alert alert-success mt-3">
-								{% for message in messages %}
-								{{ message }}
-								{% endfor %}
-								</div>
-								{% endif %}
-				
-                  
-                              <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Log in</h3>
-                  
-                              <div class="form-outline mb-4">
-                                <input type="email" id="form2Example18"name="email" class="form-control form-control-lg" />
-                                <label class="form-label"  for="form2Example18">Email address</label>
-                              </div>
-                  
-                              <div class="form-outline mb-4">
-                                <input type="password" id="form2Example28"  name="pass" class="form-control form-control-lg" />
-                                <label class="form-label"for="form2Example28">Password</label>
-                              </div>
-                  
-                              <div class="pt-1 mb-4">
-                                <button class="btn btn-info btn-lg btn-block" type="submit">Login</button>
-                              </div>
-                  
-                              <p class="small mb-5 pb-lg-2"><a class="text-muted" href="/resetpassword/">Forgot password?</a></p>
-                              <p>Don't have an account? <a href="/usersignup/" class="link-info">Register here</a></p>
-                  
-                            </form>
-                  
-                          </div>
-                  
-                        </div>
-                        <div class="col-sm-6 px-0 d-none d-sm-block">
-                          <img style="width:100px;height:100px"src="{% static "images/img-grid-1.jpg" %}"
-                            alt="Login image" class="w-100 vh-100" style="object-fit: cover; object-position: left;">
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                  
+
+		{% block 'content' %}
+
+		
 
 		<!-- Start Footer Section -->
-		<footer class="footer-section ">
+		<footer class="footer-section">
 			<div class="container relative">
 
-				
+				<div class="sofa-img">
+					<img src={%static  "images/sofa.png" %}   alt="Image" class="img-fluid">
+				</div>
 
 				
 
@@ -171,7 +128,7 @@
 					<div class="row pt-4">
 						<div class="col-lg-6">
 							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
-            </p>
+                            </p>
 						</div>
 
 						<div class="col-lg-6 text-center text-lg-end">
@@ -188,6 +145,40 @@
 		</footer>
 		<!-- End Footer Section -->	
 
+		  <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+		  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+		  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+		  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+		  
+		  <script>
+				  $(document).ready(function(){
+  // Activate tooltip
+  $('[data-toggle="tooltip"]').tooltip();
+  
+  // Select/Deselect checkboxes
+  var checkbox = $('table tbody input[type="checkbox"]');
+  $("#selectAll").click(function(){
+	  if(this.checked){
+		  checkbox.each(function(){
+			  this.checked = true;                        
+		  });
+	  } else{
+		  checkbox.each(function(){
+			  this.checked = false;                        
+		  });
+	  } 
+  });
+  checkbox.click(function(){
+	  if(!this.checked){
+		  $("#selectAll").prop("checked", false);
+	  }
+  });
+});
+</script>
+
+		
+
+		
 
 		<script src={% static "js/bootstrap.bundle.min.js" %}></script>
 		<script src="{% static "js/tiny-slider.js" %}"></script>
