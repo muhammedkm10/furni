@@ -5,7 +5,6 @@ urlpatterns = [
     path('adminproductmanage/',views.product_manage,name='adminproductmanage'),
     path('editproduct/<str:id>',views.edit_product,name='editproduct'),
     path('addproduct/',views.add_product,name='addproduct'),
-     path('deleteproduct/<str:id>',views.delete_product,name='deleteproduct'),
      path('searchforproduct/',views.search_product,name='searchforproduct'),
      path('listproduct/<str:id>/',views.list_product,name='listproduct'),
      path('unlistproduct/<str:id>/',views.un_list_product,name='unlistproduct'),

@@ -43,9 +43,8 @@
 							<a class="nav-link" href="/">Home</a>
 						</li>
 						<li><a class="nav-link" href="/shop/">Shop</a></li>
-						<li><a class="nav-link" href="about.html">About us</a></li>
-						<li><a class="nav-link" href="services.html">Pages</a></li>
-					    <li><a class="nav-link" href="contact.html">Contact us</a></li>
+						<li><a class="nav-link" href="aboutus/">About us</a></li>
+					    <li><a class="nav-link" href="contactus/">Contact us</a></li>
 						{%if 'email' in  request.session  %} 
 							<!-- Content for logged-in users -->
 							<li><a class="nav-link" href="#logout1"  data-toggle="modal" data-toggle="tooltip">logout</a><li>
@@ -83,7 +82,7 @@
 							<div class="intro-excerpt">
 								<h1>Modern Interior <span clsas="d-block">Design Studio</span></h1>
 								<p class="mb-4">Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.</p>
-								<p><a href="" class="btn btn-secondary me-2">Shop Now</a><a href="#" class="btn btn-white-outline">Explore</a></p>
+								<p><a href="/shop/" class="btn btn-secondary me-2">Shop Now</a>
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -96,7 +95,7 @@
 			</div>
 		<!-- End Hero Section -->
 
-		<!-- Start Product Section -->
+		{% comment %} <!-- Start Product Section -->
 		<div class="product-section">
 			<div class="container">
 				<div class="row">
@@ -153,7 +152,7 @@
 
 				</div>
 			</div>
-		</div>
+		</div> {% endcomment %}
 		<!-- End Product Section -->
 
 		<!-- Start Why Choose Us Section -->

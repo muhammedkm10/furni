@@ -101,7 +101,7 @@ def otp_verification(request,id):
 
         else:
             messages.error(request, "Invalid OTP. Please try again.")
-            return render('login')
+            return redirect('otpverification',id)
 
     
     return render (request,'otp_verification.html')
@@ -162,3 +162,15 @@ def confirm_password(request,id):
             messages.error(request,'the password should be same')
 
     return render(request,'confirm_password.html')
+
+
+
+
+# about us
+def about_us(request):
+    return render(request,'aboutus.html')
+
+
+# contact us
+def contact_us(request):
+    return render(request,'contactus.html')

@@ -38,16 +38,6 @@ def edit_category(request,id):
           return redirect('category')
     return redirect('category_manage.html')
 
-# delete category
-def delete_category(request,id):
-    if request.method == 'POST':
-        items = category.objects.filter(id=id).delete()
-        context = {
-            'items':items
-        }
-        messages.success(request, "category deleted successfully")
-        return redirect('category')
-    return HttpResponse("hai")
 
 
 
@@ -60,4 +50,22 @@ def search(request):
             'items':obj
         }
     return render(request,'category_manage.html',context)
+
+
+
+# list category
+def list_category(request,id):
+    obj = category.objects.get(id = id)
+    obj.is_listed = True
+    obj.save()
+    return redirect('category')
+
+
+# un list category
+def un_list_category(request,id):
+    obj = category.objects.get(id = id)
+    obj.is_listed = False
+    obj.save()
+    return redirect('category')
+
    

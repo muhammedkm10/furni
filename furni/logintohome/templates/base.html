@@ -42,22 +42,56 @@
 						<li class="nav-item active">
 							<a class="nav-link" href="/">Home</a>
 						</li>
-						
-						<li><a class="nav-link" href="about.html">About us</a></li>
-						
-					    <li><a class="nav-link" href="contact.html">Contact us</a></li>
-						
+						<li><a class="nav-link" href="/shop/">Shop</a></li>
+						<li><a class="nav-link" href="/aboutus/">About us</a></li>
+					    <li><a class="nav-link" href="/contactus/">Contact us</a></li>
+						{%if 'email' in  request.session  %} 
+							<!-- Content for logged-in users -->
+							<li><a class="nav-link" href="#logout1"  data-toggle="modal" data-toggle="tooltip">logout</a><li>
+						 {% else %} 
+							<!-- Content for non-logged-in users -->
+							<li><a class="nav-link" href="/userlogin/">login</a></li>
+						{% endif %}
 						
 					</ul>
 
-					
+					{% comment %} <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+						<li><a class="nav-link" href="cart.html"><img src="{%static "images/cart.svg"%}"></a></li>
+						<li><a class="nav-link" href="#"><img class='ms-4'src="{%static "images/icons8-search-50 (1).png"%}"></a></li>
+					</ul> {% endcomment %}
 				</div>
 			</div>
 				
 		</nav>
 		<!-- End Header/Navigation -->
 
-		{% block 'content' %}
+	{% block 'content'%}{% endblock %}
+
+
+		 <!-- logout modal -->
+		 <div id="logout1" class="modal fade">
+		
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<form action="/logout/">
+						{% csrf_token%}
+						<div class="modal-header">						
+							<h4 class="modal-title">Logout</h4>
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+						</div>
+						<div class="modal-body">					
+							<p>Are you sure you want to logout?</p>
+						</div>
+						<div class="modal-footer">
+							<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+							<button type="submit" class="btn btn-danger" value="Delete">logout</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			
+		</div>
+
 
 		
 
@@ -65,9 +99,6 @@
 		<footer class="footer-section">
 			<div class="container relative">
 
-				<div class="sofa-img">
-					<img src={%static  "images/sofa.png" %}   alt="Image" class="img-fluid">
-				</div>
 
 				
 
