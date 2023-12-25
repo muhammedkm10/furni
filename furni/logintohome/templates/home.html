@@ -48,6 +48,7 @@
 						{%if 'email' in  request.session  %} 
 							<!-- Content for logged-in users -->
 							<li><a class="nav-link" href="#logout1"  data-toggle="modal" data-toggle="tooltip">logout</a><li>
+								<li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
 						 {% else %} 
 							<!-- Content for non-logged-in users -->
 							<li><a class="nav-link" href="/userlogin/">login</a></li>
@@ -56,7 +57,7 @@
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-						<li><a class="nav-link" href="cart.html"><img src="{%static "images/cart.svg"%}"></a></li>
+						
 						<li><a class="nav-link" href="#"><img class='ms-4'src="{%static "images/icons8-search-50 (1).png"%}"></a></li>
 					</ul>
 				</div>
