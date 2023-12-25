@@ -12,5 +12,8 @@ class cart(models.Model):
     def __str__(self) -> str:
         return f'{self.product_id.name} - {self.quantity}'
     
+    def subtotal(self):
+        return self.product_id.price*self.quantity
+    
 
     

@@ -11,7 +11,6 @@ from django.db.models import Sum
 
 
 
-
 # shop
 def shop(request):
     obj = products.objects.exclude(is_listed = False)
@@ -37,15 +36,13 @@ def show_cart(request):
     for i in item:
       i.total = i.product_id.price*i.quantity
       i.save()
-    total_amount = cart.objects.aggregate(sum = Sum('total'))
-    print(total_amount)
-    
+    total_amount = cart.objects.filter(user_id=user.id).aggregate(sum = Sum('total'))
     context = {
       'item':item,
       'total_amount':total_amount,
  
     }
-
+    
     return render(request,'cart.html',context)
 
 
