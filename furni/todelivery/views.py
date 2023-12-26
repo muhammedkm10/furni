@@ -65,7 +65,8 @@ def order_confirmation(request):
            orderdate = timezone.now().date()
            addres = request.POST['address']
            ad = address.objects.get(id = addres)
-           order = order_details(user_id = obj,pay_method = paymethod, order_date = orderdate,addres = ad)
+           ad1 = ad.id
+           order = order_details(user_id = obj,pay_method = paymethod, order_date = orderdate,addres = ad1)
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:

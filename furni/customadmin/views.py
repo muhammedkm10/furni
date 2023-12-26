@@ -3,6 +3,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.views.decorators.cache import never_cache
 from logintohome.models import CustomUser1
+from todelivery.models import order_details,ordered_items,address
+from product_manage.models import products
+
 # Create your views here.
 
 # admin login
@@ -84,5 +87,47 @@ def search_for_user(request):
               'user':user,
             }
         return render(request,'user_management.html',context)
+
+
+
+
+# order management
+  
+def order_management(request):
+  obj = ordered_items.objects.select_related('order_id')
+  for i in obj:
+    o = i.product_name
+    c = products.objects.get(name = o)
+    cat = c.category.name
+    
+    category={
+      'cat1':cat
+    }
+    print(category)
+
+  for i in obj:
+    ad = i.order_id.addres
+    p = address.objects.get(id = ad)
+    addres = {
+      'first_name':p.first_name,
+      'last_name':p.last_name,
+      'country':p.country,
+      'state':p.state,
+      'address':p.address,
+      'pin':p.pin,
+      'post':p.post,
+      'email':p.email,
+      'phone':p.phone
+    }
+   
+  context = {
+    'items':obj,
+    'address':addres,
+    'category1':category
+ 
+  }
+
+  return render(request,'order_management.html',context)
+
 
 

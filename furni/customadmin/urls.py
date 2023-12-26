@@ -10,4 +10,5 @@ urlpatterns = [
     path('blockuser/<str:id>',views.block_user,name='blockuser'),
     path('unblockuser/<str:id>',views.un_block_user,name='unblockuser'),
     path('searchuser/',views.search_for_user,name='searchuser'),
+    path('ordersmanage/',views.order_management,name='ordersmanage'),
 ]

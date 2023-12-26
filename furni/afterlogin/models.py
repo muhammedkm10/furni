@@ -8,6 +8,7 @@ class cart(models.Model):
     product_id = models.ForeignKey(products,on_delete = models.CASCADE)
     quantity = models.IntegerField(default = 1)
     total = models.IntegerField(blank=True, null=True)
+    category = models.CharField(max_length = 50)
 
     def __str__(self) -> str:
         return f'{self.product_id.name} - {self.quantity}'
