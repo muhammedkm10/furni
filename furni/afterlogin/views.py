@@ -77,7 +77,7 @@ def add_to_cart(request,id):
     obj = products.objects.get(id = id)
     email1 = request.session['email']
     user = CustomUser1.objects.get(email = email1)
-    cart1 = cart(user_id = user,product_id = obj)
+    cart1 = cart(user_id = user,product_id = obj,category = obj.category)
     cart1.save()
     return redirect('productdetails',id)
    

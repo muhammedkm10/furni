@@ -11,13 +11,12 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style>
-	.p{
+	.o{
 		color:red !important
 	}
-	.o{
-		color:green !important
-	}
+	
 	body {
         /* color: #566787;
 		background: #f5f5f5; */
@@ -255,6 +254,7 @@
 		
 	}
 	
+	
 </style>
   
   <body>
@@ -278,13 +278,7 @@
                     <div class="col-sm-6">
 						<h2>Manage  orders</h2>
 					</div>
-					  <div class=" col-6">
-				          <form class="form-inline col-6 my-2 my-lg-0" method='POST' action="">
-							{% csrf_token %}
-							<input class="form-control mr-sm-2" type="search" placeholder="Search" name="query">
-							<button class="butto1" type="submit">Search</button>
-						  </form>
-						</div>
+					
 					</div>
 				    
 
@@ -312,7 +306,7 @@
                     <tr> 
                         <td>{{i.order_id.id}}</td> 
                         <td>{{i.product_name}}</td> 
-                        <td>{{cate.cat}}</td> 
+                        <td>{{i.category}}</td> 
                         <td>
                             <ul class="list-unstyled">
                                 <li>name: {{ address.first_name }}</li>
@@ -328,9 +322,71 @@
                         <td>{{i.order_id.pay_method}}</td> 
                         <td>{{i.status}}</td> 
 
-                        
+						<td>
+							
+                            <a href="#editstatus{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit status">&#xE254;</i></a>
+
+
+							{% comment %} edit status {% endcomment %}
+							<div id="editstatus{{i.id}}" class="modal fade">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<form action="/editstatus/{{i.id}}" method="POST">
+											{% csrf_token %}
+											<div class="modal-header">						
+												<h4 class="modal-title">Edit status of the order</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											</div>
+											<div class="modal-body">					
+												<div class="form-group">
+													<label for="c_country" class="text-black">change status <span class="text-danger">*</span></label>
+													<select id="c_country" name="changestatus" class="form-control">
+													  <option value="ordered">ordered</option>    
+													  <option value="shipped">shipped</option>    
+													  <option value="cancelled">cancelled</option>    
+													  <option value="confirmed">confirmed</option>    
+													  <option value="Delivered">Delivered</option>    
+													  <option value="Pending">Pending</option>    
+												   
+													</select>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+												<input type="submit" class="btn btn-info" value="Update">
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+                           
+                        </td>
+                        <td><a href="#cancelorder" class="btn o cancel" data-toggle="modal">cancel</a></td>
+						{% comment %} <td> <a href="" class=" " data-toggle="modal"></a></td> {% endcomment %}
+						<div id="cancelorder" class="modal fade">
 		
-                        <td> <a href="" class="btn o " data-toggle="modal"></a> </td>
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<form action="/cancelorder/{{i.id}}" method='POST'>
+										{% csrf_token%}
+										<div class="modal-header">						
+											<h4 class="modal-title">cancel the order</h4>
+											<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										</div>
+										<div class="modal-body">					
+											<p>Are you sure you want to cancel the order?</p>
+										</div>
+										<div class="modal-footer">
+											<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+											<button type="submit" class="btn btn-danger" value="Delete">ok</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							
+						</div>
+							
+		
                         {% endfor%}
                     </tr>
 				
@@ -341,5 +397,39 @@
 			
         </div>
     </div>
+
+
+{% comment %} edit status {% endcomment %}
+
+	
   </body>
+  <script>
+	$(document).ready(function(){
+		// Activate tooltip
+		$('[data-toggle="tooltip"]').tooltip();
+		
+		// Select/Deselect checkboxes
+		var checkbox = $('table tbody input[type="checkbox"]');
+		$("#selectAll").click(function(){
+			if(this.checked){
+				checkbox.each(function(){
+					this.checked = true;                        
+				});
+			} else{
+				checkbox.each(function(){
+					this.checked = false;                        
+				});
+			} 
+		});
+		checkbox.click(function(){
+			if(!this.checked){
+				$("#selectAll").prop("checked", false);
+			}
+		});
+	});
+	// Initialization for ES Users
+import { Input, Ripple, initMDB } from "mdb-ui-kit";
+
+initMDB({ Input, Ripple });
+</script>
 </html>

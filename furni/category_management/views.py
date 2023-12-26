@@ -5,11 +5,18 @@ from django.contrib import messages
 # Create your views here.
 # show category
 def show_category(request):
-    items = category.objects.all()
-    context = {
-        'items' : items
-    }
-    return render(request,'category_manage.html',context)
+    if 'email' not in request.session:
+       if 'username' in request.session:
+            items = category.objects.all()
+            context = {
+                'items' : items
+            }
+            return render(request,'category_manage.html',context)
+       else:
+           return redirect('adminlogin')
+    else:
+     return render(request, '404.html', status=404)
+
 
 
 

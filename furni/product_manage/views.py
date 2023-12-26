@@ -5,11 +5,17 @@ from django.contrib import messages
 import os
 # Create your views here.
 def product_manage(request):
-    obj = products.objects.select_related('category').all()
-    context = {
-        'items':obj
-    }
-    return render(request,'product.html',context)
+    if 'email' not in request.session:
+      if 'useraname' in request.session:
+            obj = products.objects.select_related('category').all()
+            context = {
+                  'items':obj
+            }
+            return render(request,'product.html',context)
+      else:
+           return redirect('adminlogin')
+    else: 
+         return render(request, '404.html', status=404)
 
 
 # edit product

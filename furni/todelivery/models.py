@@ -30,6 +30,7 @@ class ordered_items(models.Model):
     quantity =  models.IntegerField()
     status =  models.CharField(max_length = 50)
     total_amount =models.IntegerField()
+    category  =  models.CharField(max_length = 50)
 
 
 
