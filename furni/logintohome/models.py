@@ -20,6 +20,7 @@ class CustomUser1(models.Model):
     password = models.CharField(max_length=100)
     date_joined = models.DateTimeField()
     phone  = models.CharField(max_length=100)
+    profile = models.ImageField(upload_to='images/', null=True, blank=True)
     is_verified = models.BooleanField(default=False)
     is_blocked = models.BooleanField(default = False)
     otp_secret = models.CharField(max_length=200)

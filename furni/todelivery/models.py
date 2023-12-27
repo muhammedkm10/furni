@@ -31,6 +31,8 @@ class ordered_items(models.Model):
     status =  models.CharField(max_length = 50)
     total_amount =models.IntegerField()
     category  =  models.CharField(max_length = 50)
+    user = models.IntegerField()
+    add = models.ForeignKey(address, on_delete=models.CASCADE)
 
 
 

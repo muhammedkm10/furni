@@ -307,16 +307,16 @@
                         <td>{{i.order_id.id}}</td> 
                         <td>{{i.product_name}}</td> 
                         <td>{{i.category}}</td> 
-                        <td>
-                            <ul class="list-unstyled">
-                                <li>name: {{ address.first_name }}</li>
-                                <li>{{address.state}},{{address.country}}</li>
-                                <li>address: {{address.address}}</li>
-                                <li>post: {{address.post}},pin: {{address.pin}}</li>
-                                <li>{{address.email}}</li>
-                                <li>phone: {{address.phone}}</li>
-                            </ul>
-                        </td>
+						<td>
+							<ul class="list-unstyled">
+								<li>name: {{ i.add.first_name }}</li>
+								<li>{{i.add.state}},{{i.add.country}}</li>
+								<li>address: {{i.add.address}}</li>
+								<li>post: {{i.add.post}},pin: {{i.add.pin}}</li>
+								<li>{{i.add.email}}</li>
+								<li>phone: {{i.add.phone}}</li>
+							</ul>
+						</td>
                         <td>{{i.quantity}}</td> 
                         <td>{{i.total_amount}}</td> 
                         <td>{{i.order_id.pay_method}}</td> 
@@ -361,7 +361,9 @@
 							</div>
                            
                         </td>
+						{% if i.status != "cancelled" and i.status !=  "cancelled by admin" %}
                         <td><a href="#cancelorder" class="btn o cancel" data-toggle="modal">cancel</a></td>
+						{% endif %}
 						{% comment %} <td> <a href="" class=" " data-toggle="modal"></a></td> {% endcomment %}
 						<div id="cancelorder" class="modal fade">
 		

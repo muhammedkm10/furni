@@ -2,7 +2,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from product_manage.models import products
 from logintohome.models import CustomUser1
 from .models import cart
-from django.db.models import Sum
+from django.db.models import Sum,Q
 
 
 
@@ -13,7 +13,7 @@ from django.db.models import Sum
 
 # shop
 def shop(request):
-    obj = products.objects.exclude(is_listed = False)
+    obj = products.objects.filter(is_listed = True,category__is_listed = True )
     context = {
         'items' : obj,
     }

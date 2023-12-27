@@ -107,28 +107,12 @@ def search_for_user(request):
 def order_management(request): 
         if 'email' not in request.session:
           if 'username' in request.session:
-            obj = ordered_items.objects.select_related('order_id')
-            for i in obj:
-              if i.order_id.addres is not None:
-                ad = i.order_id.addres
-                p = address.objects.get(id = ad)
-                addres = {
-                    'first_name':p.first_name,
-                    'last_name':p.last_name,
-                    'country':p.country,
-                    'state':p.state,
-                    'address':p.address,
-                    'pin':p.pin,
-                    'post':p.post,
-                    'email':p.email,
-                    'phone':p.phone
-                  } 
-                context = {
-                  'items':obj,
-                  'address':addres,
-                }
-              return render(request,'order_management.html',context)
-            return render(request,'order_management.html')
+                  obj = ordered_items.objects.select_related('order_id')
+                  context = {
+                            'items':obj,
+                            
+                          }
+                  return render(request,'order_management.html',context)
           else:
              return redirect('adminlogin')
         else:
@@ -151,6 +135,9 @@ def edit_status(request,id):
 
 # cancel order
 def cancel_order(request,id):
-  ordered_items.objects.get(id = id).delete()
+  obj = ordered_items.objects.get(id = id)
+  obj.status = "cancelled by admin"
+  obj.save()
   return redirect('ordersmanage')
+
 

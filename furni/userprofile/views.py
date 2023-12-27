@@ -2,6 +2,10 @@ from django.shortcuts import render,redirect
 from logintohome.models import CustomUser1
 from todelivery.models import address
 from django.contrib import messages
+import os
+from django.views.decorators.cache import never_cache
+from todelivery.models import ordered_items,order_details
+
 # Create your views here.
 
 
@@ -89,7 +93,81 @@ def edit_address(request,id):
 def edit_profile(request): 
     email1 = request.session['email']
     obj = CustomUser1.objects.get(email = email1)
+
     context = {
         'user':obj,
     }
-    return render(request,'edit_userprofile.html')
+    if request.method == 'POST':
+        name = request.POST['name']
+        phone = request.POST['phone']
+        image = request.FILES['editprofile'] if request.FILES else None
+        obj.username = name
+        obj.phone = phone
+        if image:
+            if obj.profile:
+                os.remove(obj.profile.path)
+            obj.profile = image
+        obj.save()
+        messages.success(request,'profile updated successfully')
+        return redirect('userprofile')
+    return render(request,'edit_userprofile.html',context)
+
+
+
+# change password
+@never_cache
+def change_password(request):
+    email1 = request.session['email']
+    obj = CustomUser1.objects.get(email = email1)
+    oldpass = obj.password 
+    if request.method == "POST":
+        entered = request.POST['pass']
+        if entered == oldpass:
+           return redirect('confirming')
+        messages.error(request,'enter a valid password')
+        return redirect('changepassword')
+    return render(request,'old_password.html')
+
+
+# confirmation of password and setting new password
+@never_cache
+def cofirmation(request):
+    email1 = request.session['email']
+    obj = CustomUser1.objects.get(email = email1)
+    if request.method == 'POST':
+        pass1 = request.POST['pass1']
+        pass2 = request.POST['pass2']
+        if pass1 == pass2:
+            obj.password = pass1
+            obj.save()
+            messages.success(request,'your password changed successfully...!')
+            return redirect('userprofile')
+        messages.error(request,'the passwords should be same')
+    return render(request,'change_password.html')
+
+
+# order details
+def orderdetails(request):
+    email1 = request.session['email']
+    obj = CustomUser1.objects.get(email = email1)
+    user = obj.id
+    orders = ordered_items.objects.filter(user = user)
+    context = {
+                'orders':orders,
+
+            }
+    return render(request,'order_details.html',context)
+
+
+
+#  cancel order
+def cancel_order(request,id):
+    obj = ordered_items.objects.get(id= id)
+    obj.status = 'cancelled'
+    obj.save()
+    messages.success(request,"your order cacelled successfully")
+    return redirect('orderdetails')
+
+
+
+
