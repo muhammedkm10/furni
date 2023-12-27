@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'product_manage',
     'afterlogin',
     'todelivery',
+    'userprofile',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +68,7 @@ TEMPLATES = [
             BASE_DIR / 'product_manage/templates',
             BASE_DIR / 'category_management/templates',
             BASE_DIR / 'todelivery/templates',
+            BASE_DIR / 'userprofile/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {

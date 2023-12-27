@@ -41,7 +41,7 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                         {% if 'email' in request.session%}
-						<li><a class="nav-link" href="#"><img src={% static "images/user.svg"%}></a></li>
+						<li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
                         {% else%}
                         <li><a class="nav-link" href="/userlogin/">login</a></li>
 						{% endif %}
