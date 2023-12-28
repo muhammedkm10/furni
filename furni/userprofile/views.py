@@ -146,6 +146,8 @@ def cofirmation(request):
     return render(request,'change_password.html')
 
 
+
+
 # order details
 def orderdetails(request):
     email1 = request.session['email']

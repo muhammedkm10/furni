@@ -26,7 +26,7 @@ class order_details(models.Model):
 
 class ordered_items(models.Model):
     order_id = models.ForeignKey(order_details,on_delete=models.CASCADE )
-    product_name =  models.CharField(max_length = 500)
+    product_name =  models.ForeignKey(products, on_delete=models.CASCADE)
     quantity =  models.IntegerField()
     status =  models.CharField(max_length = 50)
     total_amount =models.IntegerField()

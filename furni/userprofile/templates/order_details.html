@@ -94,8 +94,11 @@
             <div class="container">
           <table class="table  table-bordered .custom-border table-striped table-hover">
             <thead>
+                
+               
                 <tr>
                     <th>order id</th>
+                    <th>image</th>
                     <th>Product name</th>
                     <th>total amonut</th>
                     <th>quantity</th>
@@ -112,8 +115,9 @@
             </thead>
             <tbody>
               {% for i in orders %}
-                <tr>
+                <tr> 
                     <td>{{i.order_id.id}}</td>
+                    <td><img src="{{i.product_name.img1.url}}" alt="img" style="height: 200px;width: 200px;;"></td>
                     <td>{{i.product_name}}</td>
                     <td>{{i.total_amount}}</td>
                     <td>{{i.quantity}}</td>

@@ -18,6 +18,7 @@ def proceed_to_checkout(request):
     obj = CustomUser1.objects.get(email = email1)
     userid = obj.id
     print(userid)
+    
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid)
     total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
     addresses = address.objects.filter(user_id=userid)
@@ -70,7 +71,7 @@ def order_confirmation(request):
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
-                item = ordered_items(order_id = order,product_name = i.product_id.name,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad)
+                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad)
                 item.save()
                 i.delete()
            return render(request,'thank_you.html')
