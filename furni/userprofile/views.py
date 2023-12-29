@@ -5,6 +5,9 @@ from django.contrib import messages
 import os
 from django.views.decorators.cache import never_cache
 from todelivery.models import ordered_items,order_details
+from datetime import timedelta
+
+
 
 # Create your views here.
 
@@ -114,6 +117,7 @@ def edit_profile(request):
 
 
 
+
 # change password
 @never_cache
 def change_password(request):
@@ -127,6 +131,7 @@ def change_password(request):
         messages.error(request,'enter a valid password')
         return redirect('changepassword')
     return render(request,'old_password.html')
+
 
 
 # confirmation of password and setting new password
@@ -154,8 +159,11 @@ def orderdetails(request):
     obj = CustomUser1.objects.get(email = email1)
     user = obj.id
     orders = ordered_items.objects.filter(user = user)
+
     context = {
                 'orders':orders,
+                
+
 
             }
     return render(request,'order_details.html',context)
@@ -169,6 +177,7 @@ def cancel_order(request,id):
     obj.save()
     messages.success(request,"your order cacelled successfully")
     return redirect('orderdetails')
+
 
 
 

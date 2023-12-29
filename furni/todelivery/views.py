@@ -20,17 +20,22 @@ def proceed_to_checkout(request):
     print(userid)
     
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid)
-    total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
-    addresses = address.objects.filter(user_id=userid)
-    context = {
-    
-        'cart_details': cart_details,
-        'total':total,
-        'addresses':addresses
-    }
-    print(context)
+    if cart_details.exists():
+        total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
+        addresses = address.objects.filter(user_id=userid)
+        context = {
+        
+            'cart_details': cart_details,
+            'total':total,
+            'addresses':addresses
+        }
+        print(context)
 
-    return render(request,'proceed_to_checkout.html',context)
+        return render(request,'proceed_to_checkout.html',context)
+    else:
+         messages.error(request,"add some products")
+         return redirect('showcart')
+
 
 
 # add address

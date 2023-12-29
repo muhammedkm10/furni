@@ -22,6 +22,13 @@
 	<body>
 
 		<!-- Start Header/Navigation -->
+							{% if messages %}
+						<div class="alert alert-danger mt-3">
+							{% for message in messages %}
+							{{ message }}
+							{% endfor %}
+							</div>
+							{% endif %}
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 			<div class="container">
@@ -173,6 +180,8 @@
                         <div class="col-md-12">
                           <a href="/proceedtocheckout/"><button class="btn btn-black btn-lg py-3 btn-block" >Proceed To Checkout</button></a>
                         </div>
+						
+		
                       </div>
                     </div>
                   </div>
