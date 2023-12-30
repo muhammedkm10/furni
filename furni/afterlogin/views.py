@@ -3,6 +3,7 @@ from product_manage.models import products
 from logintohome.models import CustomUser1
 from .models import cart
 from django.db.models import Sum,Q
+from category_management.models import category
 
 
 
@@ -14,10 +15,13 @@ from django.db.models import Sum,Q
 # shop
 def shop(request):
     obj = products.objects.filter(is_listed = True,category__is_listed = True )
+    cat = category.objects.filter(is_listed = True)
     context = {
         'items' : obj,
+        'category':cat
     }
     return render(request,'shop.html',context)
+
 
 # product details
 def product_details(request,id):
@@ -91,6 +95,24 @@ def delete_cart_product(request,id):
 
 
 
+# searching for category
+def selection_for_category(request):
+   if request.method == 'POST':
+      try:
+            cat1 = request.POST['catoo']
+      except:
+          cat1 = None
+      obj = products.objects.filter(category__id = cat1)
+      cat = category.objects.filter(is_listed = True)
+
+      print(obj)
+      context = {
+                'items':obj,
+                'category':cat
+
+            }
+      return render(request,'selected_category.html',context)
+     
 
 
 

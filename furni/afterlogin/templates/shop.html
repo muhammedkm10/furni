@@ -20,6 +20,41 @@
 	</head>
 
 	<body>
+		<style>{% comment %} 
+			/* Custom CSS for the styled dropdown list */
+			.custom-dropdown {
+				padding: 8px 16px;
+				border: 1px solid #ced4da;
+				border-radius: 4px;
+				background-color: #fff;
+				color: #212529;
+				font-size: 14px;
+				appearance: none;
+				-webkit-appearance: none;
+				-moz-appearance: none;
+			}
+		
+			/* Styling for the arrow icon */
+			.custom-dropdown::after {
+				content: '\25BE'; /* Unicode for down arrow */
+				position: absolute;
+				top: calc(50% - 4px);
+				right: 10px;
+				pointer-events: none;
+			}
+			{%endcomment  %} 
+
+			.o{
+				background-color: #3b5d50;
+				border: none !important;
+			}
+			.bu{
+				background-color: #0b8557;
+				color:white;
+				border: none !important;
+
+			}
+		</style> 
 
 		<!-- Start Header/Navigation -->
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
@@ -37,6 +72,27 @@
 							<a class="nav-link" href="/">Home</a>
 						</li>
 						<li class="active"><a class="nav-link" href="/shop/">Shop</a></li>
+						
+							<div class="collapse navbar-collapse" id="navbarsFurni">
+								<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+									<!-- Your other navigation items here -->
+									<li class="nav-item">
+										<form id="districtForm" action="/selectionforcategory/"method="POST">
+											{% csrf_token %}
+										<select class="custom-dropdown nav-link o text-white d-inline" id="statusDropdown" name="catoo"aria-label="Change Status"><span>ljksfhbv</span>
+											<option value="" selected disabled>select a category</option>
+											{% for i in category%}
+											<option value="{{i.id}}">{{i.name}}</option>
+											{% endfor %}
+											
+										</select>
+										<button  class="bu"type="submit">click here</button>
+										
+
+									</form>
+									</li>
+								</ul>
+							</div>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 p-1 mb-md-0 ms-5">
@@ -52,7 +108,8 @@
                             <li><a class="nav-link" href="/userlogin/">login</a></li>
 							{%else%}
 							<li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
-						 <li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
+						    <li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
+							
 
                             {% endif %}
                             
@@ -94,9 +151,9 @@
                         <h3 class="product-title">{{i.name}}</h3>
                         <strong class="product-price">${{i.price}}</strong>
 
-                        <span class="icon-cross">
+                        {% comment %} <span class="icon-cross">
                             <img src="{% static 'images/cross.svg' %}" class="img-fluid">
-                        </span>
+                        </span> {% endcomment %}
                     </a>
                 </div>
                 {% endfor %}

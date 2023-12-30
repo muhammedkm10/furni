@@ -6,7 +6,7 @@ import os
 # Create your views here.
 def product_manage(request):
     if 'email' not in request.session:
-      if 'useraname' in request.session:
+      if 'username' in request.session:
             obj = products.objects.select_related('category').all()
             context = {
                   'items':obj
@@ -16,6 +16,7 @@ def product_manage(request):
            return redirect('adminlogin')
     else: 
          return render(request, '404.html', status=404)
+    
 
 
 # edit product

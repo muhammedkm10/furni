@@ -335,8 +335,12 @@
             {% comment %} img 2 {% endcomment %}
             <div class="col-md-3 text-center">
                     <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage" src="{{items.img1.url}}"
-                        alt="example placeholder" style="width: 200px;" />
+                        {% if items.img1 %}
+                        <img id="selectedImage" src="{{ items.img1.url }}" alt="example placeholder" style="width: 200px;" />
+                        {% else %}
+       <!-- Provide a placeholder image or text if the image URL does not exist -->
+       <img id="selectedImage" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"alt="example placeholder" style="width: 200px;" />
+                        {% endif %}
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
@@ -349,8 +353,12 @@
                 {% comment %} img 1 {% endcomment %}
                 <div class="col-md-3 text-center">
                     <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage1" src="{{items.img2.url}}"
-                        alt="example placeholder" style="width: 200px;" />
+                        {% if items.img2 %}
+                        <img id="selectedImage" src="{{ items.img2.url }}" alt="example placeholder" style="width: 200px;" />
+                        {% else %}
+       <!-- Provide a placeholder image or text if the image URL does not exist -->
+             <img id="selectedImage1" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"alt="example placeholder" style="width: 200px;" />
+                {% endif %}
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
@@ -362,8 +370,12 @@
                 {% comment %} img 3 {% endcomment %}
                 <div class="col-md-3 text-center">
                     <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage2" src="{{items.img3.url}}"
-                        alt="example placeholder" style="width: 200px;" />
+                        {% if items.img3 %}
+                        <img id="selectedImage" src="{{ items.img3.url }}" alt="example placeholder" style="width: 200px;" />
+                        {% else %}
+       <!-- Provide a placeholder image or text if the image URL does not exist -->
+                         <img id="selectedImage2" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"alt="example placeholder" style="width: 200px;" />
+                        {% endif %}
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
@@ -375,8 +387,12 @@
                 {% comment %} img 4 {% endcomment %}
                 <div class="col-md-3 text-center">
                     <div class="mb-4 d-flex justify-content-center">
-                        <img id="selectedImage3" src="{{items.img4.url}}"
-                        alt="example placeholder" style="width: 200px;" />
+                        {% if items.img4 %}
+                        <img id="selectedImage" src="{{ items.img4.url }}" alt="example placeholder" style="width: 200px;" />
+                       {% else %}
+            <!-- Provide a placeholder image or text if the image URL does not exist -->
+            <img id="selectedImage3" src="https://mdbootstrap.com/img/Photos/Others/placeholder.jpg"alt="example placeholder" style="width: 200px;" />
+                        {% endif %}
                     </div>
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
