@@ -129,11 +129,14 @@
 							</div></li>
 
 						    <li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
+							<li>
+								<a class="nav-link ms-4" href="/showwishlist"><img src="{%static "images/heart.png"%}" title="wishlist"></a>
+								</li>
 							
 
                             {% endif %}
                             
-                        <li><a class="nav-link" href="#"><img class='ms-4'src="{%static "images/icons8-search-50 (1).png"%}"></a></li>
+                        {% comment %} <li><a class="nav-link" href="#"><img class='ms-4'src="{%static "images/icons8-search-50 (1).png"%}"></a></li> {% endcomment %}
 					</ul>
 				</div>
 			</div>

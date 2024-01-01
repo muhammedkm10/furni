@@ -17,4 +17,13 @@ class cart(models.Model):
         return self.product_id.price*self.quantity
     
 
+
+class wishlist(models.Model):
+    user_id = models.ForeignKey(CustomUser1, on_delete = models.CASCADE)
+    product_id = models.ForeignKey(products,on_delete = models.CASCADE)
+    
+
+    
+    
+
     

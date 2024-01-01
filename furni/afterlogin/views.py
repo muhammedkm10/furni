@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse,redirect
 from product_manage.models import products
 from logintohome.models import CustomUser1
-from .models import cart
+from .models import cart,wishlist
 from django.db.models import Sum,Q
 from category_management.models import category
 from django.contrib import messages
@@ -106,9 +106,12 @@ def add_to_cart(request,id):
     cart1 = cart(user_id = user,product_id = obj,category = obj.category)
     cart1.save()
     messages.success(request,"Product added to cart successfully.......1")
-    return redirect('productdetails',id)
+    path1 = request.GET.get('next')
+    return redirect(path1,id)
    
     
+
+
 
 # delete cart item
 def delete_cart_product(request,id):
@@ -145,7 +148,25 @@ def selection_for_category(request):
             }
       return render(request,'selected_category.html',context)
      
+# add products to wish list
+def add_to_wishlist(request,id):
+    email = request.session['email']
+    user =  CustomUser1.objects.get(email = email )
+    pro = products.objects.get(id = id)
+    obj = wishlist(user_id = user,product_id = pro)
+    obj.save()
+    messages.success(request,"Product added to wishlist successfully.......1")
+    return redirect('productdetails',id)
 
 
-
-
+# show cart
+def show_wish_list(request):
+    email = request.session['email']
+    user = CustomUser1.objects.get(email = email)
+    user_id = user.id
+    pros = wishlist.objects.filter(user_id = user_id)
+    context = {
+        'items' : pros
+    }
+    return render(request,'wishlist.html',context)
+1
