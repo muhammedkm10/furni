@@ -271,7 +271,7 @@
 
 
 	 <!-- user   table  -->
-    <div class="container">
+    <div class="container-fluid">
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -293,7 +293,9 @@
                         <th>address</th>
                         <th>quantity</th>
                         <th>total amount</th>
-                        <th>payment</th>
+                        <th>ordered date</th> 
+						<th>delivery expected date</th>
+                        <th>payment method</th>
                         <th>status</th>
                         <th>actions</th>
 
@@ -318,7 +320,9 @@
 							</ul>
 						</td>
                         <td>{{i.quantity}}</td> 
-                        <td>{{i.total_amount}}</td> 
+                        <td>{{i.total_amount}}</td>
+                        <td>{{i.order_id.order_date}}</td> 
+						<td>{{i.expected}}</td> 
                         <td>{{i.order_id.pay_method}}</td> 
                         <td>{{i.status}}</td> 
 
@@ -344,10 +348,8 @@
 													  <option value="ordered">ordered</option>    
 													  <option value="shipped">shipped</option>    
 													  <option value="cancelled">cancelled</option>    
-													  <option value="confirmed">confirmed</option>    
-													  <option value="Delivered">Delivered</option>    
-													  <option value="Pending">Pending</option>    
-												   
+													  <option value="Delivered">Delivered</option> 
+													  <option value="On the way">on the way</option>    
 													</select>
 												</div>
 											</div>

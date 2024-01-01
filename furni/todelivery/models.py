@@ -33,7 +33,7 @@ class ordered_items(models.Model):
     category  =  models.CharField(max_length = 50)
     user = models.IntegerField()
     add = models.ForeignKey(address, on_delete=models.CASCADE)
-
+    expected = models.DateField(null = True )
 
 
 

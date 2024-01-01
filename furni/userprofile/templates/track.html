@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Tracking</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    .status-box {
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin: 5px;
+      text-align: center;
+    }
+
+    .active {
+      background-color: #ffc107; /* Change this color to highlight the active part */
+    }
+  
+
+    /* Custom styles for order tracking */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+    .tracking-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    .tracking-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .status {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 20px;
+      background-color: #5cb85c;
+      color: #fff;
+    }
+    .tracking-details {
+      margin-top: 40px;
+    }
+    .tracking-details table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    .tracking-details th,
+    .tracking-details td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .tracking-details th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+    body{
+      background: #ddd3;
+      height: 100vh;
+      vertical-align: middle;
+      display: flex;
+      font-family: Muli;
+      font-size: 14px;    
+  }
+  .card{
+      margin: auto;
+      width: 38%;
+      max-width:600px;
+      padding: 4vh 0;
+      box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+      border-top: 3px solid rgb(252, 103, 49);
+      border-bottom: 3px solid rgb(252, 103, 49);
+      border-left: none;
+      border-right: none;
+  }
+  @media(max-width:768px){
+      .card{
+          width: 90%;
+      }
+  }
+  .title{
+      color: rgb(252, 103, 49);
+      font-weight: 600;
+      margin-bottom: 2vh;
+      padding: 0 8%;
+      font-size: initial;
+  }
+  #details{
+      font-weight: 400;
+  }
+  .info{
+      padding: 5% 8%;
+  }
+  .info .col-5{
+      padding: 0;
+  }
+  #heading{
+      color: grey;
+      line-height: 6vh;
+  }
+  .pricing{
+      background-color: #ddd3;
+      padding: 2vh 8%;
+      font-weight: 400;
+      line-height: 2.5;
+  }
+  .pricing .col-3{
+      padding: 0;
+  }
+  .total{
+      padding: 2vh 8%;
+      color: rgb(252, 103, 49);
+      font-weight: bold;
+  }
+  .total .col-3{
+      padding: 0;
+  }
+  .footer{
+      padding: 0 8%;
+      font-size: x-small;
+      color: black;
+  }
+  .footer img{
+      height: 5vh;
+      opacity: 0.2;
+  }
+  .footer a{
+      color: rgb(252, 103, 49);
+  }
+  .footer .col-10, .col-2{
+      display: flex;
+      padding: 3vh 0 0;
+      align-items: center;
+  }
+  .footer .row{
+      margin: 0;
+  }
+  #progressbar {
+      margin-bottom: 3vh;
+      overflow: hidden;
+      color: rgb(252, 103, 49);
+      padding-left: 0px;
+      margin-top: 3vh
+  }
+  
+  #progressbar li {
+      list-style-type: none;
+      font-size: x-small;
+      width: 25%;
+      float: left;
+      position: relative;
+      font-weight: 400;
+      color: rgb(160, 159, 159);
+  }
+  
+  #progressbar #step1:before {
+      content: "";
+      color: rgb(252, 103, 49);
+      width: 5px;
+      height: 5px;
+      margin-left: 0px !important;
+      /* padding-left: 11px !important */
+  }
+  
+  #progressbar #step2:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-left: 32%;
+  }
+  
+  #progressbar #step3:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-right: 32% ; 
+      /* padding-right: 11px !important */
+  }
+  
+  #progressbar #step4:before {
+      content: "";
+      color: #fff;
+      width: 5px;
+      height: 5px;
+      margin-right: 0px !important;
+      /* padding-right: 11px !important */
+  }
+  
+  #progressbar li:before {
+      line-height: 29px;
+      display: block;
+      font-size: 12px;
+      background: #ddd;
+      border-radius: 50%;
+      margin: auto;
+      z-index: -1;
+      margin-bottom: 1vh;
+  }
+  
+  #progressbar li:after {
+      content: '';
+      height: 2px;
+      background: #ddd;
+      position: absolute;
+      left: 0%;
+      right: 0%;
+      margin-bottom: 2vh;
+      top: 1px;
+      z-index: 1;
+  }
+  .progress-track{
+      padding: 0 8%;
+  }
+  #progressbar li:nth-child(2):after {
+      margin-right: auto;
+  }
+  
+  #progressbar li:nth-child(1):after {
+      margin: auto;
+  }
+  
+  #progressbar li:nth-child(3):after {
+      float: left;
+      width: 68%;
+  }
+  #progressbar li:nth-child(4):after {
+      margin-left: auto;
+      width: 132%;
+  }
+  
+  #progressbar  li.active{
+      color: black;
+  }
+  
+  #progressbar li.active:before,
+  #progressbar li.active:after {
+      background: rgb(252, 103, 49);
+  }
+  
+  </style>
+</head>
+<body>
+
+<div class="container tracking-container">
+  <h2>Track Your Order</h2>
+  
+  <!-- Tracking status -->
+  <div class="container-fluid ">
+  <div class="row">
+    <div class="col-lg-4"><img src="{{item.product_name.img1.url}}" alt="img" style="height: 200px;width: 200px;"></div>
+  
+  <div class="col-lg-6 mt-5 text-danger">
+    <h6 class="fs-3 text-capitalize" >Name  : {{item.product_name}}</h1>
+      <h6 class="fs-3 text-capitalize" >Quantity : {{item.quantity}}</h1>
+      <h6 class="fs-3 text-capitalize" >Toatl-amount : {{item.total_amount}}</h1>
+
+  </div>
+</div>
+</div>
+
+  
+  <!-- Tracking details -->
+  <div class="tracking-details">
+    <h3>Order Details</h3>
+    <table>
+      <tr>
+        <th>Order ID</th>
+        <td>{{item.order_id.id}}</td>
+      </tr>
+      <tr>
+        <th>Shipping Address</th>
+        <td>
+          <ul class="list-unstyled">
+              <li>name: {{ item.add.first_name }}</li>
+              <li>{{item.add.state}},{{item.add.country}}</li>
+              <li>address: {{item.add.address}}</li>
+              <li>post: {{item.add.post}},pin: {{item.add.pin}}</li>
+              <li>{{item.add.email}}</li>
+              <li>phone: {{item.add.phone}}</li>
+          </ul>
+      </td>
+      </tr>
+      <tr>
+        <th>Estimated Delivery</th>
+        <td>{{item.expected}}</td>
+        
+        
+      </tr>
+      <!-- Add more details as needed -->
+    </table>
+    <div class="container-fluid mt-5">
+      <div class="row">
+        <div class="col-12">
+          <h3>Order Tracking Flowchart</h3>
+          <div class="container-fluid flowchart col-12">
+            <div class="row">
+              <div class="col-sm-2 status-box {% if item.status == 'ordered' %}active{% endif %}">
+                ordered
+              </div>
+              <div class="col-sm-3 status-box {% if item.status == 'shipped' %}active{% endif %}">
+                shipped
+              </div>
+              <div class="col-sm-3 status-box {% if item.status == 'On the way' %}active{% endif %}">
+                On the way
+              </div>
+              <div class="col-sm-3 status-box {% if item.status == 'Delivered' %}active{% endif %}">
+                Delivered
+              </div>
+              <!-- Add more status boxes as needed -->
+            </div>
+            <!-- Add more rows and status boxes as needed -->
+          </div>
+        </div>
+      </div>
+    </div>
+  
+ <div class="container text-center pt-2">
+    <a href="/orderdetails" class="btn btn-danger text-decoration-none" >back to orders</a>
+  </div>
+
+
+
+
+
+
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

@@ -30,6 +30,27 @@
         {
             border:3px solid;
         }
+        .cart-icon-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            min-width: 5px;
+            padding: 1px;
+            border-radius: 50%;
+            background-color: #007bff; /* You can change the background color */
+            color: white;
+            text-align: center;
+            font-size: 12px;
+        }
+        .btn1{
+            border-radius:50px;
+        }
+
     </style>
 
 	<body>
@@ -63,7 +84,9 @@
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
                         
-                        <li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
+                        <li><div class="cart-icon-container">
+                            <a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"> <span class="px-2 text-center cart-badge">{{no}}</span></a>
+                            </div></li>
                         
 						
 					</ul>
@@ -103,7 +126,8 @@
                     <th>total amonut</th>
                     <th>quantity</th>
                     <th>address</th>
-                    <th>date</th>
+                    <th>ordered date</th>
+                    <th>delivery expected date</th>
                     <th>status/pay method</th>
                     
                   
@@ -131,16 +155,21 @@
                         </ul>
                     </td>
                     <td>{{i.order_id.order_date}}</td>
-                   
-                    <td>{{i.status}}<br>{{i.order_id.pay_method}}</td>
+                    <td>{{i.expected}}</td>
+                    {% if i.status == 'cancelled'%}
+                    <td class="text-danger">{{i.status}}</td>
+                    {% else %}
+                    <td>{{i.status}}<br>/{{i.order_id.pay_method}}</td>
+                    {% endif %}
+
                     
                     
                     
                     <td>
                        
                         {% if i.status != "cancelled" and i.status !=  "cancelled by admin" %}
-                        <a href="#cancelorder{{i.id}}" class="btn btn-danger text-decoration-none" data-toggle="modal">cancel</a>
-                        {% endif%}
+                        <a href="#cancelorder{{i.id}}" class="btn btn-danger text-decoration-none" data-toggle="modal">Cancel</a>
+                        
                         
                         <div id="cancelorder{{i.id}}" class="modal fade">
 		
@@ -166,7 +195,11 @@
                         </div>
                         
                     </td>
+                    <td><a href="/trakorder/{{i.id}}" class="btn btn-danger text-decoration-none" >Track</a></td>
+
                 </tr>	
+                {% endif%}
+
                 {% endfor %}
             </tbody>
         </table>

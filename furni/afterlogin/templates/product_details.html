@@ -37,7 +37,23 @@
           .icon-hover:hover i {
             color: #3b71ca !important;
           }
-         
+          .cart-icon-container {
+            position: relative;
+            display: inline-block;
+          }
+      
+          .cart-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            min-width: 5px;
+            padding: 1px;
+            border-radius: 50%;
+            background-color: #007bff; /* You can change the background color */
+            color: white;
+            text-align: center;
+            font-size: 12px;
+          }
           
     </style>
 
@@ -66,7 +82,9 @@
 
                             <li><a class="nav-link" href="/userlogin/">login</a></li>
                             {% else%}
-                            <li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
+                            <li><div class="cart-icon-container">
+                              <a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"> <span class="px-2 text-center cart-badge">{{no}}</span></a>
+                              </div></li>
 
                             {% endif %}
                         {% comment %} <li><a class="nav-link" href="#"><img src="{%static "images/heart.png"%}"></a></li> {% endcomment %}
@@ -206,6 +224,9 @@
                         </div>
                       </div>
                     </div> 
+                    <div>
+                      <p>{{items.description}}</p>
+                      <div>
                     {% if 'email' in request.session%}
                     <a href="/addtocart/{{items.id}}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
                     {% else %}
@@ -214,8 +235,16 @@
                       </div>
                     <a href="/userlogin/" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"  ></i> login to add cart </a>
                   {% endif%}
-                    <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                    {% comment %} <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i> Save </a> {% endcomment %}
                   </div>
+                  {% if messages %}
+                  <div class="alert alert-success mt-3">
+                  {% for message in messages %}
+                  {{ message }}
+                  {% endfor %}
+                  </div>
+                  {% endif %}
+          
                 </main>
               </div>
             </div>

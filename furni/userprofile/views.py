@@ -6,6 +6,7 @@ import os
 from django.views.decorators.cache import never_cache
 from todelivery.models import ordered_items,order_details
 from datetime import timedelta
+from afterlogin.models import cart
 
 
 
@@ -19,11 +20,13 @@ def show_user_profile(request):
      email1 = request.session['email']
      obj = CustomUser1.objects.get(email = email1)
      user = obj.id
+     no_of_cart = cart.objects.filter(user_id = user).count()
      addr = address.objects.filter(user_id = user)
 
      context={
            'obj':obj,
-           'addr':addr
+           'addr':addr,
+           'no':no_of_cart
      }
      return render(request,'user_profile.html',context)
     return render(request, '404.html', status=404)
@@ -96,7 +99,6 @@ def edit_address(request,id):
 def edit_profile(request): 
     email1 = request.session['email']
     obj = CustomUser1.objects.get(email = email1)
-
     context = {
         'user':obj,
     }
@@ -158,13 +160,12 @@ def orderdetails(request):
     email1 = request.session['email']
     obj = CustomUser1.objects.get(email = email1)
     user = obj.id
+    no_of_cart = cart.objects.filter(user_id = user).count()
     orders = ordered_items.objects.filter(user = user)
 
     context = {
                 'orders':orders,
-                
-
-
+               'no':no_of_cart
             }
     return render(request,'order_details.html',context)
 
@@ -181,4 +182,12 @@ def cancel_order(request,id):
 
 
 
+# track order 
+def track_order(request,id):
+    obj = ordered_items.objects.get(id = id)
+    context = {
+        'item' :obj
+    }
+
+    return render(request,'track.html',context)
 

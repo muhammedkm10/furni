@@ -30,6 +30,23 @@
         {
             border:3px solid;
         }
+        .cart-icon-container {
+				position: relative;
+				display: inline-block;
+			}
+	
+			.cart-badge {
+				position: absolute;
+				top: -10px;
+				right: -10px;
+				min-width: 5px;
+				padding: 1px;
+				border-radius: 50%;
+				background-color: #007bff; /* You can change the background color */
+				color: white;
+				text-align: center;
+				font-size: 12px;
+			}
     </style>
 
 	<body>
@@ -58,14 +75,11 @@
 						<li class="nav-item "><a class="nav-link" href="/">Home</a></li>
 						<li><a class="nav-link" href="/shop">Shop</a></li>
 						<li><a class="nav-link" href="/orderdetails">My orders</a></li>
-
 					</ul>
-
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                        
-                        <li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
-                        
-						
+            <li><div class="cart-icon-container">
+              <a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"> <span class="px-2 text-center cart-badge">{{no}}</span></a>
+              </div></li>
 					</ul>
 				</div>
 			</div>
@@ -99,7 +113,7 @@
           <div class="card mb-4 col-lg-4 m-auto">
             <div class="card-body text-center">
               {% if obj.profile %}
-              <img src="{{obj.profile.url}}" alt="avatar"class="img-fluid" style="width: 150px;">
+              <img src="{{obj.profile.url}}" alt="avatar"class="mt-4 img-fluid" style="width: 150px; height:200px;">
               {% else %}
               <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                 class=" img-fluid" style="width: 150px;">
@@ -148,14 +162,14 @@
              
              
               <a href="/editprofile/"><button type="button" class="btn btn-primary mt-4">edit profile</button></a>
-              <a class="ms-3 mt-5" href="/changepassword/">change password</a>
+              <a class="btn btn-primary mt-4 " href="/changepassword/">change password</a>
             </div>
           </div>
 
             
           <table class="table  table-bordered .custom-border table-striped table-hover">
             <thead>
-                <tr>
+                <tr class="bg-black text-white">
                     
                     <th>Name</th>
                     <th>state,country</th>
@@ -182,7 +196,7 @@
                     <td>{{i.phone}}</td>
                     
                     
-                    <td>
+                    <td >
                        
                         <a href="/editaddressinuser/{{i.id}}" class="d-block text-dark text-decoration-none"  >Edit</a>
                         

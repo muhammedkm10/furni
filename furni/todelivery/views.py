@@ -7,6 +7,7 @@ from django.views.decorators.cache import never_cache
 from .models import address,order_details,ordered_items
 from django.contrib import messages
 from django.utils import timezone
+from datetime import  timedelta
 
 
 
@@ -76,7 +77,7 @@ def order_confirmation(request):
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
-                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad)
+                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7))
                 item.save()
                 i.delete()
            return render(request,'thank_you.html')

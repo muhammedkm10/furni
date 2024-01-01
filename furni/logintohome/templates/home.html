@@ -26,7 +26,25 @@
 	</head>
 
 	<body>
+     <style>
+		.cart-icon-container {
+			position: relative;
+			display: inline-block;
+		}
 
+		.cart-badge {
+			position: absolute;
+			top: -10px;
+			right: -10px;
+			min-width: 5px;
+			padding: 1px;
+			border-radius: 50%;
+			background-color: #007bff; /* You can change the background color */
+			color: white;
+			text-align: center;
+			font-size: 12px;
+		}
+	 </style>
 		<!-- Start Header/Navigation -->
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
@@ -48,7 +66,9 @@
 						{%if 'email' in  request.session  %} 
 							<!-- Content for logged-in users -->
 							<li><a class="nav-link" href="#logout1"  data-toggle="modal" data-toggle="tooltip">logout</a><li>
-								<li><a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"></a></li>
+								<li><div class="cart-icon-container">
+									<a class="nav-link" href="/showcart"><img src="{%static "images/cart.svg"%}"> <span class="px-2 text-center cart-badge">{{no}}</span></a>
+									</div></li>
 								<li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
 						 {% else %} 
 							<!-- Content for non-logged-in users -->

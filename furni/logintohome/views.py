@@ -5,6 +5,7 @@ from . models import CustomUser1
 from .import models
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
+from afterlogin.models import cart
 
 
 
@@ -16,12 +17,17 @@ def index(request):
     if 'email' in request.session:
         email1 = request.session['email']
         obj = CustomUser1.objects.get(email = email1)
+        id = obj.id
+        no = cart.objects.filter(user_id = id).count()
+        context = {
+            'no':no
+        }
         if obj.is_blocked:
             messages.error(request,'you are blocked')
             request.session.flush()
             return redirect('userlogin')
         else:
-            return render(request,'home.html')
+            return render(request,'home.html',context)
     return render(request,'home.html')
     
         
