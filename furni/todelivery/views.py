@@ -14,21 +14,21 @@ from datetime import  timedelta
 
 # Create your views here.
 @never_cache
-def proceed_to_checkout(request):
+def proceed_to_checkout(request, last_added_address_id):
     email1  =  request.session['email']
     obj = CustomUser1.objects.get(email = email1)
     userid = obj.id
     print(userid)
-    
-    cart_details = cart.objects.select_related('product_id').filter(user_id = userid)
+    cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
     if cart_details.exists():
         total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
-        addresses = address.objects.filter(user_id=userid)
+        addresses = address.objects.filter(user_id = userid,is_cancelled = False)
         context = {
         
             'cart_details': cart_details,
             'total':total,
-            'addresses':addresses
+            'addresses':addresses,
+            'last_added_address_id': last_added_address_id,
         }
         print(context)
 
@@ -55,8 +55,9 @@ def add_address(request):
            phone = request.POST['phone']
            addobj = address(user_id = obj,first_name = fname,last_name=lname,address=addv,state=state,country=country,post=post,pin=pin,email=email,phone=phone)
            addobj.save()
+           last_added_address_id = addobj.id
            messages.success(request,"address added successfully")
-           return redirect('proceedtocheckout')
+           return redirect('proceedtocheckout', last_added_address_id = last_added_address_id)
      return render(request,'add_address.html')
 
 
@@ -79,6 +80,10 @@ def order_confirmation(request):
            for i in cart_items:
                 item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7))
                 item.save()
+                print(item.product_name.quantity)
+                item.product_name.quantity = item.product_name.quantity-item.quantity
+                item.product_name.save()
+                print(item.product_name.quantity)
                 i.delete()
            return render(request,'thank_you.html')
 

@@ -120,13 +120,18 @@
 }
 .kk{
 	color:white;
-	background-color:black;
+	background-color:rgb(2, 2, 2);
+	border:2px solid black;
 }
 .x{
 	
 		color:white;
-		
-
+}
+.x1{
+	
+	color:white;
+	font-size:22px;
+	font-weight:300
 }
 
 		</style> 
@@ -210,14 +215,51 @@
                 <form  action="/selectionforcategory/" method="POST">
 					{% csrf_token%}
                     <!-- Price Range -->
-                    <div class="mb-3" >
-                        <label for="priceRange" class="form-label x ">Filtrs</label>
-                        <input type="text" class="form-control" id="priceRange" name="price_range" placeholder="Enter Price Range">
-                    </div>
-					
+					<h4 class=" mt-3 x">FILTERS</h3>
+
+
+						<!-- price range filters -->
+					<h6 class="x">Select your price range...</h6>
+
+                  <div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-6 mb-3" >
+							<label for="priceRange" class="form-label x "> Minimum </label>
+							<select class="form-select" id="categorySelect" name="min" >
+							   <option value="" selected disabled>min</option>
+							   <option value="">100</option>
+							   <option value="">500</option>
+							   <option value="">900</option>
+							   <option value="">1200</option>
+							   <option value="">1800</option>
+							   <option value="">2300</option>
+							   <option value="">2800</option>
+							</select>
+						</div>
+
+
+
+					 <div class="col-lg-6 mb-3" >
+						<label for="priceRange" class="form-label x ">Maximum</label>
+                        <select class="form-select" id="categorySelect" name="max" >
+                            <option value="" selected disabled>max</option>
+							<option value="">600</option>
+							<option value="">1200</option>
+							<option value="">3000</option>
+							<option value="">5000</option>
+							<option value="">7000</option>
+							<option value="">7600</option>
+							
+
+                        </select>
+                     </div>
+				   </div>
+			     </div>
+
+
                     <!-- Category -->
                     <div class="mb-3" >
-                        <select class="form-select" id="categorySelect" name="catoo">
+                        <select class="form-select" id="categorySelect" name="catoo" required>
                             <option value="" selected disabled>Select Category</option>
                             <!-- Populate categories dynamically if available -->
                             {% for i in category%}

@@ -6,6 +6,7 @@ from django.db.models import Sum,Q
 from category_management.models import category
 from django.contrib import messages
 from django.core.paginator import Paginator
+from todelivery.models import address
 
 
 
@@ -68,9 +69,13 @@ def show_cart(request):
       i.total = i.product_id.price*i.quantity
       i.save()
     total_amount = cart.objects.filter(user_id=user.id).aggregate(sum = Sum('total'))
+    last_added_address = address.objects.filter(user_id=user).order_by('-id').first()
+    print(last_added_address)
+    last_added_address_id = last_added_address.id
     context = {
       'item':item,
       'total_amount':total_amount,
+      'last_added_address_id' : last_added_address_id
  
     }
     
@@ -108,6 +113,9 @@ def add_to_cart(request,id):
     obj = products.objects.get(id = id)
     email1 = request.session['email']
     user = CustomUser1.objects.get(email = email1)
+    if cart.objects.filter(product_id = obj).exists():
+        messages.success(request,"Product is already in cart")
+        return redirect('showcart')
     cart1 = cart(user_id = user,product_id = obj,category = obj.category)
     cart1.save()
     messages.success(request,"Product added to cart successfully.......1")
@@ -131,8 +139,10 @@ def selection_for_category(request):
    if request.method == 'POST':
       try:
             cat1 = request.POST['catoo']
+            
       except:
           cat1 = None
+       
       obj = products.objects.filter(category__id = cat1)
       cat = category.objects.filter(is_listed = True)
       if 'email' in request.session:
@@ -156,10 +166,14 @@ def add_to_wishlist(request,id):
     email = request.session['email']
     user =  CustomUser1.objects.get(email = email )
     pro = products.objects.get(id = id)
-    obj = wishlist(user_id = user,product_id = pro)
-    obj.save()
-    messages.success(request,"Product added to wishlist successfully.......1")
-    return redirect('productdetails',id)
+    if wishlist.objects.filter(product_id = pro).exists():
+        messages.success(request,"Product is already in wishlist")
+        return redirect('showwishlist')
+    else:
+        obj = wishlist(user_id = user,product_id = pro)
+        obj.save()
+        messages.success(request,"Product added to wishlist successfully.......")
+        return redirect('productdetails',id)
 
 
 # show cart

@@ -112,9 +112,14 @@
                              
                                 {% for i in addresses %}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="address" id="address{{ forloop.counter }}" value="{{ i.id }}" required>
+									<input class="form-check-input" type="radio" name="address" id="address{{ i.id }}" value="{{ i.id }}" {% if i.id == last_added_address_id %} checked {% endif %} required>
                                     <label class="form-check-label fs-5 text-black" for="address{{ forloop.counter }}">
-                                        <div class=""> {{i.first_name }}   <br>      {{i.state}} , {{i.country}} <br>    {{i.address}} <br>    {{i.pin}},{{i.post}}(po)  <br>    {{i.email}} ,{{i.phone}}</div>
+                                        <div class=""> {{i.first_name }}   
+											<br>      {{i.state}} , {{i.country}}
+											 <br>    {{i.address}} 
+											 <br> {{i.pin}},{{i.post}}(po) 
+											 <br>  {{i.email}} ,{{i.phone}} 
+										</div>
                                     </label>
                                 </div>
                             {% endfor %}

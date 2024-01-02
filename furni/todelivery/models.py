@@ -15,6 +15,7 @@ class address(models.Model):
     post = models.CharField( max_length=200)
     email = models.EmailField()
     phone = models.BigIntegerField()
+    is_cancelled = models.BooleanField(default = False)
 
 
 class order_details(models.Model):

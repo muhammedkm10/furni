@@ -21,8 +21,7 @@ def show_user_profile(request):
      obj = CustomUser1.objects.get(email = email1)
      user = obj.id
      no_of_cart = cart.objects.filter(user_id = user).count()
-     addr = address.objects.filter(user_id = user)
-
+     addr = address.objects.filter(user_id = user,is_cancelled = False)
      context={
            'obj':obj,
            'addr':addr,
@@ -35,8 +34,12 @@ def show_user_profile(request):
 
 # removing the addresses user added
 def remove_address(request,id):
-   address.objects.get(id = id).delete()
-   return redirect('userprofile')
+    add = address.objects.get(id = id)
+    print(add)
+    print(add.user_id.id)
+    add.is_cancelled = True
+    add.save()
+    return redirect('userprofile')
    
 
 # adding new address
@@ -161,7 +164,7 @@ def orderdetails(request):
     obj = CustomUser1.objects.get(email = email1)
     user = obj.id
     no_of_cart = cart.objects.filter(user_id = user).count()
-    orders = ordered_items.objects.filter(user = user)
+    orders = ordered_items.objects.filter(user = user).order_by('-id')
 
     context = {
                 'orders':orders,
