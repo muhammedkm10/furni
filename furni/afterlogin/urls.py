@@ -12,6 +12,8 @@ urlpatterns = [
     path('selectionforcategory/',views.selection_for_category,name='selectionforcategory'),
     path('wishlist/<str:id>',views.add_to_wishlist,name='wishlist'),
     path('showwishlist/',views.show_wish_list,name='showwishlist'),
+    path('remove/<str:id>',views.delete_whish_list,name='remove'),
+
 
 
 

@@ -265,6 +265,15 @@
 							
 	 </nav>
 
+     {% if messages %}
+     <div class="alert alert-success mt-3">
+     {% for message in messages %}
+     {{ message }}
+     {% endfor %}
+     </div>
+     {% endif %}
+
+
 
 	
      <div id=""class="container-fluid">
@@ -305,7 +314,7 @@
      <div class="form-group">
        <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>  
        <div class="col-md-4">
-       <input id="available_quantity" name="quantity" value="{{items.quantity}}" class="form-control input-md" required="" type="text">
+       <input id="available_quantity" name="quantity" value="{{items.quantity}}" class="form-control input-md" required="" type="number">
          
        </div>
      </div>
@@ -320,9 +329,9 @@
      </div>
 {% comment %} price {% endcomment %}
      <div class="form-group">
-        <label class="col-md-4 control-label" for="product_id">PRODUCT ID</label>  
+        <label class="col-md-4 control-label" for="product_id">PRODUCT PRICE</label>  
         <div class="col-md-4">
-        <input id="product_id" name="price" value="{{items.price}}" class="form-control input-md" required="" type="text">
+        <input id="product_id" name="price" value="{{items.price}}" class="form-control input-md" required="" type="number">
           
         </div>
       </div>

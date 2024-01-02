@@ -56,12 +56,17 @@ def edit_product(request,id):
                       obj.img4 = img4
                 obj.name = name
                 obj.category = selected_category
-                obj.quantity = quantity
-                obj.price = price
-                obj.description = desc1
-                obj.save()
-                messages.success(request, "product updated successfully")
-                return redirect('adminproductmanage')
+                if int(quantity) > 0 and int(price) > 0:
+                  obj.quantity = quantity
+                  obj.price = price
+                  obj.description = desc1
+                  obj.save()
+                  messages.success(request, "product updated successfully")
+                  return redirect('adminproductmanage')
+                else:
+                     messages.success(request, "please enter a valid input for quantity or price please check it....")
+                     return redirect('editproduct',obj.id)
+                     
         return render(request,'edit_product.html',context)
 
 
@@ -84,10 +89,14 @@ def add_product(request):
         img2 = request.FILES['img2'] if 'img2' in request.FILES else None
         img3 = request.FILES['img3'] if 'img3' in request.FILES else None
         img4 = request.FILES['img4'] if 'img4' in request.FILES else None
-        obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img1,img2 = img2,img3 = img3,img4 = img4)
-        obj.save()
-        messages.success(request, "product added successfully")
-        return redirect('adminproductmanage')
+        if int(quantity) > 0 and int(price) > 0:
+            obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img1,img2 = img2,img3 = img3,img4 = img4)
+            obj.save()
+            messages.success(request, "product added successfully")
+            return redirect('adminproductmanage')
+        else:
+             messages.error(request, "please enter a valid input for quantity or price please check it....")
+             return redirect('addproduct')
     return render(request,'add_product.html',{'cat' : p})
 
 

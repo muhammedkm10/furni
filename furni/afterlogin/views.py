@@ -5,6 +5,7 @@ from .models import cart,wishlist
 from django.db.models import Sum,Q
 from category_management.models import category
 from django.contrib import messages
+from django.core.paginator import Paginator
 
 
 
@@ -19,6 +20,9 @@ def shop(request):
  
     obj = products.objects.filter(is_listed = True,category__is_listed = True )
     cat = category.objects.filter(is_listed = True)
+    paginator = Paginator(obj, 12)  # 10 products per page
+    page_number = request.GET.get('page')  # Get the current page number from the request query parameters
+    page_obj = paginator.get_page(page_number)
     
     if 'email' in request.session:
             email  = request.session['email']
@@ -30,7 +34,8 @@ def shop(request):
     context = {
         'items' : obj,
         'category':cat,
-        'no':no_of_cart
+        'no':no_of_cart,
+        'page_obj': page_obj
 
     }
     return render(request,'shop.html',context)
@@ -143,8 +148,6 @@ def selection_for_category(request):
                 'items':obj,
                 'category':cat,
                 'no':no_of_cart
-
-
             }
       return render(request,'selected_category.html',context)
      
@@ -169,4 +172,11 @@ def show_wish_list(request):
         'items' : pros
     }
     return render(request,'wishlist.html',context)
-1
+
+
+
+# remove from wishlist
+def delete_whish_list(request,id):
+    wishlist.objects.get(id = id).delete()
+    return redirect('showwishlist') 
+    

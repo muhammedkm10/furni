@@ -20,6 +20,20 @@
 	</head>
 
 	<body>
+		<style>
+			.btn1{
+		     border: 1px solid black;
+			 padding:2px;
+			 text-decoration:None
+			}
+			.btn1:hover{
+
+                 background-color:black;
+				 color:white;
+				 cursor:arrow
+			}
+		</style>
+			
 
 		<!-- Start Header/Navigation -->
 							{% if messages %}
@@ -113,9 +127,9 @@
 						  {% else %}
 						  <td class="text-danger">out of stock</td>
                         {% endif %}
-						<td> <a href="{% url 'addtocart' i.product_id.id %}?next={{request.path}}"  class="btn">add to cart</button></a>
+						<td> <a href="{% url 'addtocart' i.product_id.id %}?next={{request.path}}"  class=" btn1">add to cart</button></a>
 						</td>
-                          <td><a href="" class="btn btn-black btn-sm">X</a></td>
+                          <td><a href="/remove/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>
                         {%endfor%}
         

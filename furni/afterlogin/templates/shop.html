@@ -71,6 +71,64 @@
 				text-align: center;
 				font-size: 12px;
 			}
+			/* Pagination Box Model Styles */
+.pagination-box {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+}
+
+.pagination a,
+.pagination .current {
+    margin: 0 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    background-color: #ddd;
+}
+
+.pagination .current {
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Previous and Next buttons */
+.pagination .step-links a {
+    background-color: transparent;
+    border: none;
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .step-links a:hover {
+    background-color: #ddd;
+}
+.kk{
+	color:white;
+	background-color:black;
+}
+.x{
+	
+		color:white;
+		
+
+}
+
 		</style> 
 
 		<!-- Start Header/Navigation -->
@@ -90,26 +148,7 @@
 						</li>
 						<li class="active"><a class="nav-link" href="/shop/">Shop</a></li>
 						
-							<div class="collapse navbar-collapse" id="navbarsFurni">
-								<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-									<!-- Your other navigation items here -->
-									<li class="nav-item">
-										<form id="districtForm" action="/selectionforcategory/"method="POST">
-											{% csrf_token %}
-										<select class="custom-dropdown nav-link o text-white d-inline" id="statusDropdown" name="catoo"aria-label="Change Status"><span>ljksfhbv</span>
-											<option value="" selected disabled>select a category</option>
-											{% for i in category%}
-											<option value="{{i.id}}">{{i.name}}</option>
-											{% endfor %}
-											
-										</select>
-										<button  class="bu"type="submit">click here</button>
-										
-
-									</form>
-									</li>
-								</ul>
-							</div>
+						
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 p-1 mb-md-0 ms-5">
@@ -161,30 +200,85 @@
         </div>
     <!-- End Hero Section -->
 
-    
-
-    <div class="untree_co-section product-section before-footer-section">
-        <div class="container">
-              <div class="row">
-                <!-- Start Column 4 -->
-                {% for i in items %}
-                <div class="col-12 col-md-4 col-lg-3 mb-5">
-                    <a class="product-item" href="/productdetails/{{i.id}}/">
-                        <img src="{{i.img1.url}}" class="img-fluid product-thumbnail">
-                        <h3 class="product-title">{{i.name}}</h3>
-                        <strong class="product-price">${{i.price}}</strong>
-
-                        {% comment %} <span class="icon-cross">
-                            <img src="{% static 'images/cross.svg' %}" class="img-fluid">
-                        </span> {% endcomment %}
-                    </a>
-                </div>
-                {% endfor %}
-                <!-- End Column 4 -->
-
+	<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 text-center " style="border-top:1px solid white; background-color: #3b5d50;">
+            <div class="sidebar">
+                <!-- Filter options -->
+              
+                <form  action="/selectionforcategory/" method="POST">
+					{% csrf_token%}
+                    <!-- Price Range -->
+                    <div class="mb-3" >
+                        <label for="priceRange" class="form-label x ">Filtrs</label>
+                        <input type="text" class="form-control" id="priceRange" name="price_range" placeholder="Enter Price Range">
+                    </div>
+					
+                    <!-- Category -->
+                    <div class="mb-3" >
+                        <select class="form-select" id="categorySelect" name="catoo">
+                            <option value="" selected disabled>Select Category</option>
+                            <!-- Populate categories dynamically if available -->
+                            {% for i in category%}
+											<option value="{{i.id}}">{{i.name}}</option>
+							{% endfor %}
+                        </select>
+                    </div>
+                    <!-- Other filter options -->
+                    <!-- ... -->
+                    <button type="submit" class="kk">Apply Filters</button>
+                </form>
             </div>
         </div>
+        <!-- Product Display Column -->
+        <div class="col-lg-10">
+			<div class="untree_co-section product-section before-footer-section">
+				<div class="container">
+					  <div class="row">
+						<!-- Start Column 4 -->
+						{% for i in page_obj  %}
+						<div class="col-12 col-md-4 col-lg-3 mb-5">
+							<a class="product-item" href="/productdetails/{{i.id}}/">
+								<img src="{{i.img1.url}}" class="img-fluid product-thumbnail">
+								<h3 class="product-title">{{i.name}}</h3>
+								<strong class="product-price">${{i.price}}</strong>
+		
+								{% comment %} <span class="icon-cross">
+									<img src="{% static 'images/cross.svg' %}" class="img-fluid">
+								</span> {% endcomment %}
+							</a>
+						</div>
+						{% endfor %}
+						<!-- End Column 4 -->
+		
+					</div>
+				</div>
+			</div>
+			<div class="pagination">
+				<span class="step-links">
+					{% if page_obj.has_previous %}
+						<a href="?page=1">&laquo; first</a>
+						<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+					{% endif %}
+			
+					<span class="current">
+						Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+					</span>
+			
+					{% if page_obj.has_next %}
+						<a href="?page={{ page_obj.next_page_number }}">next</a>
+						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+					{% endif %}
+				</span>
+			</div>
+		
+        </div>
     </div>
+</div>
+
+    
+
 
 
 		

@@ -26,11 +26,18 @@ def show_category(request):
 def add_category(request):
     if request.method == 'POST':
         name2 = request.POST['nameeee']
-        description = request.POST['desc']
-        items = category(name = name2,description = description)
-        items.save()
-        messages.success(request, "category added successfully")
-    return redirect('category')
+        description = request.POST['desc'] 
+        o = category.objects.filter(name  = name2).exists()
+        if not o:
+            items = category(name = name2,description = description)
+            items.save()
+            messages.success(request, "category added successfully")
+            return redirect('category')
+        else:
+            messages.error(request, "category is already in the table...")
+            return redirect('category')
+
+    
 
 
 

@@ -90,26 +90,6 @@
 						</li>
 						<li class="active"><a class="nav-link" href="/shop/">Shop</a></li>
 						
-							<div class="collapse navbar-collapse" id="navbarsFurni">
-								<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-									<!-- Your other navigation items here -->
-									<li class="nav-item">
-										<form id="districtForm" action="/selectionforcategory/"method="POST">
-											{% csrf_token %}
-										<select class="custom-dropdown nav-link o text-white d-inline" id="statusDropdown" name="catoo"aria-label="Change Status"><span>ljksfhbv</span>
-											<option value="" selected disabled>select a category</option>
-											{% for i in category%}
-											<option value="{{i.id}}">{{i.name}}</option>
-											{% endfor %}
-											
-										</select>
-										<button  class="bu"type="submit">click here</button>
-										
-
-									</form>
-									</li>
-								</ul>
-							</div>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 p-1 mb-md-0 ms-5">

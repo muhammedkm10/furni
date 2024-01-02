@@ -264,7 +264,13 @@
 							</div>
 							
 	 </nav>
-
+     {% if messages %}
+     <div class="alert alert-success mt-3">
+     {% for message in messages %}
+     {{ message }}
+     {% endfor %}
+     </div>
+     {% endif %}
 
 	
      <div class="container-fluid">
@@ -282,7 +288,7 @@
      <div class="form-group">
        <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>  
        <div class="col-md-4">
-       <input id="product_name" name="name" placeholder="PRODUCT NAME" class="form-control input-md" required="" type="text">
+       <input id="product_name" name="name" placeholder="PRODUCT NAME" class="form-control input-md" required type="text">
          
        </div>
      </div>
@@ -305,7 +311,7 @@
      <div class="form-group">
        <label class="col-md-4 control-label" for="available_quantity">AVAILABLE QUANTITY</label>  
        <div class="col-md-4">
-       <input id="available_quantity" name="quantity" placeholder="AVAILABLE QUANTITY" class="form-control input-md" required="" type="text">
+       <input id="available_quantity" name="quantity" placeholder="AVAILABLE QUANTITY" class="form-control input-md" required type="number">
          
        </div>
      </div>
@@ -323,7 +329,7 @@
      <div class="form-group">
         <label class="col-md-4 control-label" for="product_name">PRODUCT PRICE</label>  
         <div class="col-md-4">
-        <input id="product_price" name="price" placeholder="PRODUCT PRICE" class="form-control input-md" required="" type="text">
+        <input id="product_price" name="price" placeholder="PRODUCT PRICE" class="form-control input-md" required type="number">
           
         </div>
       </div>
@@ -342,7 +348,7 @@
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
                             <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name="img1"class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage')" />
+                            <input type="file" name="img1"class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage')" required />
                         </div>
                     </div>
                 </div>
