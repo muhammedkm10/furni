@@ -56,10 +56,18 @@ def add_address_in_user(request):
            pin = request.POST['pin']
            email = request.POST['email']
            phone = request.POST['phone']
-           addobj = address(user_id = obj,first_name = fname,last_name=lname,address=addv,state=state,country=country,post=post,pin=pin,email=email,phone=phone)
-           addobj.save()
-           messages.success(request,"address added successfully")
-           return redirect('userprofile')
+           if len(phone) == 10 and int(phone) > 0:
+                if len(pin) == 6 and int(phone) > 0:
+                    addobj = address(user_id = obj,first_name = fname,last_name=lname,address=addv,state=state,country=country,post=post,pin=pin,email=email,phone=phone)
+                    addobj.save()
+                    messages.success(request,"address added successfully")
+                    return redirect('userprofile')
+                else:
+                    messages.success(request,"pin number should be valid")
+                    return redirect('addaddressinuser')
+           else:
+               messages.success(request,"phone number should be valid")
+               return redirect('addaddressinuser')
      return render(request,'add_address_in_user.html')
    
 
@@ -86,13 +94,21 @@ def edit_address(request,id):
            obj.address  = addv
            obj.state  = state
            obj.country  = country
-           obj.pin  = pin
            obj.post  = post
            obj.email  = email
-           obj.phone  = phone
-           obj.save()
-           messages.success(request,"address edited successfully")
-           return redirect('userprofile')
+           if len(phone) == 10 and int(phone) > 0:
+                if len(pin) == 6 and int(phone) > 0:
+                        obj.phone  = phone
+                        obj.pin  = pin
+                        obj.save()
+                        messages.success(request,"address edited successfully")
+                        return redirect('userprofile')
+                else:
+                    messages.success(request,"pin number should be valid")
+                    return redirect('editaddressinuser',id)
+           else:
+               messages.success(request,"phone number should be valid")
+               return redirect('editaddressinuser',id)
     return render(request,'edit_address.html',context)
 
 
@@ -110,14 +126,18 @@ def edit_profile(request):
         phone = request.POST['phone']
         image = request.FILES['editprofile'] if request.FILES else None
         obj.username = name
-        obj.phone = phone
         if image:
             if obj.profile:
                 os.remove(obj.profile.path)
             obj.profile = image
-        obj.save()
-        messages.success(request,'profile updated successfully')
-        return redirect('userprofile')
+        if len(phone) == 10 and int(phone) > 0:
+            obj.phone = phone
+            obj.save()
+            messages.success(request,'profile updated successfully')
+            return redirect('userprofile')
+        else:
+            messages.success(request,'phone number should valid')
+            return redirect('editprofile')
     return render(request,'edit_userprofile.html',context)
 
 

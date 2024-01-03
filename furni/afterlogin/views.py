@@ -88,14 +88,18 @@ def update_cart(request, id,op):
     cart_item = cart.objects.get(id=id)
    
     if op == 0:
-      if cart_item.quantity <5:
-        cart_item.quantity += 1
-        cart_item.save()
+      if cart_item.quantity < 5:
+        if cart_item.product_id.quantity > cart_item.quantity:
+            cart_item.quantity += 1
+            cart_item.save()
+        else:
+            messages.success(request,"Product is out of stock")
+            return redirect('showcart')
       else:
          cart_item.quantity = 5
          cart_item.save()
     else:
-        if cart_item.quantity >1:
+        if cart_item.quantity > 1:
             cart_item.quantity -= 1
             cart_item.save()
         else:
@@ -139,28 +143,38 @@ def selection_for_category(request):
    if request.method == 'POST':
       try:
             cat1 = request.POST['catoo']
-            
+            min = int(request.POST['min'])
+            max = int(request.POST['max'])  
+            sort = request.POST['sort']  
       except:
           cat1 = None
-       
-      obj = products.objects.filter(category__id = cat1)
-      cat = category.objects.filter(is_listed = True)
-      if 'email' in request.session:
-            email  = request.session['email']
-            user = CustomUser1.objects.get(email = email)
-            id1 = user.id
-            no_of_cart = cart.objects.filter(user_id = id1).count()
-      else:
-        no_of_cart = 0
+      if max > min:
+                if sort == 'asc':
+                   obj = products.objects.filter(category__id = cat1,price__range=(min,max)).order_by('price')
+                else:
+                    obj = products.objects.filter(category__id = cat1,price__range=(min,max)).order_by('-price')
+                cat = category.objects.filter(is_listed = True)
+                if 'email' in request.session:
+                        email  = request.session['email']
+                        user = CustomUser1.objects.get(email = email)
+                        id1 = user.id
+                        no_of_cart = cart.objects.filter(user_id = id1).count()
+                else:
+                    no_of_cart = 0
 
-      print(obj)
-      context = {
-                'items':obj,
-                'category':cat,
-                'no':no_of_cart
-            }
-      return render(request,'selected_category.html',context)
+                print(obj)
+                context = {
+                            'items':obj,
+                            'category':cat,
+                            'no':no_of_cart
+                        }
+                return render(request,'selected_category.html',context)
+      messages.error(request,"please enter a valid price range")
+      return redirect('shop') 
      
+
+
+
 # add products to wish list
 def add_to_wishlist(request,id):
     email = request.session['email']
@@ -194,3 +208,5 @@ def delete_whish_list(request,id):
     wishlist.objects.get(id = id).delete()
     return redirect('showwishlist') 
     
+
+

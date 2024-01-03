@@ -24,7 +24,11 @@
 		<link href="{% static "css/style.css" %}" rel="stylesheet">
 		<title>proceed to checkout</title>
 	</head>
-
+	.no-spinner::-webkit-inner-spin-button,
+	.no-spinner::-webkit-outer-spin-button {
+		-webkit-appearance: none !important;
+		margin: 0;
+	} 
 	<body>
 
 		<!-- Start Header/Navigation -->
@@ -123,7 +127,7 @@
 		              </div>
                       <div class="col-md-6">
 		                <label for="c_postal_zip" class="text-black">Pin<span class="text-danger">*</span></label>
-		                <input type="number" class="form-control" id="c_postal_zip" name="pin" required>
+		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" required>
 		              </div>
 		            </div>
 
@@ -134,7 +138,7 @@
 		              </div>
 		              <div class="col-md-6">
 		                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-		                <input type="number" class="form-control" id="c_phone" name="phone">
+		                <input type="number" class="form-control no-spinner" id="c_phone" name="phone">
 		              </div>
 		            </div>
 

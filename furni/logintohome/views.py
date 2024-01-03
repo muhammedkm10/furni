@@ -79,9 +79,13 @@ def user_signup(request):
         if CustomUser1.objects.filter(email=email).exists():
             messages.error(request, "email already exists change your email")
             return redirect('usersignup')
-        user1  = CustomUser1(username = username,email = email,password = password,phone = phone,date_joined=current_date)
-        user1.save()
-        return redirect('otpverification',id=user1.id)
+        if len(phone) == 10  and int(phone) > 0:
+            user1  = CustomUser1(username = username,email = email,password = password,phone = phone,date_joined=current_date)
+            user1.save()
+            return redirect('otpverification',id=user1.id)
+        else:
+            messages.error(request, "the phone number should valid")
+            return redirect('usersignup')
     return render (request,'user_signup.html')
 
 

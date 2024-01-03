@@ -54,6 +54,52 @@
             text-align: center;
             font-size: 12px;
           }
+          .image-zoom-container {
+            overflow: hidden;
+            position: relative;
+          }
+          .image-zoom-container {
+            cursor: -webkit-zoom-in;
+            cursor: -moz-zoom-in;
+            cursor: zoom-in; }
+          #zoom-image {
+            width: 100%;
+          
+            transition: transform 0.3s ease-out;
+            transform-origin: 0% 0%; /* Set the transform origin to the top-left corner */
+          }
+          
+          .image-zoom-container:hover #zoom-image  {
+            transform: scale(2); /* Adjust the scale factor as needed */
+          }
+          .thumbnail-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+          }
+          
+          .thumbnail {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            transition: opacity 0.3s ease-in-out;
+          }
+          
+          .thumbnail:hover {
+            opacity: 0.7;
+          }
+          .prd1{
+            {% comment %} height: 100vh; {% endcomment %}
+          }
+          .imgsiz{
+          max-height: 460px;
+          overflow: hidden;
+          }
+          .imgsiz img{
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          }
           
     </style>
 
@@ -107,56 +153,94 @@
             <div class="container">
               <div class="row gx-5">
                 <aside class="col-lg-6">
-                  <div class="border rounded-4 mb-3 d-flex justify-content-center">
-                    {% if items.img1%}
-                      <div id="zoomContainer" style="width: 500px; height: 500px;">
-                       </div>
-                    </a>
-                    {% endif %}
-                  </div>
+                  <div class="col-lg-6 mb-5 ftco-animate prd1">
+                    <div>
+                        <div class="image-zoom-container imgsiz" id="product-container"  style="width: 500px; height: 500px;">
+                        <img src="{{items.img1.url}}" class="img-fluid" alt="Product Image" id="zoom-image">
+                        </div>
+                        <div class="thumbnail-container">
+                          {% if items.img2%}
+                            <img src="{{ items.img2.url }}" class="thumbnail" alt="Thumbnail 1" onclick="changeImage(this)">
+							            {% endif %}
+                          {% if items.img2%}
+                            <img src="{{ items.img3.url }}" class="thumbnail" alt="Thumbnail 2" onclick="changeImage(this)">
+							            {% endif %}
+                          {% if items.img2%}
+                            <img src="{{ items.img4.url }}" class="thumbnail" alt="Thumbnail 2" onclick="changeImage(this)">
+                          {% endif %}
 
-
-
-                      {% comment %} zoom javascript     {% endcomment %}
-                    
-                    
-                    
-                      <script>
-                        var viewer = OpenSeadragon({
-                          id: 'zoomContainer',
-                          prefixUrl: 'https://openseadragon.github.io/openseadragon/images/',
-                          tileSources: {
-                            type: 'image',
-                            url: '{{ items.img1.url }}'
-                          }
-                        });
-                      </script>
-
-
-
-
-                     {% comment %} endof   zoom javascript     {% endcomment %}
-
-                  <div class="d-flex justify-content-center mb-3">
-                    {% if items.img2%}
-                    <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{items.img2.url}}" class="item-thumb">
-                      <img width="60" height="60" class="rounded-2" src="{{items.img2.url}}" />
-                    </a>
-                    {% endif%}
-                  {% if items.img3%}
-                    <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{items.img3.url}}" class="item-thumb">
-                      <img width="60" height="60" class="rounded-2" src="{{items.img3.url}}" />
-                    </a>
-                    {% endif%}
-                    {% if items.img4%}
-                    <a data-fslightbox="mygalley" class="border mx-1 rounded-2" target="_blank" data-type="image" href="{{items.img4.url}}" class="item-thumb">
-                      <img width="60" height="60" class="rounded-2" src="{{items.img4.url}}" />
-                    </a>
-                    {% endif%}
-                  </div>
-                  <!-- thumbs-wrap.// -->
-                  <!-- gallery-wrap .end// -->
+                            <!-- <img src="{% static 'images/pumashoelow.jpg' %}" class="thumbnail" alt="Thumbnail 3" onclick="changeImage(this)">
+                            <img src="{% static 'images/pumashoelow.jpg' %}" class="thumbnail" alt="Thumbnail 4" onclick="changeImage(this)"> -->
+						
+                        </div>
+                    </div>
+                    </div>
                 </aside>
+
+
+
+
+<script>
+                var image = document.getElementById('zoom-image');
+                var container = document.querySelector('.image-zoom-container');
+                
+                container.addEventListener('mousemove', function (e) {
+                    var rect = container.getBoundingClientRect();
+                    var x = e.clientX - rect.left; // X position within the container
+                    var y = e.clientY - rect.top; // Y position within the container
+                
+                    var scaleX = container.offsetWidth / image.naturalWidth;
+                    var scaleY = container.offsetHeight / image.naturalHeight;
+                
+                    // Calculate the percentage position within the container
+                    var percentX = (x / container.offsetWidth) * 100;
+                    var percentY = (y / container.offsetHeight) * 100;
+                
+                    // Set the transform origin based on the mouse position
+                    image.style.transformOrigin = percentX + '% ' + percentY + '%';
+                });
+                
+                container.addEventListener('mouseleave', function () {
+                    // Reset the transform origin when the mouse leaves the container
+                    image.style.transformOrigin = '0% 0%';
+                });
+
+                                                var mainImage = document.getElementById('zoom-image');
+                                var thumbnailContainer = document.querySelector('.thumbnail-container');
+
+                                function changeImage(thumbnail) {
+                                    mainImage.src = thumbnail.src;
+                                  // resetZoom();
+                                }
+
+                                // function resetZoom() {
+                                  // mainImage.style.transform = 'scale(1)';
+                                  // mainImage.style.transformOrigin = '0% 0%';
+                                //}
+
+                                thumbnailContainer.addEventListener('mouseover', function () {
+                                    resetZoom();
+                                });
+
+
+
+
+              </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 <main class="col-lg-6">
                   <div class="ps-lg-3">
                     <h4 class="title text-dark">
@@ -213,9 +297,9 @@
                       </div> {% endcomment %}
                       <!-- col.// -->
                       <div class="col-md-4 col-6 mb-3">
-                        <label class="mb-2 d-block">Quantity</label>
+                        {% comment %} <label class="mb-2 d-block">Quantity</label> {% endcomment %}
                         <div class="input-group mb-3" style="width: 170px;">
-                          <input type="text" class="form-control text-center border border-secondary" value="1"placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                          {% comment %} <input type="text" class="form-control text-center border border-secondary" value="1"placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1" /> {% endcomment %}
 
                           {% comment %} <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
                             <i class="fas fa-minus"></i>
@@ -230,10 +314,14 @@
                     <div>
                       <p>{{items.description}}</p>
                       <div>
-                    {% if 'email' in request.session%}
+                    {% if 'email' in request.session %}
+                    {% if items.quantity > 0%}
+                    
                     <a href="{% url 'addtocart' items.id %}?next={{request.path}}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
                     <a href="/wishlist/{{items.id}}" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i>add to wishlist</a>
-                    
+                    {% else %}
+                    <span class="text-danger ms-2 mt-4">out of stock</span>
+                    {% endif%}
                     {% else %}
                     <div class="alert alert-danger mt-3">
                      please login you have no account

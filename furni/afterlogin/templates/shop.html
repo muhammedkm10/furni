@@ -125,7 +125,11 @@
 }
 .x{
 	
-		color:white;
+		color:black;
+}
+.x2{
+	
+	color:white;
 }
 .x1{
 	
@@ -192,13 +196,13 @@
         <div class="hero">
             <div class="container">
                 <div class="row justify-content-between">
-                    <div class="col-lg-5">
+                    <div class="col-lg-10">
                         <div class="intro-excerpt">
                             <h1>Shop</h1>
                         </div>
                     </div>
-                    <div class="col-lg-7">
-                        
+                    <div class="col-lg-2 mb-0">
+                        <!-- <div class="bg-black">hhhhhhhhhhhhh</div> -->
                     </div>
                 </div>
             </div>
@@ -208,47 +212,47 @@
 	<div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-lg-2 text-center " style="border-top:1px solid white; background-color: #3b5d50;">
-            <div class="sidebar">
+        <div class="col-lg-2 text-center p-0" style="border-top:1px solid white; background-color: #3b5d50;  ">
+            <div class="sidebar  ">
                 <!-- Filter options -->
               
                 <form  action="/selectionforcategory/" method="POST">
 					{% csrf_token%}
                     <!-- Price Range -->
-					<h4 class=" mt-3 x">FILTERS</h3>
+					<div class="container pb-2 " style="border-bottom:1px solid white">
 
+					<h4 class=" mt-3 x">FILTERS</h3>
+						</div>
+                      
 
 						<!-- price range filters -->
-					<h6 class="x">Select your price range...</h6>
+						
+					<h6 class="x2 my-3">Select your price range...</h6>
 
                   <div class="container-fluid">
 					<div class="row">
 						<div class="col-lg-6 mb-3" >
-							<label for="priceRange" class="form-label x "> Minimum </label>
-							<select class="form-select" id="categorySelect" name="min" >
+							<select class="form-select" id="categorySelect" name="min" required>
 							   <option value="" selected disabled>min</option>
-							   <option value="">100</option>
-							   <option value="">500</option>
-							   <option value="">900</option>
-							   <option value="">1200</option>
-							   <option value="">1800</option>
-							   <option value="">2300</option>
-							   <option value="">2800</option>
+							   <option value="0">0</option>
+							   <option value="500">500</option>
+							   <option value="1000">1000</option>
+							   <option value="2000">2000</option>
+							   <option value="5000">5000</option>
+							   
 							</select>
 						</div>
 
 
 
 					 <div class="col-lg-6 mb-3" >
-						<label for="priceRange" class="form-label x ">Maximum</label>
-                        <select class="form-select" id="categorySelect" name="max" >
+                        <select class="form-select" id="categorySelect" name="max" required>
                             <option value="" selected disabled>max</option>
-							<option value="">600</option>
-							<option value="">1200</option>
-							<option value="">3000</option>
-							<option value="">5000</option>
-							<option value="">7000</option>
-							<option value="">7600</option>
+							<option value="500">500</option>
+							<option value="1000">1000</option>
+							<option value="5000">5000</option>
+							<option value="10000">10000</option>
+							
 							
 
                         </select>
@@ -267,13 +271,44 @@
 							{% endfor %}
                         </select>
                     </div>
+					<h6 class="x2 my-3">order by price</h6>
+                    <div class="form-check form-check-inline">
+						<input class=" form-check-input" type="radio" name="sort" id="ascending" value="asc" required>
+						<label class="text-white form-check-label" for="ascending">Low to high</label>
+					</div>
+					<div class="form-check form-check-inline">
+						<input class="form-check-input" type="radio" name="sort" id="descending" value="desc" required>
+						<label class="text-white form-check-label" for="descending">High to low</label>
+					</div>
                     <!-- Other filter options -->
                     <!-- ... -->
-                    <button type="submit" class="kk">Apply Filters</button>
+                    <!-- <button type="submit" class="kk">Apply Filters</button> -->
+                    <div class="container-fluid mt-4 " style="border: 1px solid white; padding: 3px;">
+						<button  class="container-fluid" type="submit">Apply Filters</button>
+					</div>
+
+
                 </form>
+				                 {% if messages %}
+						<div class="alert alert-danger mt-3">
+							{% for message in messages %}
+							{{ message }}
+							{% endfor %}
+							</div>
+							{% endif %}
+                        
+
+
+
+
+
+
             </div>
         </div>
+		
+		
         <!-- Product Display Column -->
+		
         <div class="col-lg-10">
 			<div class="untree_co-section product-section before-footer-section">
 				<div class="container">

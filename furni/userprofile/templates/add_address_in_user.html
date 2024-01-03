@@ -26,6 +26,13 @@
 	</head>
 
 	<body>
+		<style>
+			.no-spinner::-webkit-inner-spin-button,
+			.no-spinner::-webkit-outer-spin-button {
+				-webkit-appearance: none !important;
+				margin: 0;
+			}
+		</style>
 
 		<!-- Start Header/Navigation -->
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
@@ -70,6 +77,16 @@
 				</div>
 			</div>
 		<!-- End Hero Section -->
+		{% if messages %}
+        <div class="alert alert-success mt-3">
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+        </div>
+        {% endif %}
+
+
+		
        <div class="text-center">
         <div class="untree_co-section">
 		    <div class="container">
@@ -122,7 +139,7 @@
 		              </div>
                       <div class="col-md-6">
 		                <label for="c_postal_zip" class="text-black">Pin<span class="text-danger">*</span></label>
-		                <input type="number" class="form-control" id="c_postal_zip" name="pin" required>
+		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" required>
 		              </div>
 		            </div>
 
@@ -133,7 +150,7 @@
 		              </div>
 		              <div class="col-md-6">
 		                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-		                <input type="number" class="form-control" id="c_phone" name="phone">
+		                <input type="number"  class="form-control no-spinner" id="c_phone" name="phone">
 		              </div>
 		            </div>
 
@@ -153,6 +170,7 @@
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>
 		<script src="js/custom.js"></script>
+		
 	</body>
 
 </html>

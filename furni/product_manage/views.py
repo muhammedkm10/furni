@@ -7,7 +7,7 @@ import os
 def product_manage(request):
     if 'email' not in request.session:
       if 'username' in request.session:
-            obj = products.objects.select_related('category').all()
+            obj = products.objects.select_related('category').all().order_by('-id')
             context = {
                   'items':obj
             }
@@ -85,15 +85,19 @@ def add_product(request):
         quantity = request.POST['quantity']
         price = request.POST['price']
         desc1 = request.POST['description']
-        img1 = request.FILES['img1'] if 'img1' in request.FILES else None
+        img1 = request.FILES['cropped_image'] if 'cropped_image' in request.FILES else None
         img2 = request.FILES['img2'] if 'img2' in request.FILES else None
         img3 = request.FILES['img3'] if 'img3' in request.FILES else None
         img4 = request.FILES['img4'] if 'img4' in request.FILES else None
-        if int(quantity) > 0 and int(price) > 0:
-            obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img1,img2 = img2,img3 = img3,img4 = img4)
-            obj.save()
-            messages.success(request, "product added successfully")
-            return redirect('adminproductmanage')
+        if int(quantity) > 0 and int(price) > 0: 
+            if not products.objects.filter(name = name).exists():
+                  obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img1,img2 = img2,img3 = img3,img4 = img4)
+                  obj.save()
+                  messages.success(request, "product added successfully")
+                  return redirect('adminproductmanage')
+            else:
+               messages.error(request, "product already exists")
+               return redirect('addproduct')  
         else:
              messages.error(request, "please enter a valid input for quantity or price please check it....")
              return redirect('addproduct')
@@ -138,3 +142,6 @@ def un_list_product(request,id):
       return redirect('adminproductmanage')
 
       
+
+
+

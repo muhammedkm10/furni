@@ -20,22 +20,28 @@ def proceed_to_checkout(request, last_added_address_id):
     userid = obj.id
     print(userid)
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
+    # if cart_details.product_id.quantity < cart_details.quantity:
     if cart_details.exists():
-        total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
-        addresses = address.objects.filter(user_id = userid,is_cancelled = False)
-        context = {
-        
-            'cart_details': cart_details,
-            'total':total,
-            'addresses':addresses,
-            'last_added_address_id': last_added_address_id,
-        }
-        print(context)
+            total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
+            addresses = address.objects.filter(user_id = userid,is_cancelled = False)
+            context = {
+            
+                'cart_details': cart_details,
+                'total':total,
+                'addresses':addresses,
+                'last_added_address_id': last_added_address_id,
+            }
+            print(context)
 
-        return render(request,'proceed_to_checkout.html',context)
+            return render(request,'proceed_to_checkout.html',context)
     else:
-         messages.error(request,"add some products")
-         return redirect('showcart')
+            messages.error(request,"add some products")
+            return redirect('showcart')
+    # else:
+    #      messages.error(request,"the product is out of stock")
+    #      return redirect('showcart')
+  
+         
 
 
 
