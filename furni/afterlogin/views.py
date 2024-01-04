@@ -18,28 +18,63 @@ from todelivery.models import address
 
 # shop
 def shop(request):
- 
+    data = request.GET.get('data')
+    price1 = request.GET.get('price1')
+    sort = request.GET.get('sort')
+    print(sort)
+
     obj = products.objects.filter(is_listed = True,category__is_listed = True )
-    cat = category.objects.filter(is_listed = True)
-    paginator = Paginator(obj, 12)  # 10 products per page
-    page_number = request.GET.get('page')  # Get the current page number from the request query parameters
-    page_obj = paginator.get_page(page_number)
-    
+  
+    if data == "all":
+        obj = products.objects.filter(is_listed = True,category__is_listed = True )
+    if data == "seating_furniture":
+        obj = products.objects.filter(category = 7,is_listed = True,category__is_listed = True )
+    if data == "sleaping_furniture":
+        obj = products.objects.filter(category = 8,is_listed = True,category__is_listed = True )
+    if data == "tables":
+        obj = products.objects.filter(category = 10,is_listed = True,category__is_listed = True )
+    if data == "storage_furniture":
+        obj = products.objects.filter(category = 12,is_listed = True,category__is_listed = True )
+    if sort == "asc":
+        obj = products.objects.filter(is_listed = True,category__is_listed = True ).order_by('price')
+    if sort == "desc":
+        obj = products.objects.filter(is_listed = True,category__is_listed = True ).order_by('-price')
+    if price1 == "o":
+        obj = products.objects.filter(price__range = (0,100),is_listed = True,category__is_listed = True )
+    if price1 == "a":
+        obj = products.objects.filter(price__range = (100,500),is_listed = True,category__is_listed = True )
+    if price1 == "b":
+        obj = products.objects.filter(price__range = (500,1500),category = 7,is_listed = True,category__is_listed = True )
+    if price1 == "c":
+        obj = products.objects.filter(price__range = (1500,2500),category = 8,is_listed = True,category__is_listed = True )
+    if price1 == "d":
+        obj = products.objects.filter(price__range = (2500,5000),category = 10,is_listed = True,category__is_listed = True )
+    if price1 == "e":
+        obj = products.objects.filter(price__range = (5000,7000),category = 12,is_listed = True,category__is_listed = True )
+    if price1 == "f":
+        obj = products.objects.filter(price__range = (7000,15000),category = 12,is_listed = True,category__is_listed = True )
+    cat = category.objects.filter(is_listed = True)   
     if 'email' in request.session:
             email  = request.session['email']
             user = CustomUser1.objects.get(email = email)
             id = user.id
             no_of_cart = cart.objects.filter(user_id = id).count()
     else: 
-        no_of_cart = 0        
+        no_of_cart = 0     
+    paginator = Paginator(obj, 8)  # 10 products per page
+    page_number = request.GET.get('page')  # Get the current page number from the request query parameters
+    page_obj = paginator.get_page(page_number)   
     context = {
-        'items' : obj,
-        'category':cat,
-        'no':no_of_cart,
-        'page_obj': page_obj
-
-    }
+    'items': obj,
+    'category': cat,
+    'no': no_of_cart,
+    'page_obj': page_obj,
+    'data': data,  # Pass the 'data' filter parameter to the context
+    'price1': price1,  # Pass the 'price1' filter parameter to the context
+    'sort':sort
+    }  
     return render(request,'shop.html',context)
+
 
 
 # product details
@@ -135,43 +170,6 @@ def delete_cart_product(request,id):
     cart.objects.get(id = id).delete()
     return redirect('showcart') 
     
-
-
-
-# searching for category
-def selection_for_category(request):
-   if request.method == 'POST':
-      try:
-            cat1 = request.POST['catoo']
-            min = int(request.POST['min'])
-            max = int(request.POST['max'])  
-            sort = request.POST['sort']  
-      except:
-          cat1 = None
-      if max > min:
-                if sort == 'asc':
-                   obj = products.objects.filter(category__id = cat1,price__range=(min,max)).order_by('price')
-                else:
-                    obj = products.objects.filter(category__id = cat1,price__range=(min,max)).order_by('-price')
-                cat = category.objects.filter(is_listed = True)
-                if 'email' in request.session:
-                        email  = request.session['email']
-                        user = CustomUser1.objects.get(email = email)
-                        id1 = user.id
-                        no_of_cart = cart.objects.filter(user_id = id1).count()
-                else:
-                    no_of_cart = 0
-
-                print(obj)
-                context = {
-                            'items':obj,
-                            'category':cat,
-                            'no':no_of_cart
-                        }
-                return render(request,'selected_category.html',context)
-      messages.error(request,"please enter a valid price range")
-      return redirect('shop') 
-     
 
 
 

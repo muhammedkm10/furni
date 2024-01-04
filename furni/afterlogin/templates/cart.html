@@ -194,6 +194,31 @@
           </div>
 		
 
+		  
+  <script>
+    let currentQuantity = 0; // Initial quantity
+
+    function increment() {
+      currentQuantity++;
+      document.getElementById('quantity').textContent = currentQuantity;
+    }
+
+    function decrement() {
+      if (currentQuantity > 0) {
+        currentQuantity--;
+        document.getElementById('quantity').textContent = currentQuantity;
+      }
+    }
+
+    function checkout() {
+      // Pass the currentQuantity to the view for checkout
+      // Replace this with your logic to send the value to the view (e.g., via form submission, AJAX, etc.)
+      alert('Quantity for checkout: ' + currentQuantity);
+    }
+  </script>
+
+
+  
 		<!-- Start Footer Section -->
 		<footer class="footer-section">
 			<div class="container relative">

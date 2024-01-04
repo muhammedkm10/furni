@@ -16,6 +16,7 @@ class products(models.Model):
     img3 =  models.ImageField(upload_to='images/')
     img4 =  models.ImageField(upload_to='images/')
     is_listed = models.BooleanField(default = True)
+    original_price = models.IntegerField(null = True)
 
 
 

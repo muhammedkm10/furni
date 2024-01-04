@@ -16,7 +16,7 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="{%static "css/tiny-slider.css" %}" rel="stylesheet">
 		<link href="{%static "css/style.css"%}" rel="stylesheet">
-		<title>Furni Free Bootstrap 5 Template for Furniture and Interior Design Websites by Untree.co </title>
+		<title>Furni shop</title>
 	</head>
 
 	<body>
@@ -125,7 +125,8 @@
 }
 .x{
 	
-		color:black;
+		color:rgb(125, 123, 123);
+		
 }
 .x2{
 	
@@ -197,12 +198,14 @@
             <div class="container">
                 <div class="row justify-content-between">
                     <div class="col-lg-10">
+
+			
                         <div class="intro-excerpt">
                             <h1>Shop</h1>
                         </div>
                     </div>
                     <div class="col-lg-2 mb-0">
-                        <!-- <div class="bg-black">hhhhhhhhhhhhh</div> -->
+                        <!-- <div class="bg-black"></div> -->
                     </div>
                 </div>
             </div>
@@ -212,93 +215,66 @@
 	<div class="container-fluid">
     <div class="row">
         <!-- Sidebar -->
-        <div class="col-lg-2 text-center p-0" style="border-top:1px solid white; background-color: #3b5d50;  ">
+        <div class="col-lg-2 text-center p-0" style="border-top:1px solid white; background-color: #3d3705;  ">
             <div class="sidebar  ">
                 <!-- Filter options -->
               
-                <form  action="/selectionforcategory/" method="POST">
-					{% csrf_token%}
-                    <!-- Price Range -->
-					<div class="container pb-2 " style="border-bottom:1px solid white">
+                                       <!-- filter using categories  -->
+				
+						<div class="container pb-2 " style="border-top:2px solid white;">
 
-					<h4 class=" mt-3 x">FILTERS</h3>
-						</div>
-                      
+							<h6 class=" mt-3 x">Catgories</h6>
+								</div>
 
-						<!-- price range filters -->
-						
-					<h6 class="x2 my-3">Select your price range...</h6>
+                    
+						<a href="?data=all" style="color:white;text-decoration: none;"><div class="container pb-2 " style="border-bottom:2px solid white;border-top:2px solid white">
+						All Furnitures</div>
+						</a>
 
-                  <div class="container-fluid">
-					<div class="row">
-						<div class="col-lg-6 mb-3" >
-							<select class="form-select" id="categorySelect" name="min" required>
-							   <option value="" selected disabled>min</option>
-							   <option value="0">0</option>
-							   <option value="500">500</option>
-							   <option value="1000">1000</option>
-							   <option value="2000">2000</option>
-							   <option value="5000">5000</option>
-							   
-							</select>
-						</div>
+						<a href="?data=seating_furniture" style="color:white;text-decoration: none;"><div class="container pb-2 " style="border-bottom:2px solid white;">
+							Seating Furnitures</div>
+							</a>
 
+							<a href="?data=sleaping_furniture" style="color:white;text-decoration: none;"><div class="container pb-2 " style="border-bottom:2px solid white;">
+								Sleeping Furnitures</div>
+								</a>
 
+								<a href="?data=tables" style="color:white;text-decoration: none;"><div class="container pb-2 " style="border-bottom:2px solid white;">
+									Tables</div>
+									</a>
 
-					 <div class="col-lg-6 mb-3" >
-                        <select class="form-select" id="categorySelect" name="max" required>
-                            <option value="" selected disabled>max</option>
-							<option value="500">500</option>
-							<option value="1000">1000</option>
-							<option value="5000">5000</option>
-							<option value="10000">10000</option>
-							
-							
+									<a href="?data=storage_furniture" style="color:white;text-decoration: none;"><div class="container pb-2 " style="border-bottom:2px solid white;">
+										Storage furnitures</div>
+										</a>
 
-                        </select>
-                     </div>
-				   </div>
-			     </div>
+			               <!-- filters using  price range -->
 
 
-                    <!-- Category -->
-                    <div class="mb-3" >
-                        <select class="form-select" id="categorySelect" name="catoo" required>
-                            <option value="" selected disabled>Select Category</option>
-                            <!-- Populate categories dynamically if available -->
-                            {% for i in category%}
-											<option value="{{i.id}}">{{i.name}}</option>
-							{% endfor %}
-                        </select>
-                    </div>
-					<h6 class="x2 my-3">order by price</h6>
-                    <div class="form-check form-check-inline">
-						<input class=" form-check-input" type="radio" name="sort" id="ascending" value="asc" required>
-						<label class="text-white form-check-label" for="ascending">Low to high</label>
-					</div>
-					<div class="form-check form-check-inline">
-						<input class="form-check-input" type="radio" name="sort" id="descending" value="desc" required>
-						<label class="text-white form-check-label" for="descending">High to low</label>
-					</div>
-                    <!-- Other filter options -->
-                    <!-- ... -->
-                    <!-- <button type="submit" class="kk">Apply Filters</button> -->
-                    <div class="container-fluid mt-4 " style="border: 1px solid white; padding: 3px;">
-						<button  class="container-fluid" type="submit">Apply Filters</button>
-					</div>
+						   <div class="container pb-2 mt-4" style="border-bottom:2px solid white;">
 
+							<h6 class=" mt-3 x">Price range filters</h6>
+								</div>
+							<a href="?price1=o" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+									$0 - $100</div>
 
-                </form>
-				                 {% if messages %}
-						<div class="alert alert-danger mt-3">
-							{% for message in messages %}
-							{{ message }}
-							{% endfor %}
-							</div>
-							{% endif %}
-                        
-
-
+						   <a href="?price1=a" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+							   $100 - $500</div>
+							</a>
+							<a href="?price1=b" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+								$500 - $1500</div>
+							 </a>
+							 <a href="?price1=c" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+								$1500 - $2500</div>
+							 </a>
+							 <a href="?price1=d" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+								$2500 - $5000</div>
+							 </a>
+							 <a href="?price1=e" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+								$5000 - $7000</div>
+							 </a>
+							 <a href="?price1=f" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
+								$7000 - $15000</div>
+							 </a>
 
 
 
@@ -310,6 +286,19 @@
         <!-- Product Display Column -->
 		
         <div class="col-lg-10">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						
+					
+						<div class="d-flex align-items-center p-3">
+							<h6 class= "mt-2 me-3 ">Sort by price:</h6>
+							<a href="?sort=asc" class="d-block me-3 " style="color:rgb(2, 2, 74)"><span>-></span> Low to high</a>
+							<a href="?sort=desc"  style="color:rgb(2, 2, 74)"><span>-></span>High to low</a>
+						</div>
+					</div>
+				</div>
+		
 			<div class="untree_co-section product-section before-footer-section">
 				<div class="container">
 					  <div class="row">
@@ -335,18 +324,19 @@
 			<div class="pagination">
 				<span class="step-links">
 					{% if page_obj.has_previous %}
-						<a href="?page=1">&laquo; first</a>
-						<a href="?page={{ page_obj.previous_page_number }}">previous</a>
+						<a href="?page=1{% if data %}&data={{ data }}{% endif %}{% if price1 %}&price1={{ price1 }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">&laquo; first</a>
+						<a href="?page={{ page_obj.previous_page_number }}{% if data %}&data={{ data }}{% endif %}{% if price1 %}&price1={{ price1 }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">previous</a>
 					{% endif %}
-			
+
 					<span class="current">
 						Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
 					</span>
-			
+
 					{% if page_obj.has_next %}
-						<a href="?page={{ page_obj.next_page_number }}">next</a>
-						<a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+						<a href="?page={{ page_obj.next_page_number }}{% if data %}&data={{ data }}{% endif %}{% if price1 %}&price1={{ price1 }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">next</a>
+						<a href="?page={{ page_obj.paginator.num_pages }}{% if data %}&data={{ data }}{% endif %}{% if price1 %}&price1={{ price1 }}{% endif %}{% if sort %}&sort={{ sort }}{% endif %}">last &raquo;</a>
 					{% endif %}
+
 				</span>
 			</div>
 		
