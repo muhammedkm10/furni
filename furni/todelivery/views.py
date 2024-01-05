@@ -8,6 +8,9 @@ from .models import address,order_details,ordered_items
 from django.contrib import messages
 from django.utils import timezone
 from datetime import  timedelta
+from django.http import JsonResponse
+from django.urls import reverse
+
 
 
 
@@ -18,7 +21,8 @@ def proceed_to_checkout(request, last_added_address_id):
     email1  =  request.session['email']
     obj = CustomUser1.objects.get(email = email1)
     userid = obj.id
-    print(userid)
+    
+  
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
     # if cart_details.product_id.quantity < cart_details.quantity:
     if cart_details.exists():
@@ -30,8 +34,9 @@ def proceed_to_checkout(request, last_added_address_id):
                 'total':total,
                 'addresses':addresses,
                 'last_added_address_id': last_added_address_id,
+                'user' :obj
             }
-            print(context)
+            
 
             return render(request,'proceed_to_checkout.html',context)
     else:
@@ -75,12 +80,11 @@ def order_confirmation(request):
            email1  =  request.session['email']
            obj = CustomUser1.objects.get(email = email1)
            userid = obj.id
-           paymethod = request.POST['paymethod']
            orderdate = timezone.now().date()
            addres = request.POST['address']
            ad = address.objects.get(id = addres)
            ad1 = ad.id
-           order = order_details(user_id = obj,pay_method = paymethod, order_date = orderdate,addres = ad1)
+           order = order_details(user_id = obj,pay_method = "cod", order_date = orderdate,addres = ad1)
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
@@ -94,8 +98,37 @@ def order_confirmation(request):
            return render(request,'thank_you.html')
 
 
+def ordered_by_razor(request) :
+      if request.method == 'POST':
+           email1  =  request.session['email']
+           obj = CustomUser1.objects.get(email = email1)
+           userid = obj.id
+           orderdate = timezone.now().date()
+           i = request.POST.get('address_id')
+           ad = address.objects.get(id = i)
+           ad1 = ad.id
+           order = order_details(user_id = obj,pay_method = "razor_pay", order_date = orderdate,addres = ad1)
+           order.save()
+           cart_items  = cart.objects.filter(user_id = userid)
+           for i in cart_items:
+                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7))
+                item.save()
+                print(item.product_name.quantity)
+                item.product_name.quantity = item.product_name.quantity-item.quantity
+                item.product_name.save()
+                print(item.product_name.quantity)
+                i.delete()
+           response_data = {
+           'success': True,
+           'redirect_url': reverse('thanks')
+             }
+           return JsonResponse(response_data)
+
+
+
+      
      
-     
 
 
-
+def thanks(request):
+      return render(request,'thank_you.html')
