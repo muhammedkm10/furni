@@ -234,13 +234,6 @@
 
 
 
-
-
-
-
-
-
-
                 <main class="col-lg-6">
                   <div class="ps-lg-3">
                     <h4 class="title text-dark">
@@ -259,15 +252,19 @@
                       </div> {% endcomment %}
                       {% comment %} <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span> {% endcomment %}
                       {% if items.quantity > 0%}
+                      {% if items.quantity > 5%}
                       <span class="text-success ms-2 mt-4">In stock</span>
+                      {% else %}
+                      <span class="text-success ms-2 mt-4">only {{items.quantity}} in stock</span>
+                      {% endif %}
                       {% else %}
                       <span class="text-danger ms-2 mt-4">out of stock</span>
                       {% endif %}
                     </div>
           
                     <div class="mb-3 mt-4">
-                      <span class="h4">$ {{items.price}}</span><br>
-                      <span class="h5 text-decoration-line-through">$ {{items.original_price}}</span>
+                      <span class="h4">₹ {{items.price}}</span><br>
+                      <span class="h5 text-decoration-line-through">₹ {{items.original_price}}</span>
                       
                       {% comment %} <span class="text-muted">/per box</span> {% endcomment %}
                     </div>
@@ -286,7 +283,7 @@
                       <dd class="col-9">Reebook</dd>
                     </div> {% endcomment %}
           
-                    <hr />
+                    <hr >
           
                     <div class="row mb-4">
                       {% comment %} <div class="col-md-4 col-6">
@@ -298,11 +295,15 @@
                         </select>
                       </div> {% endcomment %}
                       <!-- col.// -->
+                      <form method="POST" action="{% url 'addtocart' items.id %}?next={{request.path}}">
+                        {% csrf_token %}
                       <div class="col-md-4 col-6 mb-3">
-                        {% comment %} <label class="mb-2 d-block">Quantity</label> {% endcomment %}
+                        {% if 'email' in request.session %}
+                        <label class="mb-2 d-block">Quantity 1 to 5</label>
                         <div class="input-group mb-3" style="width: 170px;">
-                          {% comment %} <input type="text" class="form-control text-center border border-secondary" value="1"placeholder="1" aria-label="Example text with button addon" aria-describedby="button-addon1" /> {% endcomment %}
-
+                         
+                          <input type="number" class="form-control text-center border border-secondary" name="qnty" value=""placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" required />
+                          {% endif%}
                           {% comment %} <button class="btn btn-white border border-secondary px-3" type="button" id="button-addon1" data-mdb-ripple-color="dark">
                             <i class="fas fa-minus"></i>
                           </button>
@@ -312,18 +313,15 @@
                           </button> {% endcomment %}
                         </div>
                       </div>
-                    </div> 
+                 
                     <div>
                       <p>{{items.description}}</p>
                       <div>
                     {% if 'email' in request.session %}
-                    {% if items.quantity > 0%}
                     
-                    <a href="{% url 'addtocart' items.id %}?next={{request.path}}" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </a>
+                    <button class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </button>
                     <a href="/wishlist/{{items.id}}" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i>add to wishlist</a>
-                    {% else %}
-                    <span class="text-danger ms-2 mt-4">out of stock</span>
-                    {% endif%}
+                 
                     {% else %}
                     <div class="alert alert-danger mt-3">
                      please login you have no account
@@ -341,6 +339,7 @@
           
                 </main>
               </div>
+            </form>
             </div>
           </section>
           <!-- about the product -->

@@ -7,6 +7,8 @@ from category_management.models import category
 from django.contrib import messages
 from django.core.paginator import Paginator
 from todelivery.models import address
+from django.http import JsonResponse
+
 
 
 
@@ -117,49 +119,64 @@ def show_cart(request):
     return render(request,'cart.html',context)
 
 
-# update cart 
-def update_cart(request, id,op):
-   
-    cart_item = cart.objects.get(id=id)
-   
-    if op == 0:
-      if cart_item.quantity < 5:
-        if cart_item.product_id.quantity > cart_item.quantity:
-            cart_item.quantity += 1
-            cart_item.save()
-        else:
-            messages.success(request,"Product is out of stock")
-            return redirect('showcart')
-      else:
-         cart_item.quantity = 5
-         cart_item.save()
-    else:
-        if cart_item.quantity > 1:
-            cart_item.quantity -= 1
-            cart_item.save()
-        else:
-           cart_item.quantity = 1
-           cart_item.save()
-        
-    return redirect('showcart') 
     
+def quantity_updation(request):
+    print('hai')
+    if request.method =='POST':
+        cart_id = int(request.POST['cart_id'])
+        action =  request.POST['action']
+        obj = cart.objects.get(id = cart_id)
+        q = obj.product_id.quantity
+        
+        if action == 'plus':
+            if obj.quantity < 5 and obj.quantity < q:
+                obj.quantity += 1
+                obj.save()
+            else:
+                obj.quantity = 5
+
+        else:
+           if obj.quantity > 1: 
+                obj.quantity -=1
+                obj.save()
+           else:
+               obj.quantity = 0
+        return JsonResponse({'status':'alsjdjhfp'})
 
     
 
 
 # add to cart
 def add_to_cart(request,id):
-    obj = products.objects.get(id = id)
-    email1 = request.session['email']
-    user = CustomUser1.objects.get(email = email1)
-    if cart.objects.filter(product_id = obj).exists():
-        messages.success(request,"Product is already in cart")
-        return redirect('showcart')
-    cart1 = cart(user_id = user,product_id = obj,category = obj.category)
-    cart1.save()
-    messages.success(request,"Product added to cart successfully.......1")
-    path1 = request.GET.get('next')
-    return redirect(path1,id)
+    if request.method == 'POST':
+        obj = products.objects.get(id = id)
+        email1 = request.session['email']
+        quantity = int(request.POST['qnty'])
+        if quantity > 0:
+            if quantity < 6 :
+                    if obj.quantity > quantity:
+                            user = CustomUser1.objects.get(email = email1)
+                            if cart.objects.filter(product_id = obj).exists():
+                                messages.success(request,"Product is already in cart")
+                                return redirect('showcart')
+                            cart1 = cart(user_id = user,product_id = obj,category = obj.category,quantity = quantity)
+                            cart1.save()
+                            messages.success(request,"Product added to cart successfully.......")
+                            path1 = request.GET.get('next')
+                            return redirect(path1,id)
+                    else:
+                        messages.success(request,"Sorry.......product is out of stock....")
+                        path1 = request.GET.get('next')
+                        return redirect(path1,id)
+            else:
+                messages.success(request,"quantity should be less than or equal to 5...")
+                path1 = request.GET.get('next')
+                return redirect(path1,id)
+        else:
+            messages.success(request,"quantity should be greater than or equal to 1...")
+            path1 = request.GET.get('next')
+            return redirect(path1,id)
+
    
     
 

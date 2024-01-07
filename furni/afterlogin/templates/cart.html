@@ -12,7 +12,7 @@
   <meta name="keywords" content="bootstrap, bootstrap4" />
 
 		<!-- Bootstrap CSS -->
-		<link href={% static "css/bootstrap.min.css" %} rel="stylesheet">
+		<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="{% static "css/tiny-slider.css"%}" rel="stylesheet">
 		<link href="{% static "css/style.css"%}" rel="stylesheet">
@@ -84,7 +84,7 @@
 
 		<div class="untree_co-section before-footer-section">
             <div class="container">
-              <div class="row mb-5">
+              <div class="row mb-5 tablediv" id="tablediv">
                 <form class="col-md-12" method="post">
                   <div class="site-blocks-table">
                     <table class="table">
@@ -111,15 +111,17 @@
                           <td class="product-name">
                             <h2 class="h5 text-black">{{i.product_id.name}}</h2>
                           </td>
-                          <td>${{i.product_id.price}}  </td>
-                          <td> 
-                            <a class="d-block btn btn-black btn-sm"href="/updatecart/{{i.id}}/0"><img src="{% static 'images/plus-symbol-button.png'%}" alt=""></a>
-                           <h6> Qty: {{i.quantity}}  </h6>
-                            <a class="d-block btn btn-black btn-sm"href="/updatecart/{{i.id}}/1"><img src="{% static 'images/minus.png'%}" alt=""></a>
-                         </td>
+                          <td>₹{{i.product_id.price}}  </td>
+                          <td> <div id="ppp">
+							{% csrf_token %}
+                            <button class="d-block change_quantity offset-5" data-action="plus"  data-product-id="{{ i.id }}"><span class="fs-4">+</span></button>
+                                              <h6> Qty: {{i.quantity}}  </h6>
+                            <button class="d-block change_quantity offset-5" data-action="minus"  data-product-id="{{ i.id }}"><span class="fs-3">-</span></button>
+                        </div> 
+						</td>
                         
                             
-                            <td>${{i.subtotal}}</td>
+                            <td>₹{{i.subtotal}}</td>
                           <td><a href="/deletecart/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>
                         {%endfor%}
@@ -174,7 +176,7 @@
                         <div class="col-md-6">
                           <span class="text-black">Total</span>
                         </div>
-                        <div class="col-md-6 text-right">
+                        <div id="2load"class="col-md-6 text-right">
                           <strong class="text-black">${{total_amount.sum}}</strong>
                         </div>
                       </div>
@@ -277,7 +279,45 @@
 			</div>
 		</footer>
 		<!-- End Footer Section -->	
-
+<script>
+</script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>
+		$(document).ready(function() {
+			$('.tablediv').on('click', '.change_quantity', function(e) {
+				e.preventDefault();
+				
+				var cart_id = $(this).data('product-id');
+				// var pro_quantity = $(this).closest('.cart-list').find('.quantity1').val();
+				var token = $('input[name=csrfmiddlewaretoken]').val();
+				 
+				var action = $(this).data('action');
+				$.ajax({
+					method: "POST",
+					url: '/updatequantity/',
+					data:  {
+						'cart_id':cart_id,
+						// 'pro_quantity':pro_quantity,
+						'action': action,
+						csrfmiddlewaretoken:token
+					},
+					
+					success: function(response) {
+					  if(response.status) {
+						console.log(response.status);
+						   $('#tablediv').load('/showcart/ #tablediv');
+						   $('#2load').load('/showcart/ #2load');
+					   }
+					},
+					error: (error) => {
+					  console.log(error,'hi');
+					}
+				  });
+		
+		});
+		
+		});
+	</script>
 
 		<script src="js/bootstrap.bundle.min.js"></script>
 		<script src="js/tiny-slider.js"></script>

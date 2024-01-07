@@ -13,4 +13,5 @@ urlpatterns = [
     path('ordersmanage/',views.order_management,name='ordersmanage'),
     path('editstatus/<str:id>',views.edit_status,name='editstatus'),
     path('cancelorder/<str:id>',views.cancel_order,name='cancelorder'),
+
 ]

@@ -6,7 +6,9 @@ from logintohome.models import CustomUser1
 from todelivery.models import order_details,ordered_items,address
 from product_manage.models import products
 from django.http import HttpResponseServerError
-
+from datetime import date,timedelta
+from django.db.models import Sum
+from datetime import datetime
 
 # Create your views here.
 
@@ -39,7 +41,68 @@ def admin_login(request):
 def admin_home(request):
   if 'email' not in request.session:
     if 'username' in request.session:
-      return render(request,'admin_home.html')
+      today = date.today()
+      year = date.today().year
+      start_week = today - timedelta(days = today.weekday())
+      end_week = start_week + timedelta(days= 6)
+      current_date = datetime.now().date()
+      print("Current Date:", current_date)
+      thismonth = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month=date.today().month).aggregate(sum = Sum('total_amount'))
+      today = ordered_items.objects.filter(status = 'delivered', order_id__order_date = today).aggregate(sum = Sum('total_amount'))
+      thisyear = ordered_items.objects.filter(status = 'delivered',order_id__order_date__year = year).aggregate(sum = Sum('total_amount'))
+      thisweek = ordered_items.objects.filter(status = 'delivered',order_id__order_date__range = [start_week,end_week]).aggregate(sum = Sum('total_amount'))
+      jan = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 1).aggregate(sum = Sum('total_amount'))
+      feb = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 2).aggregate(sum = Sum('total_amount'))
+      mar = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 3).aggregate(sum = Sum('total_amount'))
+      apr = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 4).aggregate(sum = Sum('total_amount'))
+      may = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 5).aggregate(sum = Sum('total_amount'))
+      june = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 6).aggregate(sum = Sum('total_amount'))
+      july = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 7).aggregate(sum = Sum('total_amount'))
+      aug = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 8).aggregate(sum = Sum('total_amount'))
+      sep = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 9).aggregate(sum = Sum('total_amount'))
+      oct = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 10).aggregate(sum = Sum('total_amount'))
+      nov = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 11).aggregate(sum = Sum('total_amount'))
+      dec = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 12).aggregate(sum = Sum('total_amount'))
+
+      
+      if thismonth['sum'] is None:
+         thismonth['sum'] = 0
+      if today['sum'] is None:
+         today['sum'] = 0
+      if thisyear['sum'] is None:
+         thisyear['sum'] = 0
+      if thisweek['sum'] is None:
+         thisweek['sum'] = 0
+      if jan['sum'] is None:
+         jan['sum'] = 0
+         
+      print(thismonth)
+      print(today)
+      print(thisyear)
+      print(thisweek)
+
+
+
+      context={
+         'thismonth' :thismonth,
+         'today':today,
+         'thisyear':thisyear,
+         'thisweek':thisweek,
+         'jan':jan,
+         'feb':feb,
+         'mar':mar,
+         'apr':apr,
+         'may':may,
+         'june':june,
+         'july':july,
+         'aug':aug,
+         'sep':sep,
+         'oct':oct,
+         'nov':nov,
+         'dec':dec,
+         'date':current_date
+      }
+      return render(request,'admin_home.html',context)
     else:
       return redirect('adminlogin')
   else:

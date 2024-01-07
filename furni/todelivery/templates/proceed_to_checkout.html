@@ -147,7 +147,7 @@
                             {%for i in cart_details%}
 		                    <tr>
 		                      <td>{{i.product_id.name}} <strong class="mx-2">x</strong> {{i.quantity}}</td>
-		                      <td>${{i.total}}</td>
+		                      <td>₹{{i.total}}</td>
 		                    </tr>
 		                    
                             {% endfor %}
@@ -157,7 +157,7 @@
 		                    </tr> {% endcomment %}
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-		                      <td class="text-black font-weight-bold"><strong>${{total.sum}}</strong></td>
+		                      <td class="text-black font-weight-bold"><strong>₹{{total.sum}}</strong></td>
 		                    </tr>
 		                  </tbody>
 		                </table>
