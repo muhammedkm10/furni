@@ -3,6 +3,10 @@ from . models import products
 from category_management import models
 from django.contrib import messages
 import os
+from django.core.files.base import ContentFile
+import base64
+import re
+
 # Create your views here.
 def product_manage(request):
     if 'email' not in request.session:
@@ -88,13 +92,29 @@ def add_product(request):
         price = request.POST['price']
         ogprice = request.POST['ogprice']
         desc1 = request.POST['description']
-        img1 = request.FILES['img1'] if 'img1' in request.FILES else None
+        if 'croppedImageData' in request.POST:
+            img1 = request.POST['croppedImageData']
+
+            # Convert base64 data to file and save
+            if img1:
+                format, imgstr = img1.split(';base64,')
+                ext = re.search(r'/(.*?)$', format).group(1)
+
+                # Convert base64 string to a Django ContentFile
+                decoded_file = base64.b64decode(imgstr)
+                img_file = ContentFile(decoded_file, name=f'cropped_image.{ext}')
+
+                # Save the image file to the desired model field (adjust this as per your model)
+            #     obj.img1.save(f'cropped_image.{ext}', img_file, save=True)
+
+
+
         img2 = request.FILES['img2'] if 'img2' in request.FILES else None
         img3 = request.FILES['img3'] if 'img3' in request.FILES else None
         img4 = request.FILES['img4'] if 'img4' in request.FILES else None
         if int(quantity) > 0 and int(price) > 0 and int(ogprice) > 0: 
             if not products.objects.filter(name = name).exists():
-                  obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img1,img2 = img2,img3 = img3,img4 = img4,original_price = ogprice)
+                  obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img_file,img2 = img2,img3 = img3,img4 = img4,original_price = ogprice)
                   obj.save()
                   messages.success(request, "product added successfully")
                   return redirect('adminproductmanage')

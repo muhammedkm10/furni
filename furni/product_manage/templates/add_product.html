@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
@@ -355,10 +356,76 @@
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
                             <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name="img1"class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage')" required />
+                            <input type="file" name="img1"class="form-control d-none" id="image1" onchange="displaySelectedImage(event, 'selectedImage')" required />
+                            <input type="hidden" name="croppedImageData" id="croppedImageData" />
                         </div>
                     </div>
                 </div>
+
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const input = document.getElementById('image1');
+                        const image = document.getElementById('selectedImage');
+                        let cropper;
+                
+                        input.addEventListener('change', function (e) {
+                            const file = e.target.files[0];
+                            const reader = new FileReader();
+                
+                            reader.onload = function (event) {
+                                image.src = event.target.result;
+                                cropper = new Cropper(image, {
+                                    aspectRatio: 1, // Set the aspect ratio for cropping as needed
+                                    viewMode: 2, // Set the view mode (e.g., 0, 1, 2, 3)
+                                    // Other options can be added as needed
+                                });
+                            };
+                
+                            reader.readAsDataURL(file);
+                        });
+                
+                        const addButton = document.getElementById('singlebutton');
+                        addButton.addEventListener('click', function (e) {
+                            e.preventDefault(); // Prevent the default form submission
+                
+                            if (cropper) {
+                                const canvas = cropper.getCroppedCanvas();
+                                const croppedImageData = canvas.toDataURL(); // Get cropped image data as base64 string
+                                document.getElementById('croppedImageData').value = croppedImageData;
+                
+                                // Submit the form
+                                const form = document.querySelector('form');
+                                if (form) {
+                                    form.submit();
+                                }
+                            } else {
+                                console.error('Cropper not initialized or no image selected.');
+                            }
+                        });
+                    });
+                </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
                 {% comment %} img 1 {% endcomment %}
                 <div class="col-md-3 text-center">
@@ -369,10 +436,71 @@
                     <div class="d-flex justify-content-center">
                         <div class="btn btn-primary btn-rounded">
                             <label class="form-label text-white m-1" for="customFile1">Choose file</label>
-                            <input type="file" name='img2'class="form-control d-none" id="customFile1" onchange="displaySelectedImage(event, 'selectedImage1')" />
+                            <input type="file" name='img2'class="form-control d-none" id="image2" onchange="displaySelectedImage(event, 'selectedImage1')" />
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                 {% comment %} img 3 {% endcomment %}
                 <div class="col-md-3 text-center">
                     <div class="mb-4 d-flex justify-content-center">
