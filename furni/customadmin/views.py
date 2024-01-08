@@ -9,6 +9,8 @@ from django.http import HttpResponseServerError
 from datetime import date,timedelta
 from django.db.models import Sum
 from datetime import datetime
+from django.db.models import Q
+from datetime import datetime 
 
 # Create your views here.
 
@@ -170,7 +172,7 @@ def search_for_user(request):
 def order_management(request): 
         if 'email' not in request.session:
           if 'username' in request.session:
-                  obj = ordered_items.objects.select_related('order_id')
+                  obj = ordered_items.objects.select_related('order_id').order_by('-id')
                   context = {
                             'items':obj,
                             
@@ -203,4 +205,21 @@ def cancel_order(request,id):
   obj.save()
   return redirect('ordersmanage')
 
+
+
+# sales report
+def sales_report(request):
+   if request.method == 'POST':
+      start = request.POST['date1']
+      print(start)
+      end = request.POST['date2']
+      start_date = datetime.strptime(start, '%Y-%m-%d')
+      end_date = datetime.strptime(end, '%Y-%m-%d')
+      if end_date > start_date:
+         obj = ordered_items.objects.filter(Q(status = 'delivered') & Q(order_id__order_date__range=[start,end]))
+      else:
+         messages.error(request,'select valid date....')
+         return redirect('adminhome')
+      print(obj)
+   return render(request,'sales_report.html',{'orders':obj})
 

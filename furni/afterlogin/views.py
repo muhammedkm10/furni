@@ -151,7 +151,11 @@ def add_to_cart(request,id):
     if request.method == 'POST':
         obj = products.objects.get(id = id)
         email1 = request.session['email']
-        quantity = int(request.POST['qnty'])
+        try:
+         quantity = int(request.POST['qnty'])
+        except:
+            quantity = None
+        
         if quantity > 0:
             if quantity < 6 :
                     if obj.quantity > quantity:
@@ -203,6 +207,24 @@ def add_to_wishlist(request,id):
         obj.save()
         messages.success(request,"Product added to wishlist successfully.......")
         return redirect('productdetails',id)
+    
+
+def whishtocart(request,id):
+    email = request.session['email']
+    user = CustomUser1.objects.get(email = email)
+    pro = products.objects.get(id = id)
+    if pro.quantity >= 1:
+        if cart.objects.filter(product_id = pro).exists():
+                messages.success(request,"Product is already in cart")
+                return redirect('showcart')
+        obj = cart(user_id = user,product_id = pro,quantity = 1,category = pro.category) 
+        obj.save()
+        messages.success(request,"Product added to cart successfully.......")
+        return redirect('showcart')
+    else:
+         messages.error(request,"Product is out of stock")
+         return redirect('showwishlist')
+    
 
 
 # show cart

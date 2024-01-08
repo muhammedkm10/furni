@@ -36,8 +36,9 @@
 			
 
 		<!-- Start Header/Navigation -->
+		
 							{% if messages %}
-						<div class="alert alert-success mt-3">
+						<div class="alert alert-info mt-3">
 							{% for message in messages %}
 							{{ message }}
 							{% endfor %}
@@ -127,7 +128,7 @@
 						  {% else %}
 						  <td class="text-danger">out of stock</td>
                         {% endif %}
-						<td> <a href="{% url 'addtocart' i.product_id.id %}?next={{request.path}}"  class=" btn1">add to cart</button></a>
+						<td> <a href="{% url 'fromwishlist' i.product_id.id %}"  class=" btn1">add to cart</button></a>
 						</td>
                           <td><a href="/remove/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>

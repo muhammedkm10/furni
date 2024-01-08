@@ -158,6 +158,7 @@
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
 		                      <td class="text-black font-weight-bold"><strong>₹{{total.sum}}</strong></td>
+							  <input type="hidden" name="total" value="{{total.sum}}">
 		                    </tr>
 		                  </tbody>
 		                </table>
@@ -183,9 +184,11 @@
 							<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 							<script>
+								var total = $('input[name="total"]').val(); 
+								
 								var options = {
 									"key": "rzp_test_waokdwpF3Rteg3", // Replace with your Razorpay Test Key ID
-									"amount": "{{ total.sum }}", // Ensure that the amount is in currency subunits
+									"amount": total*100, // Ensure that the amount is in currency subunits
 									"currency": "INR",
 									"name": "Furni", // Your business name
 									"description": "Thank you for your purchase...",

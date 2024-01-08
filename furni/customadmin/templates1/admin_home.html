@@ -33,6 +33,34 @@
 	.date-container {
 		margin-left: auto; /* Moves the date to the right */
 	}
+
+	.date-fields {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Styling for individual date field */
+.date-field {
+    margin: 0 10px;
+}
+
+/* Style for the labels of date fields (optional) */
+.date-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333; /* Change the color as needed */
+}
+
+/* Style for the input fields (optional) */
+.date-field input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 180px; 
+}	
+
 </style>
 
 	<!-- SIDEBAR -->
@@ -169,6 +197,13 @@
 
 	<!-- CONTENT -->
 	<section id="content">
+		{% if messages %}
+		<div class="alert alert-success mt-3">
+		{% for message in messages %}
+		{{ message }}
+		{% endfor %}
+		</div>
+		{% endif %}
 		<!-- NAVBAR -->
 		<nav class="text-center">
 			<div>
@@ -227,6 +262,24 @@
 			<!-- HTML canvas to render the chart -->
 
 			<canvas id="salesChart" width="400" height="400"></canvas>
+            <h4 class="mt-5">Sales report:</h4>
+
+
+			<form method="POST" action="/salesreport/">
+				{% csrf_token %}
+			<div class="date-fields">
+				<div class="date-field">
+					<label for="date1">Start date:</label>
+					<input type="date" id="date1" name="date1" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+				</div>
+				<div class="date-field">
+					<label for="date2">End date:</label>
+					<input type="date" id="date2" name="date2" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}">
+				</div>
+				<button type="submit" class="btn btn-primary">Submit</button>
+			</div>
+		
+		</form>
 
 			<script>
 				const jan = "{{ jan.sum }}"
@@ -272,7 +325,7 @@
 			</script>
 
 	</section>
-
+	
 
 	<!-- logout modal0 -->
 
@@ -293,11 +346,14 @@
 						<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
 						<button type="submit" class="btn btn-danger" value="Delete">logout</button>
 					</div>
+
 				</form>
 			</div>
 		</div>
 
 	</div>
+
+
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
