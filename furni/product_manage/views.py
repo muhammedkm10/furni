@@ -103,12 +103,6 @@ def add_product(request):
                 # Convert base64 string to a Django ContentFile
                 decoded_file = base64.b64decode(imgstr)
                 img_file = ContentFile(decoded_file, name=f'cropped_image.{ext}')
-
-                # Save the image file to the desired model field (adjust this as per your model)
-            #     obj.img1.save(f'cropped_image.{ext}', img_file, save=True)
-
-
-
         img2 = request.FILES['img2'] if 'img2' in request.FILES else None
         img3 = request.FILES['img3'] if 'img3' in request.FILES else None
         img4 = request.FILES['img4'] if 'img4' in request.FILES else None

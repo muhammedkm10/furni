@@ -208,7 +208,7 @@ def add_to_wishlist(request,id):
         messages.success(request,"Product added to wishlist successfully.......")
         return redirect('productdetails',id)
     
-
+# wishlist item into cart
 def whishtocart(request,id):
     email = request.session['email']
     user = CustomUser1.objects.get(email = email)
@@ -219,6 +219,7 @@ def whishtocart(request,id):
                 return redirect('showcart')
         obj = cart(user_id = user,product_id = pro,quantity = 1,category = pro.category) 
         obj.save()
+        wishlist.objects.get(product_id = id).delete()
         messages.success(request,"Product added to cart successfully.......")
         return redirect('showcart')
     else:

@@ -64,11 +64,19 @@ def add_address(request):
            pin = request.POST['pin']
            email = request.POST['email']
            phone = request.POST['phone']
-           addobj = address(user_id = obj,first_name = fname,last_name=lname,address=addv,state=state,country=country,post=post,pin=pin,email=email,phone=phone)
-           addobj.save()
-           last_added_address_id = addobj.id
-           messages.success(request,"address added successfully")
-           return redirect('proceedtocheckout', last_added_address_id = last_added_address_id)
+           if len(phone) == 10 and int(phone) > 0:
+                if len(pin) == 6 and int(phone) > 0:
+                    addobj = address(user_id = obj,first_name = fname,last_name=lname,address=addv,state=state,country=country,post=post,pin=pin,email=email,phone=phone)
+                    addobj.save()
+                    last_added_address_id = addobj.id
+                    messages.success(request,"address added successfully")
+                    return redirect('proceedtocheckout', last_added_address_id = last_added_address_id)
+                else:
+                    messages.success(request,"pin number should be valid")
+                    return redirect('addaddressinuser')
+           else:
+               messages.success(request,"phone number should be valid")
+               return redirect('addaddressinuser')
      return render(request,'add_address.html')
 
 
