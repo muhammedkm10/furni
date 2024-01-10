@@ -29,6 +29,8 @@ urlpatterns = [
     path('', include('afterlogin.urls')),
     path('', include('todelivery.urls')),
     path('', include('userprofile.urls')),
+    path('', include('coupenapp.urls')),
+
 
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

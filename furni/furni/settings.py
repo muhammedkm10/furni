@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'afterlogin',
     'todelivery',
     'userprofile',
+    'coupenapp',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +70,7 @@ TEMPLATES = [
             BASE_DIR / 'category_management/templates',
             BASE_DIR / 'todelivery/templates',
             BASE_DIR / 'userprofile/templates',
+            BASE_DIR / 'coupenapp/templates',
         ],
         'APP_DIRS': True,
         'OPTIONS': {
