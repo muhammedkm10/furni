@@ -12,6 +12,7 @@ from datetime import datetime
 from django.db.models import Q
 from datetime import datetime 
 from product_manage.models import variant
+from userprofile.models import wallet
 
 # Create your views here.
 
@@ -203,13 +204,18 @@ def edit_status(request,id):
 def cancel_order(request,id):
     obj = ordered_items.objects.get(id= id)
     obj.status = 'cancelled by admin'
-
     pro = variant.objects.get(product_id = obj.product_name,id = obj.size.id)
     pro.quantity = pro.quantity + obj.quantity
     obj.save()
     pro.save()
+    if obj.order_id.pay_method == 'razor_pay':
+        wall = wallet.objects.get(user_id = obj.order_id.user_id)
+        wall.amount = obj.total_amount
+        print(wall)
+        wall.save()
+        messages.success(request,"your order cacelled successfully")
+        return redirect('ordersmanage')
     return redirect('ordersmanage')
-
 
 
 # sales report

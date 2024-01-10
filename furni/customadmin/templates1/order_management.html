@@ -258,7 +258,13 @@
 </style>
   
   <body>
-
+	{% if messages %}
+	<div class="alert alert-success mt-3">
+	{% for message in messages %}
+	{{ message }}
+	{% endfor %}
+	</div>
+	{% endif %}4
 
 	<!-- navbar -->
 	 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark hai "  arial-label="Furni navigation bar">

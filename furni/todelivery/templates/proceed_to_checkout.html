@@ -175,20 +175,66 @@
 		                  </tbody>
 		                </table>
 
-		                <div class="border p-3 mb-3">
-
-                            <!-- <div class="form-group">
-                                <label for="c_country" class="text-black">payment method <span class="text-danger">*</span></label>
-                                <select name="paymethod" id="c_country" class="form-control" required>
-                                  <option value="cash on delivery">cash on delivery</option>   
-                                </select>
-                            </div> -->
+		                <div class="border p-1 mb-3">
+                                  
+                              <div class="text-dark">
+                               <h4>Your wallet amount       :       ₹{{wal}}</h3>
+                            </div> 
                     </div>
-
+                            
 		                <div class="form-group mt-4">
 		               <button class="btn btn-black btn-lg py-3 btn-block" type="submit" title="cash on delivery">Order with COD</button>
 		                </div>
 
+						<!-- pay using wallet  -->
+						<div class="form-group mt-4">
+							<a href="/payusingwallet/"><button class=" btn btn-black btn-lg py-3 btn-block " id="wallet-button1" type="button">Pay using wallet</button></a>
+							</div>
+							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                     
+                                  <script>
+									$(document).ready(function() {
+									$('#wallet-button1').click(function() {
+										var selectedAddressId = $('input.adddd:checked').val();
+										var total = '{{ total.sum }}';
+
+										// Pass the selected address ID to the Django view using AJAX only if it's available
+										if (selectedAddressId) {
+											$.ajax({
+												type: 'POST',
+												url: '/payusingwallet/', // Replace with your Django view URL
+												data: {
+													'address_id': selectedAddressId,
+													'total': total,
+													csrfmiddlewaretoken: '{{ csrf_token }}' // Ensure you have the CSRF token
+												},
+												success: function(data) {
+													// Handle success response if needed
+													console.log('Address ID sent to server');
+													if (data.success) {
+														window.location.href = data.redirect_url; // Redirect to the 'thanks' page
+													} else {
+														console.log('Failed to process order');
+													}
+												},
+												error: function(xhr, errmsg, err) {
+													// Handle error if needed
+													console.log('Error sending address ID:', errmsg);
+												}
+											});
+										} else {
+											console.log('No address selected.');
+										}
+									});
+								});
+								</script>
+
+
+
+
+
+
+							<!-- pay through razor pay -->
 						<div class="form-group mt-4">
 							<button class=" btn btn-black btn-lg py-3 btn-block " id="rzp-button1" type="button">Pay through razorpay</button>
 							</div>

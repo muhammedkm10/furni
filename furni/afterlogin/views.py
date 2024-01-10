@@ -110,7 +110,11 @@ def show_cart(request):
     total_amount = cart.objects.filter(user_id=user.id).aggregate(sum = Sum('total'))
     last_added_address = address.objects.filter(user_id=user).order_by('-id').first()
     print(last_added_address)
+    if last_added_address == None:
+        messages.error(request,'add some address here')
+        return redirect('userprofile')
     last_added_address_id = last_added_address.id
+    
     context = {
       'item':item,
       'total_amount':total_amount,

@@ -6,6 +6,7 @@ from .import models
 from django.contrib import messages
 from django.views.decorators.cache import never_cache
 from afterlogin.models import cart
+from userprofile.models import wallet
 
 
 
@@ -82,6 +83,7 @@ def user_signup(request):
         if len(phone) == 10  and int(phone) > 0:
             user1  = CustomUser1(username = username,email = email,password = password,phone = phone,date_joined=current_date)
             user1.save()
+            wallet.objects.create(user_id_id = user1.id,amount = 0)
             return redirect('otpverification',id=user1.id)
         else:
             messages.error(request, "the phone number should valid")

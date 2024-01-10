@@ -8,10 +8,11 @@ from todelivery.models import ordered_items,order_details
 from datetime import timedelta
 from afterlogin.models import cart
 from product_manage.models import products,variant
+from .models import wallet
 
 
 
-# Create your views here.
+
 
 
 
@@ -197,15 +198,24 @@ def orderdetails(request):
 
 #  cancel order
 def cancel_order(request,id):
+    email1 = request.session['email']
+    user = CustomUser1.objects.get(email = email1)
     obj = ordered_items.objects.get(id= id)
     obj.status = 'cancelled'
-
     pro = variant.objects.get(product_id = obj.product_name,id = obj.size.id)
     pro.quantity = pro.quantity + obj.quantity
     obj.save()
     pro.save()
+    if obj.order_id.pay_method == 'razor_pay' or obj.order_id.pay_method == 'wallet_pay':
+        wall = wallet.objects.get(user_id = user)
+        wall.amount = wall.amount+obj.total_amount
+        print(wall)
+        wall.save()
+        messages.success(request,"your order cacelled successfully")
+        return redirect('orderdetails')
     messages.success(request,"your order cacelled successfully")
     return redirect('orderdetails')
+
 
 
 
@@ -218,4 +228,11 @@ def track_order(request,id):
     }
 
     return render(request,'track.html',context)
+
+
+
+##############################################         WALLET MANAGEMENT     #######################################
+
+
+
 

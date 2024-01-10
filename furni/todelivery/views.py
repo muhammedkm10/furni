@@ -10,6 +10,7 @@ from django.utils import timezone
 from datetime import  timedelta
 from django.http import JsonResponse
 from django.urls import reverse
+from userprofile.models import wallet
 
 
 
@@ -21,8 +22,12 @@ def proceed_to_checkout(request, last_added_address_id):
     email1  =  request.session['email']
     obj = CustomUser1.objects.get(email = email1)
     userid = obj.id
+    wal = wallet.objects.get(user_id = userid)
+    walamount = wal.amount
     
-  
+    if last_added_address_id == None:
+        messages.error(request,'add some address here')
+        return redirect('userprofile')
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
     # if cart_details.product_id.quantity < cart_details.quantity:
     if cart_details.exists():
@@ -34,9 +39,11 @@ def proceed_to_checkout(request, last_added_address_id):
                 'total':total,
                 'addresses':addresses,
                 'last_added_address_id': last_added_address_id,
-                'user' :obj
+                'user' :obj,
+                'wal':walamount,
             }
             
+        
 
             return render(request,'proceed_to_checkout.html',context)
     else:
@@ -103,7 +110,7 @@ def order_confirmation(request):
                 i.delete()
            return render(request,'thank_you.html')
 
-
+# order by razor pay
 def ordered_by_razor(request) :
       if request.method == 'POST':
            email1  =  request.session['email']
@@ -132,9 +139,50 @@ def ordered_by_razor(request) :
 
 
 
-      
-     
+# order by the walle
+def pay_using_wallet(request):
+     if request.method == 'POST':
+           email1  =  request.session['email']
+           obj = CustomUser1.objects.get(email = email1)
+           userid = obj.id  
+           total = int(request.POST['total'])
+           i = request.POST.get('address_id')
+           orderdate = timezone.now().date()
+           print(total)
+           wal = wallet.objects.get(user_id = userid)
+           wlt_amnt = wal.amount
+           if total <= wlt_amnt:
+                ad = address.objects.get(id = i)
+                ad1 = ad.id
+                order = order_details(user_id = obj,pay_method = "wallet_pay", order_date = orderdate,addres = ad1)
+                order.save()
+                cart_items  = cart.objects.filter(user_id = userid)
+                for i in cart_items:
+                        item = ordered_items(order_id = order,product_name = i.product_id,quantity = i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7),size = i.size)
+                        item.save()
+                        print(item.size.quantity)
+                        item.size.quantity = item.size.quantity-item.quantity
+                        item.size.save()
+                        print(item.size.quantity)
+                        i.delete()
+                wal.amount = wal.amount - total
+                wal.save()
+                response_data = {
+                            'success': True,
+                            'redirect_url': reverse('thanks')
+                        }
+                return JsonResponse(response_data)
+           else:
+                response_data = {
+                            'success': True,
+                            'redirect_url': reverse('sorry')
+                        }
+                return JsonResponse(response_data)
+    
 
-
+# thanks .html
 def thanks(request):
       return render(request,'thank_you.html')
+# sorry .html
+def sorry(request):
+      return render(request,'sorry.html')
