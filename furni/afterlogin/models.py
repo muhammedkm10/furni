@@ -1,6 +1,6 @@
 from django.db import models
 from logintohome.models import CustomUser1
-from product_manage.models import products
+from product_manage.models import products,variant
 
 # Create your models here.
 class cart(models.Model):
@@ -9,6 +9,7 @@ class cart(models.Model):
     quantity = models.IntegerField(default = 1)
     total = models.IntegerField(blank=True, null=True)
     category = models.CharField(max_length = 50)
+    size = models.ForeignKey(variant, on_delete = models.CASCADE,null=True)
 
     def __str__(self) -> str:
         return f'{self.product_id.name} - {self.quantity}'

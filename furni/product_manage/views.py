@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import products
+from . models import products,variant
 from category_management import models
 from django.contrib import messages
 import os
@@ -12,8 +12,10 @@ def product_manage(request):
     if 'email' not in request.session:
       if 'username' in request.session:
             obj = products.objects.select_related('category').all().order_by('-id')
+            variants = variant.objects.all()
             context = {
-                  'items':obj
+                  'items':obj,
+                  'variants':variants
             }
             return render(request,'product.html',context)
       else:
@@ -35,7 +37,6 @@ def edit_product(request,id):
                 name = request.POST['name']
                 category = request.POST['category']
                 selected_category =  models.category.objects.get(id = category)
-                quantity = request.POST['quantity']
                 price = request.POST['price']
                 ogprice = request.POST['ogprice']
                 desc1 = request.POST['desc']
@@ -61,8 +62,7 @@ def edit_product(request,id):
                       obj.img4 = img4
                 obj.name = name
                 obj.category = selected_category
-                if int(quantity) > 0 and int(price) > 0 and int(ogprice):
-                  obj.quantity = quantity
+                if   int(price) > 0 and int(ogprice):
                   obj.price = price
                   obj.original_price = ogprice
                   obj.description = desc1
@@ -88,7 +88,6 @@ def add_product(request):
         name = request.POST['name']
         category = request.POST['category']
         selected_category =  models.category.objects.get(id = category)
-        quantity = request.POST['quantity']
         price = request.POST['price']
         ogprice = request.POST['ogprice']
         desc1 = request.POST['description']
@@ -106,9 +105,9 @@ def add_product(request):
         img2 = request.FILES['img2'] if 'img2' in request.FILES else None
         img3 = request.FILES['img3'] if 'img3' in request.FILES else None
         img4 = request.FILES['img4'] if 'img4' in request.FILES else None
-        if int(quantity) > 0 and int(price) > 0 and int(ogprice) > 0: 
+        if int(price) > 0 and int(ogprice) > 0: 
             if not products.objects.filter(name = name).exists():
-                  obj = products(name = name,category = selected_category,quantity = quantity,price = price,description = desc1,img1 = img_file,img2 = img2,img3 = img3,img4 = img4,original_price = ogprice)
+                  obj = products(name = name,category = selected_category,price = price,description = desc1,img1 = img_file,img2 = img2,img3 = img3,img4 = img4,original_price = ogprice)
                   obj.save()
                   messages.success(request, "product added successfully")
                   return redirect('adminproductmanage')
@@ -161,4 +160,37 @@ def un_list_product(request,id):
       
 
 
+# add variant
+def add_variant(request,pro_id):
+     if request.method == 'POST':
+          product = products.objects.get(id  = pro_id)
+          size  = request.POST['size']
+          stock = int(request.POST['qnty'])
+          if not variant.objects.filter(size  = size,product_id = pro_id).exists():
+                  if stock >= 0:
+                        variant.objects.create(product_id = product,size = size,quantity = stock)
+                        messages.success(request,"variant added succesfully....")
+                  
+                        return redirect('adminproductmanage')
+                  else:
+                        messages.error(request,"the quantity is invalid")
+          else:
+                messages.error(request,"the size is already added so just update it")
+          return redirect('adminproductmanage') 
+          
+     
+# variant quantity updatin 
+def edit_variant_stock(request,var_id):
+     if request.method == 'POST':
+          quantity  = int(request.POST['qnty'])
+          obj = variant.objects.get(id = var_id)
+          if quantity > 0:
+            obj.quantity = quantity
+            obj.save()
+            messages.success(request,"variant quantity updated succesfully....")
+            return redirect('adminproductmanage')
+          else:
+             messages.error(request,"the quantity is invalid")
+          
+     return redirect('adminproductmanage') 
 

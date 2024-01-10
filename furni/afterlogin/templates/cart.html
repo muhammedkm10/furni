@@ -94,6 +94,7 @@
                           <th class="product-name">Product</th>
                           <th class="product-price">Price</th>
                           <th class="product-quantity">Quantity</th>
+						  <th class="size">size</th>
                           <th class="product-total">Total</th>
                           <th class="product-remove">Remove</th>
                         </tr>
@@ -119,8 +120,13 @@
                             <button class="d-block change_quantity offset-5" data-action="minus"  data-product-id="{{ i.id }}"><span class="fs-3">-</span></button>
                         </div> 
 						</td>
-                        
-                            
+						{% if i.size.size == 'l'%}
+						<td class="text-danger">Large</td>
+						{% elif i.size.size == 'm'%}
+						<td class="text-success">Medium</td>
+						{% elif i.size.size == 's'%}
+						<td class="text-info">Small</td>
+						{% endif %}
                             <td>₹{{i.subtotal}}</td>
                           <td><a href="/deletecart/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>

@@ -125,6 +125,7 @@
                     <th>Product name</th>
                     <th>total amonut</th>
                     <th>quantity</th>
+                    <th>size</th>
                     <th>address</th>
                     <th>ordered date</th>
                     <th>delivery expected date</th>
@@ -144,6 +145,14 @@
                     <td>{{i.product_name}}</td>
                     <td>₹{{i.total_amount}}</td>
                     <td>{{i.quantity}}</td>
+                    
+						{% if i.size.size == 'l'%}
+						<td class="text-danger">Large</td>
+						{% elif i.size.size == 'm'%}
+						<td class="text-success">Medium</td>
+						{% elif i.size.size == 's'%}
+						<td class="text-info">Small</td>
+						{% endif %}
                    <td>
                         <ul class="list-unstyled">
                             <li>name: {{ i.add.first_name }}</li>

@@ -249,6 +249,14 @@
 		padding: 7px;
 		
 	}
+	.custom-card {
+        background-color: #e9ecfb; /* Background color */
+        color: #333; /* Text color */
+        padding: 15px; /* Padding inside the card body */
+        border-radius: 8px; /* Rounded corners */
+		border: 2px black solid !important;
+
+    }
 </style>
   
   <body>
@@ -257,7 +265,7 @@
 	<!-- navbar -->
 	 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark hai "  arial-label="Furni navigation bar">
 		{% if messages %}
-		<div class="alert alert-success mt-3">
+		<div class="alert alert-info mt-3">
 		{% for message in messages %}
 		{{ message }}
 		{% endfor %}
@@ -300,9 +308,13 @@
                         <th>name</th>
 						<th>category</th>
 						<th>image</th>
-                        <th>quantity</th>
 						<th>price</th>
 						<th>actions</th>
+						<th></th>
+						<th>variant</th>
+						
+
+
                     </tr>
                 </thead>
                 <tbody>
@@ -317,7 +329,6 @@
 						{% if i.img1 %}
 						<td>  <img src="{{ i.img1.url }}" alt="image" style="width:50px;height:50px"></td>
 						{% endif %}
-						<td>{{i.quantity}}</td>
 						<td>{{i.price}}</td>
                         <td>
 							
@@ -332,6 +343,129 @@
                             <a href="/unlistproduct/{{i.id}}/" class="btn btn-danger " data-toggle="modal">unlist</a>
                              {% endif %}
                         </td>
+						<td>
+							<a href="#addvariant{{i.id}}" class="" data-toggle="modal">add_variant</a>
+							<div id="addvariant{{i.id}}" class="modal fade">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<form method='POST' action='/addvariant/{{i.id}}/'>
+											{% csrf_token %}
+											
+											<div class="modal-header">						
+												<h4 class="modal-title">Add variant for {{i.name}}</h4>
+												<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+											</div>
+											<div class="modal-body">					
+												<div class="form-group">
+													<label>Size</label>
+													<select id="size" name="size">
+														<option value="s">small</option>
+														<option value="m">medium</option>
+														<option value="l">large</option>
+													  </select>
+												</div>
+												<div class="form-group">
+													<label>Quantity of the variant</label>
+													<input type="number" class="form-control" name='qnty' required>
+												</div>
+											</div>
+										
+										   <div class="modal-footer">
+												<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+												<button type="submit" class="btn btn-success" value="Add">submit</button>
+											</div>
+
+										</form>
+									
+									</div>
+								</div>
+							</div>
+
+                        </td>
+                        <td>    
+							<a href="" class="btn btn-primary" style="color: white !important;" type="button" data-toggle="modal" data-target="#variantModal{{i.id}}">
+								Variant Report
+							</a>
+
+
+							<div class="modal fade " id="variantModal{{i.id}}" tabindex="-1" role="dialog" aria-labelledby="variantModalLabel{{i.id}}" aria-hidden="true">
+								<div class="modal-dialog modal-lg" role="document">
+									<div class="modal-content">
+										<div class="modal-header bg-success">
+											<h5 class="modal-title bg-success" id="variantModalLabel{{i.id}}">Variant Report for {{i.name}}</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="modal-body ">
+											<!-- Variant cards -->
+											<div class="row">
+											{% for j in variants %}
+											{% if j.product_id.id == i.id %}
+												<div class="col-12 mb-3">
+													<div class="card border-primary custom-card">
+														<div class="card-body">
+															
+															{% if j.size == 's'%}
+															<h5 class="card-title">size  : small     <br>   quantity :  {{j.quantity}}  </h5>
+															{% elif j.size == 'm' %}
+															<h5 class="card-title">size  : Medium    <br>   quantity :   {{j.quantity}} </h5>
+															{% elif j.size == 'l' %}
+															<h5 class="card-title">size  : large     <br>   quantity :   {{j.quantity}}  </h5>
+												            {% endif %}
+														</div>
+														<a href="" class="btn "  type="button" data-toggle="modal" data-target="#editvariant{{j.id}}">
+															Edit variant
+														</a>
+
+														<div id="editvariant{{j.id}}" class="modal fade">
+															<div class="modal-dialog">
+																<div class="modal-content">
+																	<form method='POST' action='/editvariantstock/{{j.id}}/'>
+																		{% csrf_token %}
+																		<div class="modal-header">	
+																			{% if j.size == 's'%}
+																			<h4 class="modal-title">Edit  variant for  small size of product</h4>
+																			{% elif j.size == 'm' %}
+																			<h4 class="modal-title">Edit  variant for  medium size  of product</h4>
+																			{% elif j.size == 'l' %}
+																			<h4 class="modal-title">Edit  variant for  large size  of product</h4>
+																			{% endif %}					
+																			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+																		</div>
+																		<div class="modal-body">					
+																			
+																			<div class="form-group">
+																				<label>Quantity of the variant</label>
+																				<input type="number" class="form-control" value="{{j.quantity}}" name='qnty' required>
+																			</div>
+																		</div>
+																	
+																	   <div class="modal-footer">
+																			<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+																			<button type="submit" class="btn btn-success" value="Add">submit</button>
+																		</div>
+							
+																	</form>
+																
+																</div>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+												{% endif %}
+												{% endfor %}
+												
+											</div>
+										
+											
+										</div>
+									</div>
+								</div>
+							</div>
+							
+					  </td>
                     </tr>
 					{% endfor %}		
                 </tbody>

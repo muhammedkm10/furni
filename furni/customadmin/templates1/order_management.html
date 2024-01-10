@@ -290,6 +290,7 @@
                         <th>order id</th>
                         <th>product name</th>
                         <th>category</th>
+                        <th>size</th>
                         <th>address</th>
                         <th>quantity</th>
                         <th>total amount</th>
@@ -309,6 +310,13 @@
                         <td>{{i.order_id.id}}</td> 
                         <td>{{i.product_name}}</td> 
                         <td>{{i.category}}</td> 
+						{% if i.size.size == 'l'%}
+						<td class="text-danger">Large</td>
+						{% elif i.size.size == 'm'%}
+						<td class="text-success">Medium</td>
+						{% elif i.size.size == 's'%}
+						<td class="text-info">Small</td>
+						{% endif %}
 						<td>
 							<ul class="list-unstyled">
 								<li>name: {{ i.add.first_name }}</li>
@@ -347,7 +355,6 @@
 													<select id="c_country" name="changestatus" class="form-control">
 													  <option value="ordered">ordered</option>    
 													  <option value="shipped">shipped</option>    
-													  <option value="cancelled">cancelled</option>    
 													  <option value="delivered">Delivered</option> 
 													  <option value="On the way">on the way</option>    
 													</select>

@@ -268,6 +268,8 @@
     <h6 class="fs-3 text-capitalize" >Name  : {{item.product_name}}</h1>
       <h6 class="fs-3 text-capitalize" >Quantity : {{item.quantity}}</h1>
       <h6 class="fs-3 text-capitalize" >Toatl-amount : {{item.total_amount}}</h1>
+      <h6 class="fs-3 text-capitalize" >Size : {{item.size.size}}</h1>
+
 
   </div>
 </div>
@@ -318,7 +320,7 @@
               <div class="col-sm-3 status-box {% if item.status == 'On the way' %}active{% endif %}">
                 On the way
               </div>
-              <div class="col-sm-3 status-box {% if item.status == 'Delivered' %}active{% endif %}">
+              <div class="col-sm-3 status-box {% if item.status == 'delivered' %}active{% endif %}">
                 Delivered
               </div>
               <!-- Add more status boxes as needed -->

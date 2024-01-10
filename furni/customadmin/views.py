@@ -11,6 +11,7 @@ from django.db.models import Sum
 from datetime import datetime
 from django.db.models import Q
 from datetime import datetime 
+from product_manage.models import variant
 
 # Create your views here.
 
@@ -200,10 +201,14 @@ def edit_status(request,id):
 
 # cancel order
 def cancel_order(request,id):
-  obj = ordered_items.objects.get(id = id)
-  obj.status = "cancelled by admin"
-  obj.save()
-  return redirect('ordersmanage')
+    obj = ordered_items.objects.get(id= id)
+    obj.status = 'cancelled by admin'
+
+    pro = variant.objects.get(product_id = obj.product_name,id = obj.size.id)
+    pro.quantity = pro.quantity + obj.quantity
+    obj.save()
+    pro.save()
+    return redirect('ordersmanage')
 
 
 

@@ -7,7 +7,7 @@ from django.views.decorators.cache import never_cache
 from todelivery.models import ordered_items,order_details
 from datetime import timedelta
 from afterlogin.models import cart
-from product_manage.models import products
+from product_manage.models import products,variant
 
 
 
@@ -200,8 +200,8 @@ def cancel_order(request,id):
     obj = ordered_items.objects.get(id= id)
     obj.status = 'cancelled'
 
-    pro = products.objects.get(id = obj.product_name.id)
-    pro.quantity = pro.quantity+obj.quantity
+    pro = variant.objects.get(product_id = obj.product_name,id = obj.size.id)
+    pro.quantity = pro.quantity + obj.quantity
     obj.save()
     pro.save()
     messages.success(request,"your order cacelled successfully")

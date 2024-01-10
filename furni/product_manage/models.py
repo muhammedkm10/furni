@@ -8,7 +8,6 @@ class products(models.Model):
 
     name = models.CharField(max_length=200)
     category = models.ForeignKey(category,on_delete=models.CASCADE)
-    quantity = models.IntegerField()
     price = models.IntegerField()
     description = models.TextField()
     img1 =  models.ImageField(upload_to='images/')
@@ -22,3 +21,7 @@ class products(models.Model):
 
     def __str__(self):
         return self.name
+class variant(models.Model):
+    product_id = models.ForeignKey(products,on_delete = models.CASCADE)
+    size = models.CharField(max_length=4)
+    quantity = models.IntegerField()

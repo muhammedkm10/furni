@@ -100,7 +100,7 @@
           width: 100%;
           height: 100%;
           }
-          
+
     </style>
 
 	<body>
@@ -148,7 +148,6 @@
 		<!-- End Header/Navigation -->
           
           <!-- content -->
-          ``
           <section class="py-5">
             <div class="container">
               <div class="row gx-5">
@@ -251,7 +250,7 @@
                         </span>
                       </div> {% endcomment %}
                       {% comment %} <span class="text-muted"><i class="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span> {% endcomment %}
-                      {% if items.quantity > 0%}
+                      {% comment %} {% if items.quantity > 0%}
                       {% if items.quantity > 5%}
                       <span class="text-success ms-2 mt-4">In stock</span>
                       {% else %}
@@ -259,7 +258,7 @@
                       {% endif %}
                       {% else %}
                       <span class="text-danger ms-2 mt-4">out of stock</span>
-                      {% endif %}
+                      {% endif %} {% endcomment %}
                     </div>
           
                     <div class="mb-3 mt-4">
@@ -313,12 +312,41 @@
                           </button> {% endcomment %}
                         </div>
                       </div>
-                 
-                    <div>
-                      <p>{{items.description}}</p>
+                      {% if 'email' in request.session %}
+                      <div class="container mt-4">
+                   
+                        <label class="text-black" for="size">Choose a size:</label>
+                      
+
+                        <div class="form-group">
+                          {% for j in variant %}
+                            {% if j.product_id.id == items.id and j.quantity > 0 %}
+                              <div class="form-check">
+                               
+                                <input class="form-check-input" type="radio" id="{{ j.size }}" name="size" value="{{ j.size }}" required>
+                                {%if j.size == 's'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Small</label>
+                                {%elif j.size == 'm'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Medium</label>
+                                {%elif j.size == 'l'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Large</label>
+                                {% endif %}
+                                  
+                              </div>
+                             
+                            {% endif %}
+                            
+                          {% endfor %}
+                        </div>
+                      </div>
+                      {% endif %}  
+                    
+                                         
+                    <div class="mt-3">
+                      <p ><span class="text-black">ABOUT PRODUCT : </span>{{items.description}}</p>
                       <div>
                     {% if 'email' in request.session %}
-                    
+                    <div class="mt-5"> 
                     <button class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </button>
                     <a href="/wishlist/{{items.id}}" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i>add to wishlist</a>
                  
@@ -336,7 +364,7 @@
                   {% endfor %}
                   </div>
                   {% endif %}
-          
+                </div>
                 </main>
               </div>
             </form>

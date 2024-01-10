@@ -42,9 +42,7 @@ def proceed_to_checkout(request, last_added_address_id):
     else:
             messages.error(request,"add some products")
             return redirect('showcart')
-    # else:
-    #      messages.error(request,"the product is out of stock")
-    #      return redirect('showcart')
+    
   
          
 
@@ -96,12 +94,12 @@ def order_confirmation(request):
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
-                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7))
+                item = ordered_items(order_id = order,product_name = i.product_id,quantity = i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7),size = i.size)
                 item.save()
-                print(item.product_name.quantity)
-                item.product_name.quantity = item.product_name.quantity-item.quantity
-                item.product_name.save()
-                print(item.product_name.quantity)
+                print(item.size.quantity)
+                item.size.quantity = item.size.quantity-item.quantity
+                item.size.save()
+                print(item.size.quantity)
                 i.delete()
            return render(request,'thank_you.html')
 
@@ -119,12 +117,12 @@ def ordered_by_razor(request) :
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
-                item = ordered_items(order_id = order,product_name = i.product_id,quantity=i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7))
+                item = ordered_items(order_id = order,product_name = i.product_id,quantity = i.quantity,total_amount = i.total,status = "ordered" ,category= i.category,user = order.user_id.id,add = ad,expected  = orderdate + timedelta(days=7),size = i.size)
                 item.save()
-                print(item.product_name.quantity)
-                item.product_name.quantity = item.product_name.quantity-item.quantity
-                item.product_name.save()
-                print(item.product_name.quantity)
+                print(item.size.quantity)
+                item.size.quantity = item.size.quantity-item.quantity
+                item.size.save()
+                print(item.size.quantity)
                 i.delete()
            response_data = {
            'success': True,

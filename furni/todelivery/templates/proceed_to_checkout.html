@@ -141,13 +141,24 @@
 		                <table class="table site-block-order-table mb-5">
 		                  <thead>
 		                    <th>Product</th>
+		                    <th>Size</th>
 		                    <th>Total</th>
 		                  </thead>
 		                  <tbody>
                             {%for i in cart_details%}
 		                    <tr>
+
 		                      <td>{{i.product_id.name}} <strong class="mx-2">x</strong> {{i.quantity}}</td>
+								{% if i.size.size == 'l'%}
+								<td class="text-danger">Large</td>
+								{% elif i.size.size == 'm'%}
+								<td class="text-success">Medium</td>
+								{% elif i.size.size == 's'%}
+								<td class="text-info">Small</td>
+								{% endif %}
 		                      <td>₹{{i.total}}</td>
+							  
+							  
 		                    </tr>
 		                    
                             {% endfor %}
@@ -157,6 +168,7 @@
 		                    </tr> {% endcomment %}
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+							  <td></td>
 		                      <td class="text-black font-weight-bold"><strong>₹{{total.sum}}</strong></td>
 							  <input type="hidden" name="total" value="{{total.sum}}">
 		                    </tr>

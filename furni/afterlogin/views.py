@@ -1,5 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect
-from product_manage.models import products
+from product_manage.models import products,variant
 from logintohome.models import CustomUser1
 from .models import cart,wishlist
 from django.db.models import Sum,Q
@@ -82,6 +82,7 @@ def shop(request):
 # product details
 def product_details(request,id):
     obj = products.objects.get(id = id)
+    variants = variant.objects.all()
     if 'email' in request.session:
             email  = request.session['email']
             user = CustomUser1.objects.get(email = email)
@@ -92,7 +93,8 @@ def product_details(request,id):
 
     context = {
         'items':obj,
-        'no':no_of_cart
+        'no':no_of_cart,
+        'variant':variants
     }
     return render(request,'product_details.html',context)
 
@@ -101,7 +103,7 @@ def product_details(request,id):
 def show_cart(request):
     email1 = request.session['email']
     user = CustomUser1.objects.get(email = email1)
-    item  =  cart.objects.select_related('product_id').filter(user_id = user)
+    item  =  cart.objects.select_related('product_id').filter(user_id = user).order_by('-id')
     for i in item:
       i.total = i.product_id.price*i.quantity
       i.save()
@@ -119,17 +121,23 @@ def show_cart(request):
     return render(request,'cart.html',context)
 
 
-    
+# quantity updation
 def quantity_updation(request):
     print('hai')
     if request.method =='POST':
         cart_id = int(request.POST['cart_id'])
+        print('cart',cart_id)
         action =  request.POST['action']
         obj = cart.objects.get(id = cart_id)
-        q = obj.product_id.quantity
-        
+        print(obj.product_id)
+        print(obj.size.id)
+        pro = products.objects.get(name = obj.product_id)
+        print(pro)
+        size_qnty = variant.objects.get(product_id__name = pro,id = obj.size.id)
+        print(size_qnty.id)
+        print(size_qnty.quantity)
         if action == 'plus':
-            if obj.quantity < 5 and obj.quantity < q:
+            if obj.quantity < 5 and obj.quantity < size_qnty.quantity:
                 obj.quantity += 1
                 obj.save()
             else:
@@ -149,39 +157,48 @@ def quantity_updation(request):
 # add to cart
 def add_to_cart(request,id):
     if request.method == 'POST':
-        obj = products.objects.get(id = id)
-        email1 = request.session['email']
         try:
-         quantity = int(request.POST['qnty'])
+         size = request.POST['size']
         except:
-            quantity = None
-        
-        if quantity > 0:
-            if quantity < 6 :
-                    if obj.quantity > quantity:
-                            user = CustomUser1.objects.get(email = email1)
-                            if cart.objects.filter(product_id = obj).exists():
-                                messages.success(request,"Product is already in cart")
-                                return redirect('showcart')
-                            cart1 = cart(user_id = user,product_id = obj,category = obj.category,quantity = quantity)
-                            cart1.save()
-                            messages.success(request,"Product added to cart successfully.......")
+            size = None
+        if size != None:
+            obj = variant.objects.get(product_id = id,size = size)
+            pro = products.objects.get(id = id)
+            email1 = request.session['email']
+            print(size)
+            try:
+             quantity = int(request.POST['qnty'])
+            except:
+                quantity = None
+            
+            if quantity > 0:
+                if quantity < 6 :
+                        if obj.quantity >= quantity:
+                                user = CustomUser1.objects.get(email = email1)
+                                if cart.objects.filter(product_id = pro,size_id = obj.id).exists():
+                                    messages.success(request,"Product is already in cart")
+                                    return redirect('showcart')
+                                else:
+                                        cart1 = cart(user_id = user,product_id = pro,category = pro.category,quantity = quantity,size = obj)
+                                        cart1.save()
+                                        messages.success(request,"Product added to cart successfully.......")
+                                        return redirect('showcart')
+                        else:
+                            messages.success(request,"Sorry.......product is out of stock....")
                             path1 = request.GET.get('next')
                             return redirect(path1,id)
-                    else:
-                        messages.success(request,"Sorry.......product is out of stock....")
-                        path1 = request.GET.get('next')
-                        return redirect(path1,id)
+                else:
+                    messages.success(request,"quantity should be less than or equal to 5...")
+                    path1 = request.GET.get('next')
+                    return redirect(path1,id)
             else:
-                messages.success(request,"quantity should be less than or equal to 5...")
+                messages.success(request,"quantity should be greater than or equal to 1...")
                 path1 = request.GET.get('next')
                 return redirect(path1,id)
         else:
-            messages.success(request,"quantity should be greater than or equal to 1...")
+            messages.success(request,"the product is out of stock")
             path1 = request.GET.get('next')
             return redirect(path1,id)
-
-   
     
 
 
@@ -207,7 +224,10 @@ def add_to_wishlist(request,id):
         obj.save()
         messages.success(request,"Product added to wishlist successfully.......")
         return redirect('productdetails',id)
-    
+
+
+
+
 # wishlist item into cart
 def whishtocart(request,id):
     email = request.session['email']
@@ -228,7 +248,7 @@ def whishtocart(request,id):
     
 
 
-# show cart
+# show whishlist
 def show_wish_list(request):
     email = request.session['email']
     user = CustomUser1.objects.get(email = email)

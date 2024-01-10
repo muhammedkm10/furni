@@ -1,6 +1,6 @@
 from django.db import models
 from logintohome.models import  CustomUser1
-from product_manage.models import products
+from product_manage.models import products,variant
 
 # Create your models here.
 
@@ -35,6 +35,8 @@ class ordered_items(models.Model):
     user = models.IntegerField()
     add = models.ForeignKey(address, on_delete=models.CASCADE)
     expected = models.DateField(null = True )
+    size = models.ForeignKey(variant, on_delete = models.CASCADE,null = True)
+
 
 
 
