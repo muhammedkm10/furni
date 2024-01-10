@@ -22,7 +22,6 @@
 
     <!-- Bootstrap JavaScript via CDN (include Popper.js and Bootstrap JS) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.2/openseadragon.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
@@ -348,8 +347,47 @@
                     {% if 'email' in request.session %}
                     <div class="mt-5"> 
                     <button class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart </button>
-                    <a href="/wishlist/{{items.id}}" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i class="me-1 fa fa-heart fa-lg"></i>add to wishlist</a>
-                 
+            </form>
+
+
+            {% comment %} add to whish list form {% endcomment %}
+                    <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3" data-toggle="collapse" data-target="#wishlistCollapse" aria-expanded="false" aria-controls="wishlistCollapse">
+                      <i class="me-1 fa fa-heart fa-lg"></i> Add to Wishlist
+                    </a>
+                    <form action="/wishlist/{{items.id}}" method="POST">
+                      {% csrf_token %}
+                    <!-- Collapsible content -->
+                    <div class="collapse mt-3" id="wishlistCollapse">
+                      <div class="card-header">
+                        <!-- Card header content -->
+                        <h5 class="mb-0">select a size</h5>
+                      </div>
+                      
+                      <div class="card card-body">
+
+                        {% for j in variant %}
+                            {% if j.product_id.id == items.id and j.quantity > 0 %}
+                              <div class="form-check">
+                               
+                                <input class="form-check-input" type="radio" id="{{ j.size }}" name="size" value="{{ j.size }}" required>
+                                {%if j.size == 's'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Small</label>
+                                {%elif j.size == 'm'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Medium</label>
+                                {%elif j.size == 'l'%}
+                                <label class="form-check-label text-black" for="size_{{ j.size }}">Large</label>
+                                {% endif %}
+                                  
+                              </div>
+                             
+                            {% endif %}
+                            
+                          {% endfor %}
+                          <button type="submit" class="btn btn-primary btn-sm">Add to Wishlist</button>
+
+                          </form>
+                      </div>
+                    </div>
                     {% else %}
                     <div class="alert alert-danger mt-3">
                      please login you have no account
@@ -367,7 +405,6 @@
                 </div>
                 </main>
               </div>
-            </form>
             </div>
           </section>
           <!-- about the product -->
@@ -547,7 +584,9 @@
 		</footer>
 		<!-- End Footer Section -->	
 
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
 		<script src="{% static "js/bootstrap.bundle.min.js" %}"></script>
 		<script src="{% static "js/tiny-slider.js" %}"></script>
 		<script src="{% static "js/custom.js" %}"></script>

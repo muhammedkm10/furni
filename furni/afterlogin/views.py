@@ -215,12 +215,15 @@ def delete_cart_product(request,id):
 def add_to_wishlist(request,id):
     email = request.session['email']
     user =  CustomUser1.objects.get(email = email )
+    size = request.POST['size']
+    var = variant.objects.get(size = size,product_id_id = id)
+    print(size)
     pro = products.objects.get(id = id)
-    if wishlist.objects.filter(product_id = pro).exists():
+    if wishlist.objects.filter(product_id = pro,size__id = var.id ).exists():
         messages.success(request,"Product is already in wishlist")
         return redirect('showwishlist')
     else:
-        obj = wishlist(user_id = user,product_id = pro)
+        obj = wishlist(user_id = user,product_id = pro,size = var)
         obj.save()
         messages.success(request,"Product added to wishlist successfully.......")
         return redirect('productdetails',id)
@@ -229,17 +232,20 @@ def add_to_wishlist(request,id):
 
 
 # wishlist item into cart
-def whishtocart(request,id):
+def whishtocart(request,pro_id,w_id):
     email = request.session['email']
     user = CustomUser1.objects.get(email = email)
-    pro = products.objects.get(id = id)
-    if pro.quantity >= 1:
-        if cart.objects.filter(product_id = pro).exists():
+    pro = products.objects.get(id = pro_id)
+    whish_item = wishlist.objects.get(id = w_id)
+    var = variant.objects.get(product_id_id = pro.id,id = whish_item.size.id)
+    if var.quantity >= 1:
+        if cart.objects.filter(product_id = pro,size = var).exists():
                 messages.success(request,"Product is already in cart")
                 return redirect('showcart')
-        obj = cart(user_id = user,product_id = pro,quantity = 1,category = pro.category) 
+        obj = cart(user_id = user,product_id = pro,quantity = 1,category = pro.category,size  =  var) 
+        wishlist.objects.get(product_id = pro,size = var).delete()
         obj.save()
-        wishlist.objects.get(product_id = id).delete()
+        
         messages.success(request,"Product added to cart successfully.......")
         return redirect('showcart')
     else:

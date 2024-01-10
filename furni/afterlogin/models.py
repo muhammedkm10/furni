@@ -22,9 +22,11 @@ class cart(models.Model):
 class wishlist(models.Model):
     user_id = models.ForeignKey(CustomUser1, on_delete = models.CASCADE)
     product_id = models.ForeignKey(products,on_delete = models.CASCADE)
+    size = models.ForeignKey(variant,on_delete = models.CASCADE,null = True)
     
 
     
     
 
+    
     

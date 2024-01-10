@@ -12,7 +12,7 @@ urlpatterns = [
     path('showwishlist/',views.show_wish_list,name='showwishlist'),
     path('remove/<str:id>',views.delete_whish_list,name='remove'),
     path('updatequantity/',views.quantity_updation,name='updatequantity'),
-    path('fromwishlist/<str:id>',views.whishtocart,name='fromwishlist'),
+    path('fromwishlist/<str:pro_id>/<str:w_id>/',views.whishtocart,name='fromwishlist'),
 
 
 

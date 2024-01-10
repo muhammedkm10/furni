@@ -106,6 +106,7 @@
                           <th class="product-name">Product</th>
                           <th class="product-price">Price</th>
                           <th class="product-quantity">stock</th>
+                          <th class="product-quantity">size</th>
                           <th class="product-remove">Remove</th>
                         </tr>
                       </thead>
@@ -123,12 +124,14 @@
                             <h2 class="h5 text-black">{{i.product_id.name}}</h2>
                           </td>
                           <td>₹{{i.product_id.price}}  </td>
-						  {% if i.product_id.quantity > 0%}
-						  <td class="text-success">in stock</td>
-						  {% else %}
-						  <td class="text-danger">out of stock</td>
-                        {% endif %}
-						<td> <a href="{% url 'fromwishlist' i.product_id.id %}"  class=" btn1">add to cart</button></a>
+						  {% if i.size.size == 'l'%}
+						  <td class="text-danger">Large</td>
+						  {% elif i.size.size == 'm'%}
+						  <td class="text-success">Medium</td>
+						  {% elif i.size.size == 's'%}
+						  <td class="text-info">Small</td>
+						  {% endif %}
+						<td> <a href="/fromwishlist/{{i.product_id.id}}/{{i.id}}/ "  class=" btn1">add to cart</button></a>
 						</td>
                           <td><a href="/remove/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>
