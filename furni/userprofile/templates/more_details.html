@@ -1,4 +1,6 @@
 
+
+
 <!doctype html>
 {% load static%}
 <html lang="en">
@@ -102,7 +104,7 @@
 					<div class="row justify-content-between">
 						<div class="col-lg-5">
 							<div class="intro-excerpt">
-								<h1>Your order details </h1>
+								<h1>User profile</h1>
 							</div>
 						</div>
 						<div class="col-lg-7">
@@ -121,48 +123,89 @@
                
                 <tr>
                     <th>order id</th>
+                    <th>image</th>
+                    <th>Product name</th>
                     <th>total amonut</th>
+                    <th>quantity</th>
+                    <th>size</th>
                     <th>address</th>
-                    <th>Any couopen</th>
                     <th>ordered date</th>
-                    <th>after discount</th>
-                    <th>pay method</th>
-                    <th></th>
-
+                    <th>delivery expected date</th>
+                    <th>status/pay method</th>
                     
-                  
-                    
-
-
                 </tr>
             </thead>
             <tbody>
               {% for i in orders %}
                 <tr> 
-                    <td>{{i.id}}</td>
+                    <td>{{i.order_id.id}}</td>
+                    <td><img src="{{i.product_name.img1.url}}" alt="img" style="height: 200px;width: 200px;;"></td>
+                    <td>{{i.product_name}}</td>
                     <td>₹{{i.total_amount}}</td>
-                     <td>
+                    <td>{{i.quantity}}</td>
+                    
+						{% if i.size.size == 'l'%}
+						<td class="text-danger">Large</td>
+						{% elif i.size.size == 'm'%}
+						<td class="text-success">Medium</td>
+						{% elif i.size.size == 's'%}
+						<td class="text-info">Small</td>
+						{% endif %}
+                   <td>
                         <ul class="list-unstyled">
-                            <li>name: {{ i.addres.first_name }}</li>
-                            <li>{{i.addres.state}},{{i.add.country}}</li>
+                            <li>name: {{ i.add.first_name }}</li>
+                            <li>{{i.add.state}},{{i.add.country}}</li>
                             <li>address: {{i.add.address}}</li>
                             <li>post: {{i.add.post}},pin: {{i.add.pin}}</li>
                             <li>{{i.add.email}}</li>
                             <li>phone: {{i.add.phone}}</li>
                         </ul>
                     </td>
-                    {% if i.coupen_applyed%}
-                    <td> coupon applied <br> coupon name : {{i.applied_coupen.cop_name}}</td>
-                    {% else%}
-                    <td>coupon not applied</td>
+                    <td>{{i.order_id.order_date}}</td>
+                    <td>{{i.expected}}</td>
+                    {% if i.status == 'cancelled'%}
+                    <td class="text-danger">{{i.status}}</td>
+                    {% else %}
+                    <td>{{i.status}}<br>/{{i.order_id.pay_method}}</td>
                     {% endif %}
-                    <td>{{i.order_date}}</td>
+
                     
-                    <td>₹{{i.after_discount}}</td>
-                    <td>{{i.pay_method}}</td>
-                    <td><a href="/moredetails/{{i.id}}">more details</a></td>
+                    
+                    
+                    <td>
+                       
+                        {% if i.status != "cancelled" and i.status !=  "cancelled by admin" %}
+                        <a href="#cancelorder{{i.id}}" class="btn btn-danger text-decoration-none" data-toggle="modal">Cancel</a>
+                        
+                        
+                        <div id="cancelorder{{i.id}}" class="modal fade">
+		
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form action="/cancelorderuser/{{i.id}}" method='POST'>
+                                        {% csrf_token%}
+                                        <div class="modal-header">						
+                                            <h4 class="modal-title">cancel the order</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <div class="modal-body">					
+                                            <p>do you want to cancel the order?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                            <button type="submit" class="btn btn-danger" value="Delete">OK</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                    </td>
+                    <td><a href="/trakorder/{{i.id}}" class="btn btn-danger text-decoration-none" >Track</a></td>
 
                 </tr>	
+                {% endif%}
 
                 {% endfor %}
             </tbody>

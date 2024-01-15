@@ -186,8 +186,8 @@ def orderdetails(request):
     obj = CustomUser1.objects.get(email = email1)
     user = obj.id
     no_of_cart = cart.objects.filter(user_id = user).count()
-    orders = ordered_items.objects.filter(user = user).order_by('-id')
-
+    orders = order_details.objects.filter(user_id = user).order_by('-id')
+    
     context = {
                 'orders':orders,
                'no':no_of_cart
@@ -231,7 +231,13 @@ def track_order(request,id):
 
 
 
-##############################################         WALLET MANAGEMENT     #######################################
+# more details of the product
+def more_details(request,id):
+    obj = ordered_items.objects.filter(order_id_id = id)
+    context = {
+        'orders':obj,
+    }
+    return render(request,'more_details.html',context)
 
 
 

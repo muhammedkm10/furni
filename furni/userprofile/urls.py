@@ -13,6 +13,8 @@ urlpatterns = [
     path('orderdetails/',views.orderdetails,name='orderdetails'),
     path('cancelorderuser/<int:id>',views.cancel_order,name='cancelorder'),
     path('trakorder/<str:id>',views.track_order,name='trakorder'),
+    path('moredetails/<str:id>',views.more_details,name='moredetails'),
+
 
 
 

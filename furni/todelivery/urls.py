@@ -9,6 +9,7 @@ urlpatterns = [
      path('payusingwallet/',views.pay_using_wallet,name='payusingwallet'),
      path('thanks/',views.thanks,name='thanks'),
      path('sorry/',views.sorry,name='sorry'),
+     path('couponapply/',views.apply_coupon,name='couponapply'),
 
 
 ]

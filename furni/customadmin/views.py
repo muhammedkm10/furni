@@ -174,7 +174,7 @@ def search_for_user(request):
 def order_management(request): 
         if 'email' not in request.session:
           if 'username' in request.session:
-                  obj = ordered_items.objects.select_related('order_id').order_by('-id')
+                  obj = order_details.objects.all().order_by('-id')
                   context = {
                             'items':obj,
                             
@@ -186,6 +186,14 @@ def order_management(request):
           return render(request, '404.html', status=404)
     
 
+# 
+def more_details_in_admin(request,id):
+   obj = ordered_items.objects.filter(order_id_id = id)
+   context = {
+      'orders':obj,
+   }
+   return render(request,'more_details_order.html',context)
+
 
 
 
@@ -196,8 +204,9 @@ def edit_status(request,id):
        changestatus = request.POST['changestatus']
        obj = ordered_items.objects.get(id = id)
        obj.status = changestatus
-       obj.save()       
-     return redirect('ordersmanage')
+       obj.save()
+       messages.success(request,"your status is edited successfully....!")       
+     return redirect('moredetailsinadmin',obj.order_id_id)
 
 
 # cancel order

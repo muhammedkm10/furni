@@ -88,21 +88,7 @@
 		        <div class="col-12">
 
 		          <div class="row mb-5 mt-3">
-		            <div class="col-md-6">
-		              <!-- <h2 class="h3 mb-3 text-black">Coupon Code</h2>
-		              <div class="p-3 p-lg-5 border bg-white">
-
-		                <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
-		                <div class="input-group w-75 couponcode-wrap">
-		                  <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
-		                  <div class="input-group-append">
-		                    <button class="btn btn-black btn-sm" type="button" id="button-addon2">Apply</button>
-		                  </div>
-		                </div> -->
-
-		              </div>
-		            </div>
-                  
+		       
                     <div class="col-md-6 mt-3">
                         <h2 class="h3 mb-3 text-black">Select address</h2>
                         <div class="p-3 p-lg-5 border bg-white">
@@ -143,6 +129,8 @@
 		                    <th>Product</th>
 		                    <th>Size</th>
 		                    <th>Total</th>
+		                   
+
 		                  </thead>
 		                  <tbody>
                             {%for i in cart_details%}
@@ -168,13 +156,31 @@
 		                    </tr> {% endcomment %}
 		                    <tr>
 		                      <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+							  
+							  
 							  <td></td>
-		                      <td class="text-black font-weight-bold"><strong>₹{{total.sum}}</strong></td>
-							  <input type="hidden" name="total" value="{{total.sum}}">
+		                      <td  class="text-black font-weight-bold" >₹<strong>{{total1.sum}}</strong></td>
+		                     
 		                    </tr>
+							<tr>
+								<td class="text-black font-weight-bold"><strong>Order Total after discount</strong></td>
+								
+								
+								<td></td>
+									<td><input type="" id="razorpayTotal1" data-dis="{{details.discount_amount}}" value="{{details.discount_amount}}"></td>
+  
+								{% comment %} <input type="" id="razorpayTotal" name="total" value="{{details.discount_amount}}"> {% endcomment %}
+								
+							  
+							  </tr>
 		                  </tbody>
 		                </table>
-
+                        <script>
+							
+								var razorpayTotalValue = $('#razorpayTotal').val();
+								console.log('Value of #razorpayTotal:', razorpayTotalValue);
+						
+						</script>
 		                <div class="border p-1 mb-3">
                                   
                               <div class="text-dark">
@@ -196,7 +202,8 @@
 									$(document).ready(function() {
 									$('#wallet-button1').click(function() {
 										var selectedAddressId = $('input.adddd:checked').val();
-										var total = '{{ total.sum }}';
+										var total = $('#razorpayTotal1').val();
+										console.log(total)
 
 										// Pass the selected address ID to the Django view using AJAX only if it's available
 										if (selectedAddressId) {
@@ -205,7 +212,7 @@
 												url: '/payusingwallet/', // Replace with your Django view URL
 												data: {
 													'address_id': selectedAddressId,
-													'total': total,
+													'total2': total,
 													csrfmiddlewaretoken: '{{ csrf_token }}' // Ensure you have the CSRF token
 												},
 												success: function(data) {
@@ -242,46 +249,44 @@
 							<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 							<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 							<script>
-								var total = $('input[name="total"]').val(); 
+								document.getElementById('rzp-button1').onclick = function (e) {
+									let total = document.getElementById('razorpayTotal1').value;
+									console.log(total); 
 								
 								var options = {
-									"key": "rzp_test_waokdwpF3Rteg3", // Replace with your Razorpay Test Key ID
-									"amount": total*100, // Ensure that the amount is in currency subunits
+									"key": "rzp_test_waokdwpF3Rteg3",
+									"amount": total*100,
 									"currency": "INR",
-									"name": "Furni", // Your business name
+									"name": "Furni",
 									"description": "Thank you for your purchase...",
 									"image": "https://example.com/your_logo",
 									"handler": function (response) {
 										alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
 
 										
-											// Listen for changes in the address radio buttons
 										var selectedAddressId = $('input.adddd:checked').val(); 
 										console.log(selectedAddressId)
 									
 									
 									
 
-										// Pass the selected address ID to the Django view using AJAX only if it's available
 										if (selectedAddressId) {
 											$.ajax({
 												type: 'POST',
-												url: '/orderedbyrazor/', // Replace with your Django view URL
+												url: '/orderedbyrazor/',
 												data: {
 													'address_id': selectedAddressId,
-													csrfmiddlewaretoken: '{{ csrf_token }}' // Ensure you have the CSRF token
+													csrfmiddlewaretoken: '{{ csrf_token }}'
 												},
 												success: function (data) {
-													// Handle success response if needed
 													console.log('Address ID sent to server');
 													if (data.success) {
-														window.location.href = data.redirect_url; // Redirect to the 'thanks' page
+														window.location.href = data.redirect_url; 
 													} else {
 														console.log('Failed to process order');
 													}
 												},
 												error: function (xhr, errmsg, err) {
-													// Handle error if needed
 													console.log('Error sending address ID:', errmsg);
 												}
 											});
@@ -300,10 +305,9 @@
 								};
 
 								var rzp1 = new Razorpay(options);
+								rzp1.open();
 
-								document.getElementById('rzp-button1').onclick = function (e) {
-									rzp1.open();
-									e.preventDefault();
+								e.preventDefault();
 								};
 							</script>
 
@@ -317,15 +321,76 @@
 		     </form>
 		    </div>
 		  </div>
+		  <form id="coupon-form"action="/couponapply/" method="POST">
+			{% csrf_token %}
+		  <div class="col-md-6">
+			<h2 class="h3 mb-3 text-black">Coupon Code</h2>
+			 <div class="p-3 p-lg-5 border bg-white">
+			   <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+			   <div class="input-group w-75 couponcode-wrap">
+				   <input type="text" id="couponInput" class="form-control py-3" name="coupon"  placeholder="Coupon Code" >
+				 <div class="input-group-append">
+				
+				   <button  id="bts" type="submit" class="btn btn-black">Apply Coupon</button>
+				   
+				   <a href="">
+					<button id="" type="button" class="btn btn-black" onclick="refreshPage()">Cancel Coupon</button>
+				</a>
+				
+				<script>
+					function refreshPage() {
+						location.reload(); // This will reload the current page
+						
+						
+					}
+				</script>
+				 </div>
+			   </div>
+			</form>
+			   {% comment %} coupen management {% endcomment %}
+			   <script>
+				$(document).ready(function() {
+					$('#coupon-form').submit(function(event) {
+						event.preventDefault();
+						var formData = $(this).serialize();
+				
+						$.ajax({
+							type: 'POST',
+							url: '{% url "couponapply" %}',
+							data: formData,
+							success: function(response) {
+								if (response.success) {
+									$('#message-container').text(response.success).addClass('success-message');
+									$('#razorpayTotal').val(response.updatedTotal);
+									$('#razorpayTotal1').val(response.updatedTotal);
+
+
+								} else if (response.error) {
+									$('#message-container').text(response.error).addClass('error-message');
+								}
+							},
+							error: function() {
+								console.log('Error in AJAX request');
+							}
+						});
+					});
+				});
+				</script>
+		   
+
+				<div id="message-container"></div>
+	
+{% comment %} coupon management {% endcomment %}
+
+			 </div>
+		   </div>
+		 
        
 		<!-- Start Footer Section -->
 		<footer class="footer-section">
 			<div class="container relative">
 
-				<div class="sofa-img">
-					<img src="{% static 'images/sofa.png' %}" alt="Image" class="img-fluid">
-				</div>
-
+				
 				
 
 				<div class="row g-5 mb-5">

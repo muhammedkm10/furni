@@ -11,8 +11,5 @@ urlpatterns = [
      path('addvariant/<str:pro_id>/',views.add_variant,name='addvariant'),
      path('editvariantstock/<str:var_id>/',views.edit_variant_stock,name='editvariantstock'),
 
-
-
-    
 ]
 

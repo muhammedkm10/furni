@@ -4,14 +4,18 @@ from afterlogin.models import cart
 from product_manage.models import products
 from django.db.models import Sum
 from django.views.decorators.cache import never_cache
-from .models import address,order_details,ordered_items
+from .models import address,order_details,ordered_items,proceedtocheckout
 from django.contrib import messages
 from django.utils import timezone
 from datetime import  timedelta
 from django.http import JsonResponse
 from django.urls import reverse
 from userprofile.models import wallet
-
+from coupenapp.models import coupons
+from django.utils import timezone
+from datetime import datetime
+from django.urls import reverse
+from django.http import JsonResponse
 
 
 
@@ -24,27 +28,33 @@ def proceed_to_checkout(request, last_added_address_id):
     userid = obj.id
     wal = wallet.objects.get(user_id = userid)
     walamount = wal.amount
-    
+    orderdate = timezone.now().date()
     if last_added_address_id == None:
         messages.error(request,'add some address here')
         return redirect('userprofile')
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
     # if cart_details.product_id.quantity < cart_details.quantity:
     if cart_details.exists():
-            total = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
+            total1 = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
+            total_amount = total1['sum']
             addresses = address.objects.filter(user_id = userid,is_cancelled = False)
-            context = {
+            proceedtocheckout.objects.create(user_id  = obj,order_date = orderdate,total_amount = total_amount,discount_amount = total_amount)
+            try:
+              details = proceedtocheckout.objects.get(user_id  = obj)
+            except:
+                  proceedtocheckout.objects.filter(user_id  = obj).delete()
+                  proceedtocheckout.objects.create(user_id  = obj,order_date = orderdate,total_amount = total_amount,discount_amount = total_amount)
+                  details = proceedtocheckout.objects.get(user_id  = obj)
             
+            context = {
+                'details':details,
                 'cart_details': cart_details,
-                'total':total,
+                'total1':total1,
                 'addresses':addresses,
                 'last_added_address_id': last_added_address_id,
                 'user' :obj,
                 'wal':walamount,
             }
-            
-        
-
             return render(request,'proceed_to_checkout.html',context)
     else:
             messages.error(request,"add some products")
@@ -85,7 +95,7 @@ def add_address(request):
      return render(request,'add_address.html')
 
 
-
+# payment using cod
 # after clicking place order order confirmation view
 # this view will save the data in two table it save the order details and the order item details in another related table
 def order_confirmation(request):
@@ -93,11 +103,12 @@ def order_confirmation(request):
            email1  =  request.session['email']
            obj = CustomUser1.objects.get(email = email1)
            userid = obj.id
+           checkout = proceedtocheckout.objects.get(user_id = obj)
            orderdate = timezone.now().date()
            addres = request.POST['address']
            ad = address.objects.get(id = addres)
            ad1 = ad.id
-           order = order_details(user_id = obj,pay_method = "cod", order_date = orderdate,addres = ad1)
+           order = order_details(user_id = obj,pay_method = "cod", order_date = orderdate,addres = ad,total_amount = checkout.total_amount,applied_coupen = checkout.applyed_coupen,coupen_applyed = checkout.coupen_applyed,after_discount = checkout.discount_amount)
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
@@ -108,6 +119,7 @@ def order_confirmation(request):
                 item.size.save()
                 print(item.size.quantity)
                 i.delete()
+                checkout.delete()
            return render(request,'thank_you.html')
 
 # order by razor pay
@@ -117,10 +129,11 @@ def ordered_by_razor(request) :
            obj = CustomUser1.objects.get(email = email1)
            userid = obj.id
            orderdate = timezone.now().date()
+           checkout = proceedtocheckout.objects.get(user_id = obj)
            i = request.POST.get('address_id')
            ad = address.objects.get(id = i)
            ad1 = ad.id
-           order = order_details(user_id = obj,pay_method = "razor_pay", order_date = orderdate,addres = ad1)
+           order = order_details(user_id = obj,pay_method = "razor_pay", order_date = orderdate,addres = ad,total_amount = checkout.total_amount,applied_coupen = checkout.applyed_coupen,coupen_applyed = checkout.coupen_applyed,after_discount = checkout.discount_amount)
            order.save()
            cart_items  = cart.objects.filter(user_id = userid)
            for i in cart_items:
@@ -131,6 +144,7 @@ def ordered_by_razor(request) :
                 item.size.save()
                 print(item.size.quantity)
                 i.delete()
+                checkout.delete()
            response_data = {
            'success': True,
            'redirect_url': reverse('thanks')
@@ -139,22 +153,23 @@ def ordered_by_razor(request) :
 
 
 
-# order by the walle
+# order by the wallet
 def pay_using_wallet(request):
      if request.method == 'POST':
            email1  =  request.session['email']
            obj = CustomUser1.objects.get(email = email1)
            userid = obj.id  
-           total = int(request.POST['total'])
+           checkout = proceedtocheckout.objects.get(user_id = obj)
+           total = int(request.POST['total2'])
            i = request.POST.get('address_id')
            orderdate = timezone.now().date()
-           print(total)
+           print('hai',total)
            wal = wallet.objects.get(user_id = userid)
            wlt_amnt = wal.amount
            if total <= wlt_amnt:
                 ad = address.objects.get(id = i)
                 ad1 = ad.id
-                order = order_details(user_id = obj,pay_method = "wallet_pay", order_date = orderdate,addres = ad1)
+                order = order_details(user_id = obj,pay_method = "wallet_pay", order_date = orderdate,addres = ad,total_amount = checkout.total_amount,applied_coupen = checkout.applyed_coupen,coupen_applyed = checkout.coupen_applyed,after_discount = checkout.discount_amount)
                 order.save()
                 cart_items  = cart.objects.filter(user_id = userid)
                 for i in cart_items:
@@ -165,20 +180,67 @@ def pay_using_wallet(request):
                         item.size.save()
                         print(item.size.quantity)
                         i.delete()
+                        checkout.delete()
                 wal.amount = wal.amount - total
                 wal.save()
                 response_data = {
-                            'success': True,
-                            'redirect_url': reverse('thanks')
-                        }
+                                    'success': True,
+                                    'redirect_url': reverse('thanks')
+                                }
                 return JsonResponse(response_data)
            else:
                 response_data = {
                             'success': True,
                             'redirect_url': reverse('sorry')
-                        }
+                }
                 return JsonResponse(response_data)
-    
+
+
+# apply coupon 
+def apply_coupon(request):
+    ad = address.objects.last()
+    email1  =  request.session['email']
+    user = CustomUser1.objects.get(email = email1)
+    userid = user.id  
+    if request.method == 'POST':
+        coupon = request.POST['coupon']
+        orders = order_details.objects.filter(user_id_id = user.id)
+        d = timezone.now().date()
+        try:
+            obj = coupons.objects.get(code = coupon)
+        except coupons.DoesNotExist:
+            return JsonResponse({'error': 'There is no coupon to apply'})
+        if obj is not None:
+            detail = proceedtocheckout.objects.get(user_id = userid)
+            date1 = obj.from_date
+            date2 = obj.to
+            copdate = d
+            p = []
+            for i in orders:
+               p.append(i.applied_coupen.id)
+            print(p)
+            print(obj.id)
+            if  obj.id not in p:
+                            if coupon == obj.code and copdate < date2 and copdate >= date1:
+                                        detail.discount_amount  = detail.total_amount - obj.cop_price
+                                        if detail.discount_amount  < 0:
+                                            detail.discount_amount = 0
+                                            detail.applyed_coupen = obj
+                                            detail.coupen_applyed = True
+                                            detail.save()
+                                        detail.applyed_coupen = obj
+                                        detail.coupen_applyed = True
+                                        print("amount",detail.discount_amount)
+                                        detail.save()
+                                        return JsonResponse({'success': 'Coupon applied successfully to cancel the coupon press cancel button', 'updatedTotal': detail.discount_amount})
+                            else:
+                                        return JsonResponse({'error': 'invalid Coupon'})
+            else:
+                        return JsonResponse({'error': 'coupen is already applied..'})
+            
+    return JsonResponse({'error': 'Invalid request'})
+
+
 
 # thanks .html
 def thanks(request):
