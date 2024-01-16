@@ -13,6 +13,8 @@ from django.db.models import Q
 from datetime import datetime 
 from product_manage.models import variant
 from userprofile.models import wallet
+from category_management.models import category
+from .models import product_offer,category_offer
 
 # Create your views here.
 
@@ -243,3 +245,160 @@ def sales_report(request):
       print(obj)
    return render(request,'sales_report.html',{'orders':obj})
 
+
+
+############################################             offer management             ######################################################## 
+
+# product offer
+def product_offers(request):
+   pros = products.objects.filter(is_listed = True)
+   context = {
+      'pros':pros,
+   }
+   if request.method == 'POST':
+      pro = request.POST['pro']
+      persc = int(request.POST['perc'])
+      others = product_offer.objects.filter(pro_id = pro)
+      h = []
+      for i in others:
+         h.append(i.pro_id.id)
+      print("the list is",h)
+      if int(pro) not in h:
+         if persc <= 100 and persc >=0:
+            print(pro)
+            print(persc)
+            prod = products.objects.get(id = pro)
+            product_offer.objects.create(pro_id = prod,percentage = persc)
+            messages.success(request,'product offer added successfully')
+            return redirect('productoffer')
+         messages.success(request,'the percentage should between 0 and 100')
+         return redirect('productoffer')
+      messages.success(request,'the offer for this product is already added')
+      return redirect('productoffer')
+   return render(request,'product_offer.html',context)
+
+
+
+# category offer
+def category_offers(request):
+   cats = category.objects.filter(is_listed = True)
+   context = {
+      'cats':cats,
+   }
+   
+   if request.method == 'POST':
+      pro = request.POST['category']
+      persc = int(request.POST['perc'])
+      others = category_offer.objects.filter(cat_id = pro)
+      h = []
+      for i in others:
+         h.append(i.cat_id.id)
+      print("the list is",h)
+      if int(pro) not in h:
+         if persc <= 100 and persc >=0:
+               prod = category.objects.get(id = pro)
+               category_offer.objects.create(cat_id = prod,percentage = persc)
+               messages.success(request,'product offer added successfully')
+               return redirect('categoryoffer')
+         messages.success(request,'the percentage should between 0 and 100')
+         return redirect('categoryoffer')
+      messages.success(request,'the offer for this category is already added')
+      return redirect('categoryoffer')
+   return render(request,'category_offer.html',context)
+
+
+
+# view product offer
+def view_product_offer(request):
+    if 'email' not in request.session:
+          if 'username' in request.session:
+                  items = product_offer.objects.all()
+                  context = {
+                     'items':items,
+                  }
+                  return render(request,'view_product_offer.html',context)
+          else:
+             return redirect('adminlogin')
+    else:
+          return render(request, '404.html', status=404)
+   
+
+# view category offer
+def view_category_offer(request):
+    if 'email' not in request.session:
+          if 'username' in request.session:
+                  items = category_offer.objects.all()
+                  context = {
+                     'items':items,
+                  }
+                  return render(request,'view_category_offer.html',context)
+          else:
+             return redirect('adminlogin')
+    else:
+          return render(request, '404.html', status=404)
+   
+   
+
+
+
+# edit product offer
+def edit_product_offer(request,id):
+      if request.method == 'POST':
+         pesc = int(request.POST['pesc'])
+         if pesc <= 100 and pesc >=0:
+            obj = product_offer.objects.get(id= id)
+            obj.percentage = pesc
+            obj.save()
+            messages.success(request,'product offer edited successfully')
+            return redirect('viewproductoffer')
+      messages.success(request,'the percentage should between 0 and 100')
+      return redirect('viewproductoffer')
+
+
+
+# edit category offer
+def edit_category_offer(request,id):
+      if request.method == 'POST':
+         pesc = int(request.POST['pesc'])
+         if pesc <= 100 and pesc >=0:
+            obj = category_offer.objects.get(id= id)
+            obj.percentage = pesc
+            obj.save()
+            messages.success(request,'category offer edited successfully')
+            return redirect('viewcategoryoffer')
+      messages.success(request,'the percentage should between 0 and 100')
+      return redirect('viewcategoryoffer')
+
+
+
+
+# list category offer
+def list_category_offer(request,id):
+   obj = category_offer.objects.get(id = id)
+   obj.is_listed = True
+   obj.save()
+   return redirect('viewcategoryoffer')
+
+
+# unlist category offer
+def un_list_category_offer(request,id):
+   obj = category_offer.objects.get(id = id)
+   obj.is_listed = False
+   obj.save()
+   return redirect('viewcategoryoffer')
+
+
+# list product offer
+def list_product_offer(request,id):
+   obj = product_offer.objects.get(id = id)
+   obj.is_listed = True
+   obj.save()
+   return redirect('viewproductoffer')
+
+
+# unlist category offer
+def un_list_product_offer(request,id):
+   obj = product_offer.objects.get(id = id)
+   obj.is_listed = False
+   obj.save()
+   return redirect('viewproductoffer')

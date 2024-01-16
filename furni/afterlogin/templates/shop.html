@@ -301,22 +301,29 @@
 		
 			<div class="untree_co-section product-section before-footer-section">
 				<div class="container">
-					  <div class="row">
+					<div class="row">
 						<!-- Start Column 4 -->
 						{% for i in page_obj  %}
 						<div class="col-12 col-md-4 col-lg-3 mb-5">
 							<a class="product-item" href="/productdetails/{{i.id}}/">
 								<img src="{{i.img1.url}}" class="img-fluid product-thumbnail">
-								<h3 class="product-title">{{i.name}}</h3>
-								<strong class="product-price">${{i.price}}</strong>
-		
-								{% comment %} <span class="icon-cross">
-									<img src="{% static 'images/cross.svg' %}" class="img-fluid">
-								</span> {% endcomment %}
+								<h6 style="color: black !important;">{{i.name}}</h6>
+
+								{% with discounted_price=i.calculate_discounted_price %}
+								{% if discounted_price < i.price %}
+									<p class="product-price text-decoration-line-through">Original prize:₹{{i.price}}</p>
+									<h6 class="text-danger" style="color: red !important;">Discounted Price: ₹{{ discounted_price }}</h6>
+								{% else %}
+									<strong class="product-price">₹{{i.price}}</strong>
+									<p>No offers available.</p>
+								{% endif %}
+							{% endwith %}		
+									
+									
 							</a>
 						</div>
-						{% endfor %}
-						<!-- End Column 4 -->
+						  {% endfor %}
+						  <!-- End Column 4 -->
 		
 					</div>
 				</div>

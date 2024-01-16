@@ -60,6 +60,26 @@
     border-radius: 5px;
     width: 180px; 
 }	
+li select {
+	padding: 8px;
+	font-size: 14px;
+}
+
+/* Style the default option (placeholder) */
+li select option[disabled] {
+	color: #999;
+}
+
+/* Style the selected option */
+li select option:checked {
+	background-color: #4CAF50;
+	color: white;
+}
+
+/* Style the dropdown options */
+li select option {
+	padding: 8px;
+}
 
 </style>
 
@@ -100,9 +120,26 @@
 					<span class="text">coupen management</span>
 				</a>
 			</li>
+			
+			<li>
+				<select onchange="if (this.value) window.location.href=this.value;">
+					<option value="" disabled selected>Offer Management</option>
+					<option value="/productoffer/">
+						<span class="text">Add Product Offer</span>
+					</option>
+					<option value="/viewproductoffer/">
+						<span class="text">view Product Offer</span>
+					</option>
+					<option value="/categoryoffer/">
+						<span class="text">Add Category Offer</span>
+					</option>
+					<option value="/viewcategoryoffer/">
+						<span class="text">view Category Offer</span>
+					</option>
+				</select>
+			</li>
 		</ul>
 		<ul class="side-menu">
-			<!-- <a class="fs-3" href="#logout"  data-toggle="modal" data-toggle="tooltip">logout</a> -->
 			<li> <a href="#logout" class="logout" data-toggle="modal" data-toggle="tooltip">
 					<i class='bx bxs-log-out-circle'></i>
 					<span class="text">Logout</span>
