@@ -333,6 +333,10 @@
   
  <div class="container text-center mt-1 pt-2">
     <a href="/orderdetails" class="btn btn-danger text-decoration-none" >back to orders</a>
+    {% if item.status == 'delivered' %}
+    <a href="/invoice/{{item.order_id.id}}" class="btn btn-danger text-decoration-none" >invoice</a>
+    {% endif %}
+
   </div>
 
 

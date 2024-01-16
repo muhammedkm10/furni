@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.5/xlsx.full.min.js"></script>
 
 <style>
 	.o{
@@ -253,6 +254,12 @@
 		padding: 7px;
 		
 	}
+
+    @media print {
+        .btn {
+            display: none;
+        }
+    }
 	
 	
 </style>
@@ -264,7 +271,7 @@
 
 
 	 <!-- user   table  -->
-    <div class="container-fluid">
+    <div class="container-fluid" >
         <div class="table-wrapper">
             <div class="table-title">
                 <div class="row">
@@ -277,7 +284,7 @@
 
                 </div>
             </div>
-            <table class="table table-striped table-hover">
+            <table class="table table-striped table-hover" id="salesReport">
                 <thead>
                     <tr>
                         <tr>
@@ -291,6 +298,8 @@
                             <th>ordered date</th> 
                             <th>delivery expected date</th>
                             <th>payment method</th>
+                            <th>coupen</th>
+                            <th>coupen name</th>
                             <th>status</th>
                         
                     </tr>
@@ -324,6 +333,12 @@
                         <td>{{i.order_id.order_date}}</td> 
 						<td>{{i.expected}}</td> 
                         <td>{{i.order_id.pay_method}}</td> 
+						<th>{{i.order_id.coupen_applyed}}</th>
+                        {% if i.order_id.coupen_applyed%}
+						<th>{{i.order_id.applied_coupen.cop_name}}</th>
+                         {%else%}
+						<th>no coupen</th>
+						{%endif%}
                         <td>{{i.status}}</td> 
 					
                         </tr>
@@ -332,10 +347,62 @@
                 </tbody>
             </table>
 			<a href="/adminhome/" class="btn btn-danger"><i class="material-icons"></i> <span >back to Dashboard</span></a>	
+           <button class="btn btn-danger" id="downloadButton" onclick="downloadSalesReport()">Download Sales Report</button>
+		   <button class="btn btn-success" id="downloadExcelButton">Download Excel</button>
+
 			
 			
         </div>
     </div>
+
+<script>
+    function downloadSalesReport() 
+	{
+        window.print();
+    }
+	function downloadExcel() {
+		var salesReportData = [
+			{% for i in orders %}
+			{
+				"order id": {{i.order_id.id}},
+				"product name": "{{i.product_name}}",
+				"category": "{{i.category}}",
+				{% if i.size.size == 'l' %}
+				"size": "large",
+				{% elif i.size.size == 'm' %}
+				"size": "medium",
+				{% elif i.size.size == 's' %}
+				"size": "small",
+				{% endif %}
+				"address": "name: {{ i.add.first_name }}, state: {{i.add.state}}, country: {{i.add.country}}, address: {{i.add.address}}, post: {{i.add.post}}, pin: {{i.add.pin}}, email: {{i.add.email}}, phone: {{i.add.phone}}",
+				"quantity": {{i.quantity}},
+				"total amount": {{i.total_amount}},
+				"order date": "{{i.order_id.order_date}}",
+				"delivery expected date": "{{i.expected}}",
+				"payment method": "{{i.order_id.pay_method}}",
+				"coupen": "{{i.order_id.coupen_applyed}}",
+				{% if i.order_id.coupen_applyed %}
+				"coupen name": "{{i.order_id.applied_coupen.cop_name}}",
+				{% else %}
+				"coupen name": "no coupen",
+				{% endif %}
+				"status": "{{i.status}}"
+			}
+			{% if not forloop.last %},{% endif %}
+			{% endfor %}
+		];
+	
+		var ws = XLSX.utils.json_to_sheet(salesReportData);
+		var wb = XLSX.utils.book_new();
+		XLSX.utils.book_append_sheet(wb, ws, "Sales Report");
+	
+		XLSX.writeFile(wb, "sales_report.xlsx");
+	}
+	
+	document.getElementById("downloadExcelButton").addEventListener("click", downloadExcel);
+	
+</script>
+
 
 
 	

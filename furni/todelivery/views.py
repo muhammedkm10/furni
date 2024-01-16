@@ -119,7 +119,7 @@ def order_confirmation(request):
                 item.size.save()
                 print(item.size.quantity)
                 i.delete()
-                checkout.delete()
+           checkout.delete()
            return render(request,'thank_you.html')
 
 # order by razor pay
@@ -144,7 +144,7 @@ def ordered_by_razor(request) :
                 item.size.save()
                 print(item.size.quantity)
                 i.delete()
-                checkout.delete()
+           checkout.delete()
            response_data = {
            'success': True,
            'redirect_url': reverse('thanks')
@@ -180,7 +180,7 @@ def pay_using_wallet(request):
                         item.size.save()
                         print(item.size.quantity)
                         i.delete()
-                        checkout.delete()
+                checkout.delete()
                 wal.amount = wal.amount - total
                 wal.save()
                 response_data = {
@@ -217,7 +217,8 @@ def apply_coupon(request):
             copdate = d
             p = []
             for i in orders:
-               p.append(i.applied_coupen.id)
+                if i.applied_coupen and i.applied_coupen.id is not None:
+                    p.append(i.applied_coupen.id)
             print(p)
             print(obj.id)
             if  obj.id not in p:

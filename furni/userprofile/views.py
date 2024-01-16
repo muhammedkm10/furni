@@ -9,7 +9,8 @@ from datetime import timedelta
 from afterlogin.models import cart
 from product_manage.models import products,variant
 from .models import wallet
-
+from django.db.models import Count
+from datetime import datetime
 
 
 
@@ -22,15 +23,19 @@ def show_user_profile(request):
      email1 = request.session['email']
      obj = CustomUser1.objects.get(email = email1)
      user = obj.id
+     wal = wallet.objects.get(user_id = obj)
      no_of_cart = cart.objects.filter(user_id = user).count()
      addr = address.objects.filter(user_id = user,is_cancelled = False)
      context={
            'obj':obj,
            'addr':addr,
-           'no':no_of_cart
+           'no':no_of_cart,
+           'wal':wal
+
      }
      return render(request,'user_profile.html',context)
     return render(request, '404.html', status=404)
+
 
 
 
@@ -206,13 +211,27 @@ def cancel_order(request,id):
     pro.quantity = pro.quantity + obj.quantity
     obj.save()
     pro.save()
-    if obj.order_id.pay_method == 'razor_pay' or obj.order_id.pay_method == 'wallet_pay':
-        wall = wallet.objects.get(user_id = user)
-        wall.amount = wall.amount+obj.total_amount
-        print(wall)
-        wall.save()
-        messages.success(request,"your order cacelled successfully")
-        return redirect('orderdetails')
+    if obj.order_id.pay_method == 'razor_pay' or obj.order_id.pay_method == 'wallet_pay' :
+        if obj.order_id.coupen_applyed == True:
+           wall = wallet.objects.get(user_id = user)
+           print(obj.order_id.id)
+           my_dict = ordered_items.objects.filter(order_id_id = obj.order_id.id).aggregate(no =  Count('id'))
+           no_orders = my_dict['no']
+           discount = obj.order_id.applied_coupen.cop_price
+           print(discount)
+           for_each_pro = int(discount/no_orders)
+           rtrn_to_wlt = obj.total_amount - for_each_pro
+           wall.amount = wall.amount + rtrn_to_wlt
+           print(wall)
+           wall.save()
+           messages.success(request,"your order cacelled successfully")
+           return redirect('orderdetails')
+        else:
+            wall = wallet.objects.get(user_id = user)
+            wall.amount = wall.amount + obj.total_amount
+            wall.save()
+            messages.success(request,"your order cacelled successfully")
+            return redirect('orderdetails')
     messages.success(request,"your order cacelled successfully")
     return redirect('orderdetails')
 
@@ -239,6 +258,19 @@ def more_details(request,id):
     }
     return render(request,'more_details.html',context)
 
+
+
+# invoice download
+def invoice(request,id):
+    obj = ordered_items.objects.get(order_id_id = id)
+    current_date = datetime.now().date()
+    print(current_date)
+   
+    context = {
+        'item':obj,
+        'date':current_date
+    }
+    return render(request,'invoice.html',context)
 
 
 
