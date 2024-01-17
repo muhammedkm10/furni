@@ -64,6 +64,8 @@ def shop(request):
             user = CustomUser1.objects.get(email = email)
             id = user.id
             no_of_cart = cart.objects.filter(user_id = id).count()
+            no_of_wish = wishlist.objects.filter(user_id = id).count()
+
     else: 
         no_of_cart = 0     
     paginator = Paginator(obj, 8)  # 10 products per page
@@ -76,7 +78,8 @@ def shop(request):
     'page_obj': page_obj,
     'data': data,  # Pass the 'data' filter parameter to the context
     'price1': price1,  # Pass the 'price1' filter parameter to the context
-    'sort':sort
+    'sort':sort,
+    'no_of_wish':no_of_wish
     }  
     return render(request,'shop.html',context)
 
@@ -91,13 +94,17 @@ def product_details(request,id):
             user = CustomUser1.objects.get(email = email)
             id1 = user.id
             no_of_cart = cart.objects.filter(user_id = id1).count()
+            no_of_wish = wishlist.objects.filter(user_id = id).count()
+
     else:
+        no_of_wish = 0
         no_of_cart = 0
 
     context = {
         'items':obj,
         'no':no_of_cart,
-        'variant':variants
+        'variant':variants,
+        'no_of_wish':no_of_wish
     }
     return render(request,'product_details.html',context)
 
@@ -107,10 +114,58 @@ def show_cart(request):
     email1 = request.session['email']
     user = CustomUser1.objects.get(email = email1)
     item  =  cart.objects.select_related('product_id').filter(user_id = user).order_by('-id')
+    
     for i in item:
-      i.total = i.product_id.price*i.quantity
-      i.save()
+      pro_offer = i.product_id.product_offer_set.first()
+      cat_offer = i.product_id.category.category_offer_set.first()
+      if pro_offer and cat_offer:
+           if pro_offer.is_listed == True and cat_offer.is_listed ==  True:
+              a = i.product_id.price-(pro_offer.percentage/100)*i.product_id.price
+              b  =i.product_id.price-(cat_offer.percentage/100)*i.product_id.price
+              c= int(min(a,b))
+              i.total = c*i.quantity
+              i.product_price = c
+              i.save()
+           elif pro_offer.is_listed == True and cat_offer.is_listed ==  False:
+              a = i.product_id.price-(pro_offer.percentage/100)*i.product_id.price
+              i.total = a*i.quantity
+              i.product_price = a
+              i.save()
+           elif pro_offer.is_listed == False and cat_offer.is_listed ==  True:
+              a = i.product_id.price-(cat_offer.percentage/100)*i.product_id.price
+              i.total = a*i.quantity
+              i.product_price = a
+              i.save()
+           else:
+                i.total = i.product_id.price*i.quantity
+                i.product_price = i.product_id.price
+                i.save()
+      elif pro_offer:
+           if pro_offer.is_listed:
+             p = i.product_id.price-(pro_offer.percentage/100)*i.product_id.price
+             i.total = p*i.quantity
+             i.product_price = p
+             i.save()
+           else:
+                i.total = i.product_id.price*i.quantity
+                i.product_price = i.product_id.price
+                i.save()
+      elif cat_offer:
+           if  cat_offer.is_listed ==  True:
+              o = int(i.product_id.price-(cat_offer.percentage/100)*i.product_id.price)
+              i.total = o*i.quantity
+              i.product_price = o
+              i.save()
+           else:
+                i.total = i.product_id.price*i.quantity
+                i.product_price = i.product_id.price
+                i.save()
+      else:
+        i.total = i.product_id.price*i.quantity
+        i.product_price = i.product_id.price
+        i.save()
     total_amount = cart.objects.filter(user_id=user.id).aggregate(sum = Sum('total'))
+    no_of_wish = wishlist.objects.filter(user_id = user).count()
     last_added_address = address.objects.filter(user_id=user).order_by('-id').first()
     print(last_added_address)
     if last_added_address == None:
@@ -118,10 +173,12 @@ def show_cart(request):
         return redirect('userprofile')
     last_added_address_id = last_added_address.id
     
+    
     context = {
       'item':item,
       'total_amount':total_amount,
-      'last_added_address_id' : last_added_address_id
+      'last_added_address_id' : last_added_address_id,
+      'no_of_wish':no_of_wish
  
     }
     
@@ -230,7 +287,42 @@ def add_to_wishlist(request,id):
         messages.success(request,"Product is already in wishlist")
         return redirect('showwishlist')
     else:
-        obj = wishlist(user_id = user,product_id = pro,size = var)
+        pro_offer = pro.product_offer_set.first()
+        cat = category.objects.get(name = pro.category)
+        cat_offer = cat.category_offer_set.first()
+        if pro_offer and cat_offer:
+           if pro_offer.is_listed == True and cat_offer.is_listed ==  True:
+              a = pro.price-(pro_offer.percentage/100)*pro.price
+              b  =pro.price-(cat_offer.percentage/100)*pro.price
+              c= int(min(a,b))
+              price = c
+           elif pro_offer.is_listed == True and cat_offer.is_listed ==  False:
+              a = pro.price-(pro_offer.percentage/100)*pro.price
+              price = a
+
+           elif pro_offer.is_listed == False and cat_offer.is_listed ==  True:
+              a = pro.price-(cat_offer.percentage/100)*pro.price
+              price = a
+              
+           else:
+              price = pro.price
+                
+        elif pro_offer:
+           if pro_offer.is_listed:
+             p = pro.price-(pro_offer.percentage/100)*pro.price
+             price = p
+           else:
+              price = pro.price
+        elif cat_offer:
+           if  cat_offer.is_listed ==  True:
+              o = int(i.product_id.price-(cat_offer.percentage/100)*i.product_id.price)
+              price = o
+           else:
+             price = pro.price
+
+        else:
+           price = pro.price
+        obj = wishlist(user_id = user,product_id = pro,size = var,product_price = price)
         obj.save()
         messages.success(request,"Product added to wishlist successfully.......")
         return redirect('productdetails',id)

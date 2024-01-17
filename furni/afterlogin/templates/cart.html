@@ -16,9 +16,28 @@
 		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 		<link href="{% static "css/tiny-slider.css"%}" rel="stylesheet">
 		<link href="{% static "css/style.css"%}" rel="stylesheet">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.2/openseadragon.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 		<title>user cart</title>
 	</head>
-
+     <style>
+		.r-badge {
+			position: absolute;
+			top: -10px;
+			min-width: 5px;
+			padding: 1px;
+			border-radius: 50%;
+			background-color: #007bff; /* You can change the background color */
+			color: white;
+			text-align: center;
+			font-size: 12px;
+		}
+		.cart-icon-container {
+			position: relative;
+			display: inline-block;
+		}
+	 </style>
 	<body>
 
 		<!-- Start Header/Navigation -->
@@ -50,8 +69,11 @@
                         {% if 'email' in request.session%}
 						<li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
 						<li><div class="cart-icon-container">
-							<a class="nav-link" href="/showwishlist"><img src="{%static "images/heart.png"%}" title="wishlist"></span></a>
-							</div></li>
+							<a class="nav-link ms-4" href="/showwishlist">
+								<img class="" src="{% static "images/heart.png" %}">
+								<span class="px-2 text-center r-badge">{{ no_of_wish }}</span>
+							</a>
+						</div></li>
                         {% else%}
                         <li><a class="nav-link" href="/userlogin/">login</a></li>
 						{% endif %}
@@ -112,7 +134,7 @@
                           <td class="product-name">
                             <h2 class="h5 text-black">{{i.product_id.name}}</h2>
                           </td>
-                          <td>₹{{i.product_id.price}}  </td>
+                          <td>₹{{i.product_price}}  </td>
                           <td> <div id="ppp">
 							{% csrf_token %}
                             <button class="d-block change_quantity offset-5" data-action="plus"  data-product-id="{{ i.id }}"><span class="fs-4">+</span></button>
@@ -127,7 +149,7 @@
 						{% elif i.size.size == 's'%}
 						<td class="text-info">Small</td>
 						{% endif %}
-                            <td>₹{{i.subtotal}}</td>
+                            <td>₹{{i.total}}</td>
                           <td><a href="/deletecart/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
                         </tr>
                         {%endfor%}
@@ -175,7 +197,7 @@
                           <span class="text-black">Total</span>
                         </div>
                         <div id="2load"class="col-md-6 text-right">
-                          <strong class="text-black">${{total_amount.sum}}</strong>
+                          <strong class="text-black">₹{{total_amount.sum}}</strong>
                         </div>
                       </div>
         

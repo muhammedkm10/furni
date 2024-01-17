@@ -45,6 +45,7 @@ def proceed_to_checkout(request, last_added_address_id):
                   proceedtocheckout.objects.filter(user_id  = obj).delete()
                   proceedtocheckout.objects.create(user_id  = obj,order_date = orderdate,total_amount = total_amount,discount_amount = total_amount)
                   details = proceedtocheckout.objects.get(user_id  = obj)
+                  no = cart.objects.filter(user_id = obj).count()
             
             context = {
                 'details':details,
@@ -54,6 +55,7 @@ def proceed_to_checkout(request, last_added_address_id):
                 'last_added_address_id': last_added_address_id,
                 'user' :obj,
                 'wal':walamount,
+                'no':no
             }
             return render(request,'proceed_to_checkout.html',context)
     else:

@@ -6,7 +6,7 @@ import os
 from django.views.decorators.cache import never_cache
 from todelivery.models import ordered_items,order_details
 from datetime import timedelta
-from afterlogin.models import cart
+from afterlogin.models import cart,wishlist
 from product_manage.models import products,variant
 from .models import wallet
 from django.db.models import Count
@@ -25,12 +25,15 @@ def show_user_profile(request):
      user = obj.id
      wal = wallet.objects.get(user_id = obj)
      no_of_cart = cart.objects.filter(user_id = user).count()
+     no_of_whis = wishlist.objects.filter(user_id = obj).count()
+
      addr = address.objects.filter(user_id = user,is_cancelled = False)
      context={
            'obj':obj,
            'addr':addr,
            'no':no_of_cart,
-           'wal':wal
+           'wal':wal,
+           'no_of_whis':no_of_whis
 
      }
      return render(request,'user_profile.html',context)
