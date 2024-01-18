@@ -13,14 +13,6 @@ from django.utils import timezone
 from datetime import datetime
 from django.urls import reverse
 
-
-
-
-
-# Create your views here.
-
-
-
 # shop
 def shop(request):
     data = request.GET.get('data')
