@@ -34,6 +34,11 @@ def proceed_to_checkout(request, last_added_address_id):
         return redirect('userprofile')
     cart_details = cart.objects.select_related('product_id').filter(user_id = userid).order_by('-id')
     # if cart_details.product_id.quantity < cart_details.quantity:
+    try:
+        no = cart.objects.filter(user_id = obj).count()
+    except:
+        no = 0
+            
     if cart_details.exists():
             total1 = cart.objects.filter(user_id = userid).aggregate(sum = Sum('total'))
             total_amount = total1['sum']
@@ -45,8 +50,7 @@ def proceed_to_checkout(request, last_added_address_id):
                   proceedtocheckout.objects.filter(user_id  = obj).delete()
                   proceedtocheckout.objects.create(user_id  = obj,order_date = orderdate,total_amount = total_amount,discount_amount = total_amount)
                   details = proceedtocheckout.objects.get(user_id  = obj)
-                  no = cart.objects.filter(user_id = obj).count()
-            
+                 
             context = {
                 'details':details,
                 'cart_details': cart_details,

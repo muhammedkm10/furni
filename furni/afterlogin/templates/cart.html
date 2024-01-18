@@ -115,6 +115,7 @@
                           <th class="product-thumbnail">Image</th>
                           <th class="product-name">Product</th>
                           <th class="product-price">Price</th>
+                          <th class="product-price">offer Price</th>
                           <th class="product-quantity">Quantity</th>
 						  <th class="size">size</th>
                           <th class="product-total">Total</th>
@@ -134,7 +135,12 @@
                           <td class="product-name">
                             <h2 class="h5 text-black">{{i.product_id.name}}</h2>
                           </td>
-                          <td>₹{{i.product_price}}  </td>
+                          <td>Original price:₹{{i.product_id.price}}</td>
+						  {%if i.product_id.price != i.product_price%}
+						  <td>Offer price : ₹{{i.product_price}}</td>
+						  {%else%}
+						  <td>No offeers available</td>
+						  {% endif %}
                           <td> <div id="ppp">
 							{% csrf_token %}
                             <button class="d-block change_quantity offset-5" data-action="plus"  data-product-id="{{ i.id }}"><span class="fs-4">+</span></button>
@@ -200,7 +206,7 @@
                           <strong class="text-black">₹{{total_amount.sum}}</strong>
                         </div>
                       </div>
-        
+          
                       <div class="row">
                         <div class="col-md-12">
                           <a href="/proceedtocheckout/{{last_added_address_id}}"><button class="btn btn-black btn-lg py-3 btn-block" >Proceed To Checkout</button></a>

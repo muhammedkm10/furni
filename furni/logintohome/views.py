@@ -7,7 +7,8 @@ from django.contrib import messages
 from django.views.decorators.cache import never_cache
 from afterlogin.models import cart,wishlist
 from userprofile.models import wallet
-
+import uuid
+from product_manage.models import products
 
 
 
@@ -15,16 +16,21 @@ from userprofile.models import wallet
 # home 
 @never_cache
 def index(request):
+    items = products.objects.filter(is_listed = True,category__is_listed = True).order_by('-id')[:3]
+
     if 'email' in request.session:
         email1 = request.session['email']
         obj = CustomUser1.objects.get(email = email1)
         id = obj.id
         no = cart.objects.filter(user_id = id).count()
         no1 = wishlist.objects.filter(user_id = id).count()
+        items = products.objects.filter(is_listed = True,category__is_listed = True).order_by('-id')[:3]
+       
 
         context = {
             'no':no,
-            'no1':no1
+            'no1':no1,
+            'items':items
         }
         if obj.is_blocked:
             messages.error(request,'you are blocked')
@@ -32,7 +38,7 @@ def index(request):
             return redirect('userlogin')
         else:
             return render(request,'home.html',context)
-    return render(request,'home.html')
+    return render(request,'home.html',{'items':items})
     
         
 
@@ -73,25 +79,40 @@ def user_login(request):
 
 
 # user signup
+@never_cache
 def user_signup(request):
-    if request.method =='POST':
-        username = request.POST['username']
-        email = request.POST['email']
-        password = request.POST['pass']
-        phone = request.POST['phone']
-        current_date = timezone.now().date()
-        if CustomUser1.objects.filter(email=email).exists():
-            messages.error(request, "email already exists change your email")
-            return redirect('usersignup')
-        if len(phone) == 10  and int(phone) > 0:
-            user1  = CustomUser1(username = username,email = email,password = password,phone = phone,date_joined=current_date)
-            user1.save()
-            wallet.objects.create(user_id_id = user1.id,amount = 0)
-            return redirect('otpverification',id=user1.id)
-        else:
-            messages.error(request, "the phone number should valid")
-            return redirect('usersignup')
-    return render (request,'user_signup.html')
+        if 'email' in request.session:
+            return redirect('index')
+        link = request.GET.get('ref','w') 
+        context = {
+            'link':link
+        }
+        if request.method =='POST':
+            username = request.POST['username']
+            email = request.POST['email']
+            password = request.POST['pass']
+            phone = request.POST['phone']
+            current_date = timezone.now().date()
+            if CustomUser1.objects.filter(email=email).exists():
+                messages.error(request, "email already exists change your email")
+                return redirect('usersignup')
+            if len(phone) == 10  and int(phone) > 0:
+                unique_code = str(uuid.uuid4().hex)[:10]  
+                y =  unique_code
+                user1  = CustomUser1(username = username,email = email,password = password,phone = phone,date_joined=current_date,referral_link = y)
+                if len(link) == 10 :
+                    refered_user = CustomUser1.objects.get(referral_link = link)
+                    print(refered_user.username)
+                    waluser = wallet.objects.get(user_id = refered_user)
+                    waluser.amount = waluser.amount + 1000
+                    waluser.save()
+                user1.save()
+                wallet.objects.create(user_id_id = user1.id,amount = 0)
+                return redirect('otpverification',id=user1.id)
+            else:
+                messages.error(request, "the phone number should valid")
+                return render (request,'user_signup.html',context)
+        return render (request,'user_signup.html',context)
 
 
 

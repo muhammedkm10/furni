@@ -67,17 +67,18 @@ def shop(request):
             no_of_wish = wishlist.objects.filter(user_id = id).count()
 
     else: 
+        no_of_wish =0
         no_of_cart = 0     
-    paginator = Paginator(obj, 8)  # 10 products per page
-    page_number = request.GET.get('page')  # Get the current page number from the request query parameters
+    paginator = Paginator(obj, 8)  
+    page_number = request.GET.get('page') 
     page_obj = paginator.get_page(page_number)   
     context = {
     'items': obj,
     'category': cat,
     'no': no_of_cart,
     'page_obj': page_obj,
-    'data': data,  # Pass the 'data' filter parameter to the context
-    'price1': price1,  # Pass the 'price1' filter parameter to the context
+    'data': data,  
+    'price1': price1,  
     'sort':sort,
     'no_of_wish':no_of_wish
     }  
@@ -178,7 +179,8 @@ def show_cart(request):
       'item':item,
       'total_amount':total_amount,
       'last_added_address_id' : last_added_address_id,
-      'no_of_wish':no_of_wish
+      'no_of_wish':no_of_wish,
+      
  
     }
     
@@ -239,7 +241,7 @@ def add_to_cart(request,id):
                 if quantity < 6 :
                         if obj.quantity >= quantity:
                                 user = CustomUser1.objects.get(email = email1)
-                                if cart.objects.filter(product_id = pro,size_id = obj.id).exists():
+                                if cart.objects.filter(user_id=user, product_id = pro,size_id = obj.id).exists():
                                     messages.success(request,"Product is already in cart")
                                     return redirect('showcart')
                                 else:
@@ -279,7 +281,11 @@ def delete_cart_product(request,id):
 def add_to_wishlist(request,id):
     email = request.session['email']
     user =  CustomUser1.objects.get(email = email )
-    size = request.POST['size']
+    try:
+      size = request.POST['size']
+    except:
+        messages.success(request,"sorry product is out of stock")
+        return redirect('productdetails',id)
     var = variant.objects.get(size = size,product_id_id = id)
     print(size)
     pro = products.objects.get(id = id)
@@ -315,7 +321,7 @@ def add_to_wishlist(request,id):
               price = pro.price
         elif cat_offer:
            if  cat_offer.is_listed ==  True:
-              o = int(i.product_id.price-(cat_offer.percentage/100)*i.product_id.price)
+              o = int(pro.price-(cat_offer.percentage/100)*pro.price)
               price = o
            else:
              price = pro.price

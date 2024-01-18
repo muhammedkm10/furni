@@ -304,10 +304,44 @@ li select option {
 			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 			<!-- HTML canvas to render the chart -->
-
-			<canvas id="salesChart" width="400" height="400"></canvas>
-            <h4 class="mt-5">Sales report:</h4>
-
+			<h4 class="mt-5"> Sales report:</h4>
+         <div class="container">
+			<div class="row">
+			
+			<canvas  class="col-md-6"id="salesChart" ></canvas>
+			{% comment %} <h4 class="mt-5">daily Sales for a week :</h4> {% endcomment %}
+            
+			<canvas class="col-md-6"  id="dailySalesChart" ></canvas>
+		</div>
+		</div>
+			<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+			<script>
+				// Get data from Django context
+				var dailySalesData = {{ daily_sales_data }};
+		
+				// Daily Sales Chart
+				var dailySalesChartCtx = document.getElementById('dailySalesChart').getContext('2d');
+				var dailySalesChart = new Chart(dailySalesChartCtx, {
+					type: 'line',
+					data: {
+						labels: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+						datasets: [{
+							label: 'Daily Sales',
+							data: dailySalesData,
+							backgroundColor: 'rgba(255, 99, 132, 0.2)',
+							borderColor: 'rgba(255, 99, 132, 1)',
+							borderWidth: 1
+						}]
+					},
+					options: {
+						scales: {
+							y: {
+								beginAtZero: true
+							}
+						}
+					}
+				});
+			</script>
 
 			<form method="POST" action="/salesreport/">
 				{% csrf_token %}
@@ -370,6 +404,7 @@ li select option {
 
 	</section>
 	
+
 
 	<!-- logout modal0 -->
 

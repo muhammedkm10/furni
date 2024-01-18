@@ -329,7 +329,7 @@
 								{% with discounted_price=i.calculate_discounted_price %}
 								{% if discounted_price < i.price %}
 									<p class="product-price text-decoration-line-through">Original prize:₹{{i.price}}</p>
-									<h6 class="text-danger" style="color: red !important;">Discounted Price: ₹{{ discounted_price }}</h6>
+									<h6 class="text-danger" style="color: red !important;">Special Price: ₹{{ discounted_price }}</h6>
 								{% else %}
 									<strong class="product-price">₹{{i.price}}</strong>
 									<p>No offers available.</p>

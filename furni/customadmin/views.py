@@ -81,12 +81,14 @@ def admin_home(request):
          thisweek['sum'] = 0
       if jan['sum'] is None:
          jan['sum'] = 0
-         
-      print(thismonth)
-      print(today)
-      print(thisyear)
-      print(thisweek)
-
+      daily_sales_data = []
+      for i in range(7):
+        date_in_week = start_week + timedelta(days=i)
+        daily_sale = ordered_items.objects.filter(
+            status='delivered',
+            order_id__order_date=date_in_week
+        ).aggregate(sum=Sum('total_amount'))
+        daily_sales_data.append(daily_sale['sum'] if daily_sale['sum'] else 0)
 
 
       context={
@@ -106,7 +108,8 @@ def admin_home(request):
          'oct':oct,
          'nov':nov,
          'dec':dec,
-         'date':current_date
+         'date':current_date,
+         'daily_sales_data': daily_sales_data,
       }
       return render(request,'admin_home.html',context)
     else:

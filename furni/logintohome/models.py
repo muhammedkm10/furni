@@ -25,7 +25,7 @@ class CustomUser1(models.Model):
     is_blocked = models.BooleanField(default = False)
     otp_secret = models.CharField(max_length=200)
     otp_fld = models.CharField()
-
+    referral_link = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
         return self.username
