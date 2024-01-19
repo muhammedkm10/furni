@@ -8,7 +8,7 @@ from todelivery.models import ordered_items,order_details
 from datetime import timedelta
 from afterlogin.models import cart,wishlist
 from product_manage.models import products,variant
-from .models import wallet
+from .models import wallet,product_review,return_requests
 from django.db.models import Count
 from datetime import datetime
 
@@ -255,9 +255,16 @@ def track_order(request,id):
 
 # more details of the product
 def more_details(request,id):
+    email1 = request.session['email']
+    obj = CustomUser1.objects.get(email = email1)
     obj = ordered_items.objects.filter(order_id_id = id)
+    try:
+     no = cart.objects.filter(user_id = obj).count()
+    except:
+        no = 0
     context = {
         'orders':obj,
+        'no':no
     }
     return render(request,'more_details.html',context)
 
@@ -274,6 +281,49 @@ def invoice(request,id):
         'date':current_date
     }
     return render(request,'invoice.html',context)
+
+
+
+
+# product review for delivered products by use
+def product_reviews(request,pro_id,order_id):
+    email1 = request.session['email']
+    pro = products.objects.get(id = pro_id)
+    obj = CustomUser1.objects.get(email = email1)
+    if request.method == 'POST':
+        comment = request.POST['comment']
+        rating = request.POST['rating']
+        product_review.objects.create(comment = comment,rating = rating,user_id = obj,pro_id = pro)
+        messages.success(request,"Thanks for your valuable review")
+        return redirect('moredetails',order_id)
+    
+# product return
+def return_products(request,item_id,order_id):
+        email1 = request.session['email']
+        obj = CustomUser1.objects.get(email = email1)
+        ordered_item = ordered_items.objects.get(id = item_id)
+        if request.method  == 'POST':
+            reason = request.POST['reason']
+            return_requests.objects.create(user_id = obj,order_id_id = order_id,item_id = ordered_item,reason = reason)
+            ordered_item.status = "return requested"
+            ordered_item.save()
+        messages.success(request,"return request is successfull")
+        return redirect('moredetails',order_id)
+    
+
+
+#return details 
+def return_details(request,item_id,order_id):
+    ordered_item = ordered_items.objects.get(id = item_id)
+    order = order_details.objects.get(id = order_id)
+    rtn_details = return_requests.objects.get(item_id = ordered_item)
+    context={
+        'ordered_item':ordered_item,
+        'order':order,
+        'rtn_details':rtn_details,
+
+    }
+    return render(request,'return_details.html',context) 
 
 
 

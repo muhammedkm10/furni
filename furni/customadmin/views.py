@@ -7,14 +7,15 @@ from todelivery.models import order_details,ordered_items,address
 from product_manage.models import products
 from django.http import HttpResponseServerError
 from datetime import date,timedelta
-from django.db.models import Sum
+from django.db.models import Sum,Count
 from datetime import datetime
 from django.db.models import Q
 from datetime import datetime 
 from product_manage.models import variant
-from userprofile.models import wallet
+from userprofile.models import wallet,return_requests
 from category_management.models import category
 from .models import product_offer,category_offer
+from django.db.models import Q
 
 # Create your views here.
 
@@ -53,22 +54,22 @@ def admin_home(request):
       end_week = start_week + timedelta(days= 6)
       current_date = datetime.now().date()
       print("Current Date:", current_date)
-      thismonth = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month=date.today().month).aggregate(sum = Sum('total_amount'))
-      today = ordered_items.objects.filter(status = 'delivered', order_id__order_date = today).aggregate(sum = Sum('total_amount'))
-      thisyear = ordered_items.objects.filter(status = 'delivered',order_id__order_date__year = year).aggregate(sum = Sum('total_amount'))
-      thisweek = ordered_items.objects.filter(status = 'delivered',order_id__order_date__range = [start_week,end_week]).aggregate(sum = Sum('total_amount'))
-      jan = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 1).aggregate(sum = Sum('total_amount'))
-      feb = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 2).aggregate(sum = Sum('total_amount'))
-      mar = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 3).aggregate(sum = Sum('total_amount'))
-      apr = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 4).aggregate(sum = Sum('total_amount'))
-      may = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 5).aggregate(sum = Sum('total_amount'))
-      june = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 6).aggregate(sum = Sum('total_amount'))
-      july = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 7).aggregate(sum = Sum('total_amount'))
-      aug = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 8).aggregate(sum = Sum('total_amount'))
-      sep = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 9).aggregate(sum = Sum('total_amount'))
-      oct = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 10).aggregate(sum = Sum('total_amount'))
-      nov = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 11).aggregate(sum = Sum('total_amount'))
-      dec = ordered_items.objects.filter(status = 'delivered', order_id__order_date__month = 12).aggregate(sum = Sum('total_amount'))
+      thismonth = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month=date.today().month).aggregate(sum = Sum('total_amount'))
+      today = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date = today).aggregate(sum = Sum('total_amount'))
+      thisyear = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'),order_id__order_date__year = year).aggregate(sum = Sum('total_amount'))
+      thisweek = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'),order_id__order_date__range = [start_week,end_week]).aggregate(sum = Sum('total_amount'))
+      jan = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 1).aggregate(sum = Sum('total_amount'))
+      feb = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 2).aggregate(sum = Sum('total_amount'))
+      mar = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 3).aggregate(sum = Sum('total_amount'))
+      apr = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 4).aggregate(sum = Sum('total_amount'))
+      may = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 5).aggregate(sum = Sum('total_amount'))
+      june = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 6).aggregate(sum = Sum('total_amount'))
+      july = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 7).aggregate(sum = Sum('total_amount'))
+      aug = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 8).aggregate(sum = Sum('total_amount'))
+      sep = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 9).aggregate(sum = Sum('total_amount'))
+      oct = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 10).aggregate(sum = Sum('total_amount'))
+      nov = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 11).aggregate(sum = Sum('total_amount'))
+      dec = ordered_items.objects.filter(Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'), order_id__order_date__month = 12).aggregate(sum = Sum('total_amount'))
 
       
       if thismonth['sum'] is None:
@@ -85,7 +86,7 @@ def admin_home(request):
       for i in range(7):
         date_in_week = start_week + timedelta(days=i)
         daily_sale = ordered_items.objects.filter(
-            status='delivered',
+            Q(status = 'delivered')|Q(status = 'return requested')|Q(status = 'return denied'),
             order_id__order_date=date_in_week
         ).aggregate(sum=Sum('total_amount'))
         daily_sales_data.append(daily_sale['sum'] if daily_sale['sum'] else 0)
@@ -222,13 +223,27 @@ def cancel_order(request,id):
     pro.quantity = pro.quantity + obj.quantity
     obj.save()
     pro.save()
-    if obj.order_id.pay_method == 'razor_pay':
-        wall = wallet.objects.get(user_id = obj.order_id.user_id)
-        wall.amount = obj.total_amount
-        print(wall)
-        wall.save()
-        messages.success(request,"your order cacelled successfully")
-        return redirect('ordersmanage')
+    if obj.order_id.pay_method == 'razor_pay' or obj.order_id.pay_method == 'wallet_pay' :
+        if obj.order_id.coupen_applyed == True:
+           wall = wallet.objects.get(user_id = obj.order_id.user_id)
+           print(obj.order_id.id)
+           my_dict = ordered_items.objects.filter(order_id_id = obj.order_id.id).aggregate(no =  Count('id'))
+           no_orders = my_dict['no']
+           discount = obj.order_id.applied_coupen.cop_price
+           print(discount)
+           for_each_pro = int(discount/no_orders)
+           rtrn_to_wlt = obj.total_amount - for_each_pro
+           wall.amount = wall.amount + rtrn_to_wlt
+           print(wall)
+           wall.save()
+           messages.success(request," order cacelled successfully")
+           return redirect('ordersmanage')
+        else:
+            wall = wallet.objects.get(user_id =  obj.order_id.user_id)
+            wall.amount = wall.amount + obj.total_amount
+            wall.save()
+            messages.success(request," order cacelled successfully")
+            return redirect('ordersmanage')
     return redirect('ordersmanage')
 
 
@@ -405,3 +420,66 @@ def un_list_product_offer(request,id):
    obj.is_listed = False
    obj.save()
    return redirect('viewproductoffer')
+
+
+
+
+# return management
+def return_management(request):
+   returns = return_requests.objects.all().order_by('-id')
+   context = {
+      'returns':returns
+   }
+   return render(request,'return_management.html',context)
+
+
+
+# change return management and incresing wallet and incresing the quantity
+def change_return_status(request,id):
+   return_obj = return_requests.objects.get(id = id)
+   print(return_obj.reason)
+   if request.method == 'POST':
+      status = request.POST['status']
+      ordered_item = ordered_items.objects.get(id = return_obj.item_id.id)
+      order = order_details.objects.get(id = ordered_item.order_id.id)
+      if status == 'return accepted':
+         if order.pay_method == 'razor_pay' or order.pay_method == 'wallet_pay':
+            userwal = wallet.objects.get(user_id =  ordered_item.order_id.user_id)
+            my_dict = ordered_items.objects.filter(order_id_id = return_obj.order_id.id).aggregate(no =  Count('id'))
+            no_orders = my_dict['no']
+            if return_obj.order_id.coupen_applyed == True:
+                  discount = return_obj.order_id.applied_coupen.cop_price
+                  for_each_pro = int(discount/no_orders)
+                  rtrn_to_wlt = return_obj.item_id.total_amount - for_each_pro
+                  userwal.amount = userwal.amount + rtrn_to_wlt
+                  pro = variant.objects.get(id = ordered_item.size.id)
+                  pro.quantity  = pro.quantity+ordered_item.quantity
+                  pro.save()
+                  userwal.save()
+                  ordered_item.status = status
+                  ordered_item.save()
+                  messages.success(request,'status updated successfully amount sent to user wallet')
+                  return redirect('returnmanagement')
+            userwal.amount = userwal.amount + ordered_item.total_amount
+            ordered_item.status = status
+            pro = variant.objects.get(id = ordered_item.size.id)
+            pro.quantity  = pro.quantity+ordered_item.quantity
+            pro.save()
+            ordered_item.save()
+            userwal.save()
+            messages.success(request,'status updated successfully amount sent to user wallet')
+            return redirect('returnmanagement')
+         pro = variant.objects.get(id = ordered_item.size.id)
+         pro.quantity  = pro.quantity+ordered_item.quantity
+         ordered_item.status = status
+         ordered_item.save()
+         pro.save()
+         messages.success(request,'status updated successfully')
+         return redirect('returnmanagement')
+      ordered_item.status = status
+      ordered_item.save()
+      messages.success(request,'status updated successfully')
+      return redirect('returnmanagement')
+
+
+  

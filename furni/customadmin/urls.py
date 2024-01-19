@@ -21,14 +21,14 @@ urlpatterns = [
     path('viewproductoffer/',views.view_product_offer,name='viewproductoffer'),
     path('editproductoffer/<str:id>',views.edit_product_offer,name='editproductoffer'),
     path('editcategoryoffer/<str:id>',views.edit_category_offer,name='editcategoryoffer'),
-
-    
-
-
     path('listcategoryoffer/<str:id>',views.list_category_offer,name='listcategoryoffer'),
     path('unlistcategoryoffer/<str:id>',views.un_list_category_offer,name='unlistcategoryoffer'),
     path('listproductoffer/<str:id>',views.list_product_offer,name='listproductoffer'),
     path('unlistproductoffer/<str:id>',views.un_list_product_offer,name='unlistproductoffer'),
+    path('returnmanagement/',views.return_management,name='returnmanagement'),
+    path('changereturnstatus/<str:id>',views.change_return_status,name='changereturnstatus'),
+
+
 
 
 

@@ -427,35 +427,54 @@
           </section>
           <!-- about the product -->
           
-          <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
-            <li class="nav-item" role="presentation" >
-                <a class="nav-link active" id="ex1-tab-1"  data-bs-toggle="pill" href="#ex1-pills-1" role="tab" aria-controls="ex1-pills-1" aria-selected="true">Description</a>
-            </li>
-            <li class="nav-item" role="presentation">
-                <a class="nav-link" id="ex2-tab-2" data-bs-toggle="pill" href="#ex2-pills-2" role="tab" aria-controls="ex2-pills-2" aria-selected="false">Review</a>
-            </li>
-        </ul>
-        
-        <!-- tab content -->
-        <div class="container">
-        <div class="tab-content bg-white text-black" id="ex1-content">
-            <div class="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
-                <p>
-                    {{ items.description }}
-                </p>
-            </div>
-          </div>
-          <div class="container">
-            <div class="tab-pane fade bg-white text-black" id="ex2-pills-2" role="tabpanel" aria-labelledby="ex2-tab-2">
-                <p>
-                    Review content goes here...
-                </p>
-            </div>
-        </div>
-        </div>
-        
-        
        
+        <!-- tab content -->
+        <div class="container text-center mb-4">
+                 <h4 class="text-black">Reviews</h4>
+                </div>
+              {% for i in reviews %}
+              <div class=" container card mb-3">
+                <div class="card-header">
+                    <h5 class="card-title text-black">{{i.user_id.username}}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-black">{{i.comment}}.</p>
+                    <div class="rating ">
+                      {% if i.rating == 1%}
+                      <i class="fas fa-star text-warning"></i>
+                      {% elif i.rating == 2%}
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      {% elif i.rating == 3%}
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      {% elif i.rating == 4%}
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      {% elif i.rating == 5%}
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+                      <i class="fas fa-star text-warning"></i>
+
+                      {%else%}
+                      no rating
+                      {%endif%}
+                        
+                    </div>
+                </div>
+                </div>
+              </div>
+              {% endfor %}
+        </div>
+        </div>
+        
+        
+{% comment %}        
 {% comment %} related items
 
                 <div class="col-lg-4">
@@ -514,7 +533,7 @@
                 </div>
               </div>
             </div>
-          </section> {% endcomment %}
+          </section> {% endcomment %} 
 
           
           

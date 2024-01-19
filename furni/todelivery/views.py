@@ -225,8 +225,7 @@ def apply_coupon(request):
             for i in orders:
                 if i.applied_coupen and i.applied_coupen.id is not None:
                     p.append(i.applied_coupen.id)
-            print(p)
-            print(obj.id)
+         
             if  obj.id not in p:
                             if coupon == obj.code and copdate < date2 and copdate >= date1:
                                         detail.discount_amount  = detail.total_amount - obj.cop_price

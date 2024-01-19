@@ -12,6 +12,7 @@ from coupenapp.models import coupons
 from django.utils import timezone
 from datetime import datetime
 from django.urls import reverse
+from userprofile.models import product_review
 
 # shop
 def shop(request):
@@ -87,7 +88,8 @@ def product_details(request,id):
             user = CustomUser1.objects.get(email = email)
             id1 = user.id
             no_of_cart = cart.objects.filter(user_id = id1).count()
-            no_of_wish = wishlist.objects.filter(user_id = id).count()
+            no_of_wish = wishlist.objects.filter(user_id = id1).count()
+            reviews = product_review.objects.filter(pro_id = obj)
 
     else:
         no_of_wish = 0
@@ -97,7 +99,8 @@ def product_details(request,id):
         'items':obj,
         'no':no_of_cart,
         'variant':variants,
-        'no_of_wish':no_of_wish
+        'no_of_wish':no_of_wish,
+        'reviews':reviews
     }
     return render(request,'product_details.html',context)
 
