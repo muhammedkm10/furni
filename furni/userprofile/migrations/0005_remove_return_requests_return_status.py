@@ -4,14 +4,13 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('userprofile', '0004_return_requests_reason'),
+        ("userprofile", "0004_return_requests_reason"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='return_requests',
-            name='return_status',
+            model_name="return_requests",
+            name="return_status",
         ),
     ]

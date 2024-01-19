@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('coupenapp', '0001_initial'),
+        ("coupenapp", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='coupons',
-            name='is_listed',
+            model_name="coupons",
+            name="is_listed",
             field=models.BooleanField(default=True),
         ),
     ]

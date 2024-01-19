@@ -5,16 +5,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('afterlogin', '0008_remove_wishlist_stock'),
-        ('product_manage', '0010_remove_products_quantity'),
+        ("afterlogin", "0008_remove_wishlist_stock"),
+        ("product_manage", "0010_remove_products_quantity"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='cart',
-            name='size',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='product_manage.variant'),
+            model_name="cart",
+            name="size",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="product_manage.variant",
+            ),
         ),
     ]

@@ -5,27 +5,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('category_management', '0001_initial'),
+        ("category_management", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='products',
+            name="products",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('quantity', models.IntegerField()),
-                ('price', models.IntegerField()),
-                ('description', models.TextField()),
-                ('img1', models.ImageField(upload_to='media/')),
-                ('img2', models.ImageField(upload_to='media/')),
-                ('img3', models.ImageField(upload_to='media/')),
-                ('img4', models.ImageField(upload_to='media/')),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='category_management.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=200)),
+                ("quantity", models.IntegerField()),
+                ("price", models.IntegerField()),
+                ("description", models.TextField()),
+                ("img1", models.ImageField(upload_to="media/")),
+                ("img2", models.ImageField(upload_to="media/")),
+                ("img3", models.ImageField(upload_to="media/")),
+                ("img4", models.ImageField(upload_to="media/")),
+                (
+                    "category",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="category_management.category",
+                    ),
+                ),
             ],
         ),
     ]

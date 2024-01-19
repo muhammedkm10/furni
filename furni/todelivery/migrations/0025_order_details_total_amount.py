@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0024_alter_proceedtocheckout_applyed_coupen'),
+        ("todelivery", "0024_alter_proceedtocheckout_applyed_coupen"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order_details',
-            name='total_amount',
+            model_name="order_details",
+            name="total_amount",
             field=models.BigIntegerField(default=0),
         ),
     ]

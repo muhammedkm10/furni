@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('customadmin', '0001_initial'),
+        ("customadmin", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='category_offer',
-            name='is_listed',
+            model_name="category_offer",
+            name="is_listed",
             field=models.BooleanField(default=True),
         ),
         migrations.AddField(
-            model_name='product_offer',
-            name='is_listed',
+            model_name="product_offer",
+            name="is_listed",
             field=models.BooleanField(default=True),
         ),
     ]

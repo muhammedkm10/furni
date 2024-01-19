@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0017_ordered_items_expected'),
+        ("todelivery", "0017_ordered_items_expected"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='address',
-            name='is_cancelled',
+            model_name="address",
+            name="is_cancelled",
             field=models.BooleanField(default=False),
         ),
     ]

@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0029_order_details_coupen_applyed_and_more'),
+        ("todelivery", "0029_order_details_coupen_applyed_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='order_details',
-            name='after_discount',
+            model_name="order_details",
+            name="after_discount",
             field=models.BigIntegerField(default=0),
         ),
     ]

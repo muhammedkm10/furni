@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('logintohome', '0003_customuser1_otp_fld_customuser1_otp_secret_and_more'),
+        ("logintohome", "0003_customuser1_otp_fld_customuser1_otp_secret_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='customuser1',
-            name='profile',
-            field=models.ImageField(blank=True, null=True, upload_to='images/'),
+            model_name="customuser1",
+            name="profile",
+            field=models.ImageField(blank=True, null=True, upload_to="images/"),
         ),
     ]

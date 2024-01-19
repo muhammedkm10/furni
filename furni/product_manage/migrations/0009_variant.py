@@ -5,19 +5,32 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('product_manage', '0008_products_original_price'),
+        ("product_manage", "0008_products_original_price"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='variant',
+            name="variant",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('size', models.CharField(max_length=4)),
-                ('quantity', models.IntegerField()),
-                ('product_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_manage.products')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("size", models.CharField(max_length=4)),
+                ("quantity", models.IntegerField()),
+                (
+                    "product_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product_manage.products",
+                    ),
+                ),
             ],
         ),
     ]

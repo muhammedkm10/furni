@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('product_manage', '0006_alter_products_img1_alter_products_img2_and_more'),
+        ("product_manage", "0006_alter_products_img1_alter_products_img2_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='products',
-            name='is_listed',
+            model_name="products",
+            name="is_listed",
             field=models.BooleanField(default=True),
         ),
     ]

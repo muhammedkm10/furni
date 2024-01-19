@@ -23,30 +23,7 @@
 	</head>
 
 	<body>
-		<style>{% comment %} 
-			/* Custom CSS for the styled dropdown list */
-			.custom-dropdown {
-				padding: 8px 16px;
-				border: 1px solid #ced4da;
-				border-radius: 4px;
-				background-color: #fff;
-				color: #212529;
-				font-size: 14px;
-				appearance: none;
-				-webkit-appearance: none;
-				-moz-appearance: none;
-			}
-		
-			/* Styling for the arrow icon */
-			.custom-dropdown::after {
-				content: '\25BE'; /* Unicode for down arrow */
-				position: absolute;
-				top: calc(50% - 4px);
-				right: 10px;
-				pointer-events: none;
-			}
-			{%endcomment  %} 
-
+		<style>
 			.o{
 				background-color: #3b5d50;
 				border: none !important;
@@ -178,10 +155,7 @@
                        
 						
                         
-                        	{% comment %} {% if user.is_authenticated %} {% endcomment %}
-							<!-- Content for logged-in users -->
-                            {% comment %} <li><a class="nav-link" href="#"><img src="{%static "images/heart.png"%}"></a></li> {% endcomment %}
-                                {% comment %} <li><a class="nav-link" href="#logout"  data-toggle="modal" data-toggle="tooltip">Logout</a></li> {% endcomment %}
+                        	
                             {% if 'email' not in request.session %}
                                 <!-- Content for non-logged-in users -->
                             <li><a class="nav-link" href="/userlogin/">login</a></li>
@@ -202,7 +176,6 @@
 
                             {% endif %}
                             
-                        {% comment %} <li><a class="nav-link" href="#"><img class='ms-4'src="{%static "images/icons8-search-50 (1).png"%}"></a></li> {% endcomment %}
 					</ul>
 				</div>
 			</div>
@@ -292,10 +265,7 @@
 							 <a href="?price1=f" style="color:white;text-decoration: none;"><div class="container pb-2 " style="">
 								₹7000 - ₹15000</div>
 							 </a>
-
-
-
-
+							
             </div>
         </div>
 		
@@ -377,13 +347,6 @@
 		<!-- Start Footer Section -->
 		<footer class="footer-section">
 			<div class="container relative">
-
-				{% comment %} <div class="sofa-img">
-					<img src={%static  "images/sofa.png" %}   alt="Image" class="img-fluid">
-				</div> {% endcomment %}
-
-				
-
 				<div class="row g-5 mb-5">
 					<div class="col-lg-4">
 						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>

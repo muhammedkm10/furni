@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('afterlogin', '0002_alter_cart_user_id'),
+        ("afterlogin", "0002_alter_cart_user_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='cart',
-            name='quantity',
+            model_name="cart",
+            name="quantity",
             field=models.IntegerField(default=1),
         ),
     ]

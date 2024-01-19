@@ -5,33 +5,46 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0005_order_details'),
+        ("todelivery", "0005_order_details"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='order_details',
-            name='pro_id',
+            model_name="order_details",
+            name="pro_id",
         ),
         migrations.RemoveField(
-            model_name='order_details',
-            name='status',
+            model_name="order_details",
+            name="status",
         ),
         migrations.AddField(
-            model_name='order_details',
-            name='addres',
+            model_name="order_details",
+            name="addres",
             field=models.TextField(default=0),
             preserve_default=False,
         ),
         migrations.CreateModel(
-            name='ordered_items',
+            name="ordered_items",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', models.CharField(max_length=50)),
-                ('total_amount', models.IntegerField()),
-                ('order_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todelivery.order_details')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("status", models.CharField(max_length=50)),
+                ("total_amount", models.IntegerField()),
+                (
+                    "order_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="todelivery.order_details",
+                    ),
+                ),
             ],
         ),
     ]

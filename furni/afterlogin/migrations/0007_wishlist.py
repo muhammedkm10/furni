@@ -5,21 +5,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('afterlogin', '0006_cart_category'),
-        ('logintohome', '0004_customuser1_profile'),
-        ('product_manage', '0007_products_is_listed'),
+        ("afterlogin", "0006_cart_category"),
+        ("logintohome", "0004_customuser1_profile"),
+        ("product_manage", "0007_products_is_listed"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='wishlist',
+            name="wishlist",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('stock', models.CharField(max_length=50)),
-                ('product_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_manage.products')),
-                ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='logintohome.customuser1')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("stock", models.CharField(max_length=50)),
+                (
+                    "product_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product_manage.products",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="logintohome.customuser1",
+                    ),
+                ),
             ],
         ),
     ]

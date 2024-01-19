@@ -5,29 +5,56 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('product_manage', '0010_remove_products_quantity'),
-        ('category_management', '0002_category_is_listed'),
+        ("product_manage", "0010_remove_products_quantity"),
+        ("category_management", "0002_category_is_listed"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='product_offer',
+            name="product_offer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('percentage', models.IntegerField()),
-                ('pro_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_manage.products')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("percentage", models.IntegerField()),
+                (
+                    "pro_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product_manage.products",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='category_offer',
+            name="category_offer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('percentage', models.IntegerField()),
-                ('cat_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='category_management.category')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("percentage", models.IntegerField()),
+                (
+                    "cat_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="category_management.category",
+                    ),
+                ),
             ],
         ),
     ]

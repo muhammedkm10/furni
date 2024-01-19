@@ -253,10 +253,7 @@
 		padding: 7px;
 		
 	}
-	
-	
 </style>
-  
   <body>
 	{% if messages %}
 	<div class="alert alert-success mt-3">
@@ -265,17 +262,12 @@
 	{% endfor %}
 	</div>
 	{% endif %}
-
 	<!-- navbar -->
 	 <nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark hai "  arial-label="Furni navigation bar">
-    
                             <div class="container-fluid  text-center">
                                 <h1 class="m-auto text1">Furni.</h1>
 							</div>
-							
 	 </nav>
-
-
 	 <!-- user   table  -->
     <div class="container-fluid">
         <div class="table-wrapper">
@@ -284,10 +276,7 @@
                     <div class="col-sm-6">
 						<h2>Manage  orders</h2>
 					</div>
-					
-					</div>
-				    
-
+				</div>
                 </div>
             </div>
             <table class="table table-striped table-hover">
@@ -305,9 +294,6 @@
                         <th>payment method</th>
                         <th>status</th>
                         <th>actions</th>
-
-                        
-                        
                     </tr>
                 </thead>
                 <tbody>
@@ -341,10 +327,7 @@
                         <td>{{i.status}}</td> 
 						{% if i.status != "cancelled" and  i.status !=  "cancelled by admin" and i.status !=  "return requested" and i.status != "return accepted" and i.status != "return denied"%}
 						<td>
-							
                             <a href="#editstatus{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit status">&#xE254;</i></a>
-
-
 							{% comment %} edit status {% endcomment %}
 							<div id="editstatus{{i.id}}" class="modal fade">
 								<div class="modal-dialog">
@@ -374,15 +357,10 @@
 									</div>
 								</div>
 							</div>
-                           
                         </td>
-					
-                       
                         <td><a href="#cancelorder" class="btn o cancel" data-toggle="modal">cancel</a></td>
 						{% endif %}
-						{% comment %} <td> <a href="" class=" " data-toggle="modal"></a></td> {% endcomment %}
 						<div id="cancelorder" class="modal fade">
-		
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<form action="/cancelorder/{{i.id}}" method='POST'>
@@ -401,21 +379,14 @@
 									</form>
 								</div>
 							</div>
-							
 						</div>
-							
-		
                         {% endfor%}
                     </tr>
-				
                 </tbody>
             </table>
 			<a href="/adminhome/" class="btn btn-danger"><i class="material-icons"></i> <span >back to admin home</span></a>	
-			
-			
         </div>
     </div>
-
 
 {% comment %} edit status {% endcomment %}
 

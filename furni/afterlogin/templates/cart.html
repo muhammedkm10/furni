@@ -1,356 +1,388 @@
-
-<!doctype html>
+<!DOCTYPE html>
 {% load static%}
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="author" content="Untree.co">
-  <link rel="shortcut icon" href="favicon.png">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="Untree.co" />
+    <link rel="shortcut icon" href="favicon.png" />
 
-  <meta name="description" content="" />
-  <meta name="keywords" content="bootstrap, bootstrap4" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="bootstrap, bootstrap4" />
 
-		<!-- Bootstrap CSS -->
-		<link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
-		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-		<link href="{% static "css/tiny-slider.css"%}" rel="stylesheet">
-		<link href="{% static "css/style.css"%}" rel="stylesheet">
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.2/openseadragon.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-		<title>user cart</title>
-	</head>
-     <style>
-		.r-badge {
-			position: absolute;
-			top: -10px;
-			min-width: 5px;
-			padding: 1px;
-			border-radius: 50%;
-			background-color: #007bff; /* You can change the background color */
-			color: white;
-			text-align: center;
-			font-size: 12px;
-		}
-		.cart-icon-container {
-			position: relative;
-			display: inline-block;
-		}
-	 </style>
-	<body>
+    <!-- Bootstrap CSS -->
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link href="{% static "css/tiny-slider.css"%}" rel="stylesheet"> <link
+    href="{% static "css/style.css"%}" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/2.4.2/openseadragon.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <title>user cart</title>
+  </head>
+  <style>
+    .r-badge {
+      position: absolute;
+      top: -10px;
+      min-width: 5px;
+      padding: 1px;
+      border-radius: 50%;
+      background-color: #007bff; /* You can change the background color */
+      color: white;
+      text-align: center;
+      font-size: 12px;
+    }
+    .cart-icon-container {
+      position: relative;
+      display: inline-block;
+    }
+  </style>
+  <body>
+    <!-- Start Header/Navigation -->
+    {% if messages %}
+    <div class="alert alert-info mt-3">
+      {% for message in messages %} {{ message }} {% endfor %}
+    </div>
+    {% endif %}
+    <nav
+      class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark"
+      arial-label="Furni navigation bar"
+    >
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Furni<span>.</span></a>
 
-		<!-- Start Header/Navigation -->
-							{% if messages %}
-						<div class="alert alert-info mt-3">
-							{% for message in messages %}
-							{{ message }}
-							{% endfor %}
-							</div>
-							{% endif %}
-		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarsFurni"
+          aria-controls="navbarsFurni"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-			<div class="container">
-				<a class="navbar-brand" href="index.html">Furni<span>.</span></a>
+        <div class="collapse navbar-collapse" id="navbarsFurni">
+          <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
+            <li class="nav-item">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li><a class="nav-link" href="/shop">Shop</a></li>
+          </ul>
 
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-
-				<div class="collapse navbar-collapse" id="navbarsFurni">
-					<ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-						<li class="nav-item ">
-							<a class="nav-link" href="/">Home</a>
-						</li>
-						<li><a class="nav-link" href="/shop">Shop</a></li>
-					</ul>
-
-					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
-                        {% if 'email' in request.session%}
-						<li><a class="nav-link" href="/userprofile/"><img src={% static "images/user.svg"%}></a></li>
-						<li><div class="cart-icon-container">
-							<a class="nav-link ms-4" href="/showwishlist">
-								<img class="" src="{% static "images/heart.png" %}">
-								<span class="px-2 text-center r-badge">{{ no_of_wish }}</span>
-							</a>
-						</div></li>
-                        {% else%}
-                        <li><a class="nav-link" href="/userlogin/">login</a></li>
-						{% endif %}
-						
-					</ul>
-				</div>
-			</div>
-				
-		</nav>
-		<!-- End Header/Navigation -->
-
-		<!-- Start Hero Section -->
-			<div class="hero">
-				<div class="container">
-					<div class="row justify-content-between">
-						<div class="col-lg-5">
-							<div class="intro-excerpt">
-								<h1>Cart</h1>
-							</div>
-						</div>
-						<div class="col-lg-7">
-							
-						</div>
-					</div>
-				</div>
-			</div>
-		<!-- End Hero Section -->
-  {% comment %} cat table {% endcomment %}
-		
-
-		<div class="untree_co-section before-footer-section">
-            <div class="container">
-              <div class="row mb-5 tablediv" id="tablediv">
-                <form class="col-md-12" method="post">
-                  <div class="site-blocks-table">
-                    <table class="table">
-                      <thead>
-                        <tr>
-                          <th class="product-thumbnail">Image</th>
-                          <th class="product-name">Product</th>
-                          <th class="product-price">Price</th>
-                          <th class="product-price">offer Price</th>
-                          <th class="product-quantity">Quantity</th>
-						  <th class="size">size</th>
-                          <th class="product-total">Total</th>
-                          <th class="product-remove">Remove</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-
-                        
-
-                        {% for i in item %}
-                        <tr>
-                            
-                          <td class="product-thumbnail">
-                            <img src="{{i.product_id.img1.url}}" alt="Image" class="img-fluid">
-                          </td>
-                          <td class="product-name">
-                            <h2 class="h5 text-black">{{i.product_id.name}}</h2>
-                          </td>
-                          <td>Original price:₹{{i.product_id.price}}</td>
-						  {%if i.product_id.price != i.product_price%}
-						  <td>Offer price : ₹{{i.product_price}}</td>
-						  {%else%}
-						  <td>No offeers available</td>
-						  {% endif %}
-                          <td> <div id="ppp">
-							{% csrf_token %}
-                            <button class="d-block change_quantity offset-5" data-action="plus"  data-product-id="{{ i.id }}"><span class="fs-4">+</span></button>
-                                              <h6> Qty: {{i.quantity}}  </h6>
-                            <button class="d-block change_quantity offset-5" data-action="minus"  data-product-id="{{ i.id }}"><span class="fs-3">-</span></button>
-                        </div> 
-						</td>
-						{% if i.size.size == 'l'%}
-						<td class="text-danger">Large</td>
-						{% elif i.size.size == 'm'%}
-						<td class="text-success">Medium</td>
-						{% elif i.size.size == 's'%}
-						<td class="text-info">Small</td>
-						{% endif %}
-                            <td>₹{{i.total}}</td>
-                          <td><a href="/deletecart/{{i.id}}" class="btn btn-black btn-sm">X</a></td>
-                        </tr>
-                        {%endfor%}
-        
-            
-                      </tbody>
-                    </table>
-                  </div>
-                </form>
+          <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
+            {% if 'email' in request.session%}
+            <li>
+              <a class="nav-link" href="/userprofile/"
+                ><img src={% static "images/user.svg"%}></a
+              >
+            </li>
+            <li>
+              <div class="cart-icon-container">
+                <a class="nav-link ms-4" href="/showwishlist">
+                  <img class="" src="{% static "images/heart.png" %}">
+                  <span class="px-2 text-center r-badge">{{ no_of_wish }}</span>
+                </a>
               </div>
-             
-              
-        
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="row mb-5">
-                    
-                    <div class="col-md-6">
-                     <a href="/shop/"> <button class="btn btn-outline-black btn-sm btn-block">Continue Shopping</button></a>
-                    </div>
+            </li>
+            {% else%}
+            <li><a class="nav-link" href="/userlogin/">login</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End Header/Navigation -->
+
+    <!-- Start Hero Section -->
+    <div class="hero">
+      <div class="container">
+        <div class="row justify-content-between">
+          <div class="col-lg-5">
+            <div class="intro-excerpt">
+              <h1>Cart</h1>
+            </div>
+          </div>
+          <div class="col-lg-7"></div>
+        </div>
+      </div>
+    </div>
+    <!-- End Hero Section -->
+
+    <div class="untree_co-section before-footer-section">
+      <div class="container">
+        <div class="row mb-5 tablediv" id="tablediv">
+          <form class="col-md-12" method="post">
+            <div class="site-blocks-table">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th class="product-thumbnail">Image</th>
+                    <th class="product-name">Product</th>
+                    <th class="product-price">Price</th>
+                    <th class="product-price">offer Price</th>
+                    <th class="product-quantity">Quantity</th>
+                    <th class="size">size</th>
+                    <th class="product-total">Total</th>
+                    <th class="product-remove">Remove</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for i in item %}
+                  <tr>
+                    <td class="product-thumbnail">
+                      <img
+                        src="{{i.product_id.img1.url}}"
+                        alt="Image"
+                        class="img-fluid"
+                      />
+                    </td>
+                    <td class="product-name">
+                      <h2 class="h5 text-black">{{i.product_id.name}}</h2>
+                    </td>
+                    <td>Original price:₹{{i.product_id.price}}</td>
+                    {%if i.product_id.price != i.product_price%}
+                    <td>Offer price : ₹{{i.product_price}}</td>
+                    {%else%}
+                    <td>No offeers available</td>
+                    {% endif %}
+                    <td>
+                      <div id="ppp">
+                        {% csrf_token %}
+                        <button
+                          class="d-block change_quantity offset-5"
+                          data-action="plus"
+                          data-product-id="{{ i.id }}"
+                        >
+                          <span class="fs-4">+</span>
+                        </button>
+                        <h6>Qty: {{i.quantity}}</h6>
+                        <button
+                          class="d-block change_quantity offset-5"
+                          data-action="minus"
+                          data-product-id="{{ i.id }}"
+                        >
+                          <span class="fs-3">-</span>
+                        </button>
+                      </div>
+                    </td>
+                    {% if i.size.size == 'l'%}
+                    <td class="text-danger">Large</td>
+                    {% elif i.size.size == 'm'%}
+                    <td class="text-success">Medium</td>
+                    {% elif i.size.size == 's'%}
+                    <td class="text-info">Small</td>
+                    {% endif %}
+                    <td>₹{{i.total}}</td>
+                    <td>
+                      <a
+                        href="/deletecart/{{i.id}}"
+                        class="btn btn-black btn-sm"
+                        >X</a
+                      >
+                    </td>
+                  </tr>
+                  {%endfor%}
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row mb-5">
+              <div class="col-md-6">
+                <a href="/shop/">
+                  <button class="btn btn-outline-black btn-sm btn-block">
+                    Continue Shopping
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 pl-5">
+            <div class="row justify-content-end">
+              <div class="col-md-7">
+                <div class="row">
+                  <div class="col-md-12 text-right border-bottom mb-5">
+                    <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
                   </div>
-
-
-
-
                 </div>
-                <div class="col-md-6 pl-5">
-                  <div class="row justify-content-end">
-                    <div class="col-md-7">
-                      <div class="row">
-                        <div class="col-md-12 text-right border-bottom mb-5">
-                          <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
-                        </div>
-                      </div>
-                      <div class="row mb-3">
-                        <div class="col-md-6">
-                          {% comment %} <span class="text-black">Subtotal</span> {% endcomment %}
-                        </div>
-                        <div class="col-md-6 text-right">
-                          {% comment %} <strong class="text-black">$230.00</strong> {% endcomment %}
-                        </div>
-                      </div>
-                      <div class="row mb-5">
-                        <div class="col-md-6">
-                          <span class="text-black">Total</span>
-                        </div>
-                        <div id="2load"class="col-md-6 text-right">
-                          <strong class="text-black">₹{{total_amount.sum}}</strong>
-                        </div>
-                      </div>
-          
-                      <div class="row">
-                        <div class="col-md-12">
-                          <a href="/proceedtocheckout/{{last_added_address_id}}"><button class="btn btn-black btn-lg py-3 btn-block" >Proceed To Checkout</button></a>
-                        </div>
-						
-		
-                      </div>
-                    </div>
+                <div class="row mb-3">
+                  <div class="col-md-6"></div>
+                  <div class="col-md-6 text-right"></div>
+                </div>
+                <div class="row mb-5">
+                  <div class="col-md-6">
+                    <span class="text-black">Total</span>
+                  </div>
+                  <div id="2load" class="col-md-6 text-right">
+                    <strong class="text-black">₹{{total_amount.sum}}</strong>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <a href="/proceedtocheckout/{{last_added_address_id}}"
+                      ><button class="btn btn-black btn-lg py-3 btn-block">
+                        Proceed To Checkout
+                      </button></a
+                    >
                   </div>
                 </div>
               </div>
             </div>
           </div>
-		
+        </div>
+      </div>
+    </div>
 
-		<!-- Start Footer Section -->
-		<footer class="footer-section">
-			<div class="container relative">
+    <!-- Start Footer Section -->
+    <footer class="footer-section">
+      <div class="container relative">
+        <div class="sofa-img">
+          <img src={% static "images/sofa.png" %} alt="Image" class="img-fluid">
+        </div>
 
-				<div class="sofa-img">
-					<img src={% static "images/sofa.png" %} alt="Image" class="img-fluid">
-				</div>
-
-				
-
-				<div class="row g-5 mb-5">
-					<div class="col-lg-4">
-						<div class="mb-4 footer-logo-wrap"><a href="#" class="footer-logo">Furni<span>.</span></a></div>
-						<p class="mb-4">Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique. Pellentesque habitant</p>
-
-						<ul class="list-unstyled custom-social">
-							<li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-twitter"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-instagram"></span></a></li>
-							<li><a href="#"><span class="fa fa-brands fa-linkedin"></span></a></li>
-						</ul>
-					</div>
-
-					<div class="col-lg-8">
-						<div class="row links-wrap">
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">About us</a></li>
-									<li><a href="#">Services</a></li>
-									<li><a href="#">Blog</a></li>
-									<li><a href="#">Contact us</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Support</a></li>
-									<li><a href="#">Knowledge base</a></li>
-									<li><a href="#">Live chat</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Jobs</a></li>
-									<li><a href="#">Our team</a></li>
-									<li><a href="#">Leadership</a></li>
-									<li><a href="#">Privacy Policy</a></li>
-								</ul>
-							</div>
-
-							<div class="col-6 col-sm-6 col-md-3">
-								<ul class="list-unstyled">
-									<li><a href="#">Nordic Chair</a></li>
-									<li><a href="#">Kruzo Aero</a></li>
-									<li><a href="#">Ergonomic Chair</a></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-
-				</div>
-
-				<div class="border-top copyright">
-					<div class="row pt-4">
-						<div class="col-lg-6">
-							<p class="mb-2 text-center text-lg-start">Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a> Distributed By <a hreff="https://themewagon.com">ThemeWagon</a>  <!-- License information: https://untree.co/license/ -->
+        <div class="row g-5 mb-5">
+          <div class="col-lg-4">
+            <div class="mb-4 footer-logo-wrap">
+              <a href="#" class="footer-logo">Furni<span>.</span></a>
+            </div>
+            <p class="mb-4">
+              Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
+              quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+              vulputate velit imperdiet dolor tempor tristique. Pellentesque
+              habitant
             </p>
-						</div>
 
-						<div class="col-lg-6 text-center text-lg-end">
-							<ul class="list-unstyled d-inline-flex ms-auto">
-								<li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
-								<li><a href="#">Privacy Policy</a></li>
-							</ul>
-						</div>
+            <ul class="list-unstyled custom-social">
+              <li>
+                <a href="#"><span class="fa fa-brands fa-facebook-f"></span></a>
+              </li>
+              <li>
+                <a href="#"><span class="fa fa-brands fa-twitter"></span></a>
+              </li>
+              <li>
+                <a href="#"><span class="fa fa-brands fa-instagram"></span></a>
+              </li>
+              <li>
+                <a href="#"><span class="fa fa-brands fa-linkedin"></span></a>
+              </li>
+            </ul>
+          </div>
 
-					</div>
-				</div>
+          <div class="col-lg-8">
+            <div class="row links-wrap">
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li><a href="#">About us</a></li>
+                  <li><a href="#">Services</a></li>
+                  <li><a href="#">Blog</a></li>
+                  <li><a href="#">Contact us</a></li>
+                </ul>
+              </div>
 
-			</div>
-		</footer>
-		<!-- End Footer Section -->	
-<script>
-</script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>
-		$(document).ready(function() {
-			$('.tablediv').on('click', '.change_quantity', function(e) {
-				e.preventDefault();
-				
-				var cart_id = $(this).data('product-id');
-				// var pro_quantity = $(this).closest('.cart-list').find('.quantity1').val();
-				var token = $('input[name=csrfmiddlewaretoken]').val();
-				 
-				var action = $(this).data('action');
-				$.ajax({
-					method: "POST",
-					url: '/updatequantity/',
-					data:  {
-						'cart_id':cart_id,
-						// 'pro_quantity':pro_quantity,
-						'action': action,
-						csrfmiddlewaretoken:token
-					},
-					
-					success: function(response) {
-					  if(response.status) {
-						console.log(response.status);
-						   $('#tablediv').load('/showcart/ #tablediv');
-						   $('#2load').load('/showcart/ #2load');
-					   }
-					},
-					error: (error) => {
-					  console.log(error,'hi');
-					}
-				  });
-		
-		});
-		
-		});
-	</script>
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li><a href="#">Support</a></li>
+                  <li><a href="#">Knowledge base</a></li>
+                  <li><a href="#">Live chat</a></li>
+                </ul>
+              </div>
 
-		<script src="js/bootstrap.bundle.min.js"></script>
-		<script src="js/tiny-slider.js"></script>
-		<script src="js/custom.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li><a href="#">Jobs</a></li>
+                  <li><a href="#">Our team</a></li>
+                  <li><a href="#">Leadership</a></li>
+                  <li><a href="#">Privacy Policy</a></li>
+                </ul>
+              </div>
 
+              <div class="col-6 col-sm-6 col-md-3">
+                <ul class="list-unstyled">
+                  <li><a href="#">Nordic Chair</a></li>
+                  <li><a href="#">Kruzo Aero</a></li>
+                  <li><a href="#">Ergonomic Chair</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
 
-	</body>
+        <div class="border-top copyright">
+          <div class="row pt-4">
+            <div class="col-lg-6">
+              <p class="mb-2 text-center text-lg-start">
+                Copyright &copy;
+                <script>
+                  document.write(new Date().getFullYear());
+                </script>
+                . All Rights Reserved. &mdash; Designed with love by
+                <a href="https://untree.co">Untree.co</a> Distributed By
+                <a hreff="https://themewagon.com">ThemeWagon</a>
+                <!-- License information: https://untree.co/license/ -->
+              </p>
+            </div>
 
+            <div class="col-lg-6 text-center text-lg-end">
+              <ul class="list-unstyled d-inline-flex ms-auto">
+                <li class="me-4"><a href="#">Terms &amp; Conditions</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- End Footer Section -->
+    <script></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $(".tablediv").on("click", ".change_quantity", function (e) {
+          e.preventDefault();
+
+          var cart_id = $(this).data("product-id");
+          var token = $("input[name=csrfmiddlewaretoken]").val();
+
+          var action = $(this).data("action");
+          $.ajax({
+            method: "POST",
+            url: "/updatequantity/",
+            data: {
+              cart_id: cart_id,
+              action: action,
+              csrfmiddlewaretoken: token,
+            },
+
+            success: function (response) {
+              if (response.status) {
+                console.log(response.status);
+                $("#tablediv").load("/showcart/ #tablediv");
+                $("#2load").load("/showcart/ #2load");
+              }
+            },
+            error: (error) => {
+              console.log(error, "hi");
+            },
+          });
+        });
+      });
+    </script>
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </body>
 </html>

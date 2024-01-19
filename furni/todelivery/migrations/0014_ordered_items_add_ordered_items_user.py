@@ -4,21 +4,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0013_remove_ordered_items_addres'),
+        ("todelivery", "0013_remove_ordered_items_addres"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='ordered_items',
-            name='add',
+            model_name="ordered_items",
+            name="add",
             field=models.IntegerField(default=0),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='ordered_items',
-            name='user',
+            model_name="ordered_items",
+            name="user",
             field=models.IntegerField(default=0),
             preserve_default=False,
         ),

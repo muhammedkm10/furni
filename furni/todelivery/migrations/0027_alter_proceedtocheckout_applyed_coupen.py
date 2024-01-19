@@ -5,16 +5,20 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('coupenapp', '0001_initial'),
-        ('todelivery', '0026_order_details_applied_coupen'),
+        ("coupenapp", "0001_initial"),
+        ("todelivery", "0026_order_details_applied_coupen"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='proceedtocheckout',
-            name='applyed_coupen',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='coupenapp.coupons'),
+            model_name="proceedtocheckout",
+            name="applyed_coupen",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="coupenapp.coupons",
+            ),
         ),
     ]

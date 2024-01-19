@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0003_rename_emial_address_email'),
+        ("todelivery", "0003_rename_emial_address_email"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='address',
-            name='post',
+            model_name="address",
+            name="post",
             field=models.CharField(default=0, max_length=200),
             preserve_default=False,
         ),

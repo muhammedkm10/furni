@@ -5,16 +5,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('afterlogin', '0001_initial'),
-        ('logintohome', '0003_customuser1_otp_fld_customuser1_otp_secret_and_more'),
+        ("afterlogin", "0001_initial"),
+        ("logintohome", "0003_customuser1_otp_fld_customuser1_otp_secret_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='cart',
-            name='user_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='logintohome.customuser1'),
+            model_name="cart",
+            name="user_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                to="logintohome.customuser1",
+            ),
         ),
     ]

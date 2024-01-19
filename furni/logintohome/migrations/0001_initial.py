@@ -5,32 +5,52 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='CustomUser1',
+            name="CustomUser1",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('username', models.CharField(max_length=100)),
-                ('email', models.EmailField(max_length=254)),
-                ('password', models.CharField(max_length=100)),
-                ('date_joined', models.DateTimeField()),
-                ('phone', models.CharField(max_length=100)),
-                ('is_verified', models.BooleanField(default=False)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("username", models.CharField(max_length=100)),
+                ("email", models.EmailField(max_length=254)),
+                ("password", models.CharField(max_length=100)),
+                ("date_joined", models.DateTimeField()),
+                ("phone", models.CharField(max_length=100)),
+                ("is_verified", models.BooleanField(default=False)),
             ],
         ),
         migrations.CreateModel(
-            name='otpverification',
+            name="otpverification",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('otp_secret', models.CharField(max_length=200)),
-                ('otp_nuber', models.IntegerField()),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='logintohome.customuser1')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("otp_secret", models.CharField(max_length=200)),
+                ("otp_nuber", models.IntegerField()),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="logintohome.customuser1",
+                    ),
+                ),
             ],
         ),
     ]

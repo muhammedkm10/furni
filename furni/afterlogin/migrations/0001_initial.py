@@ -5,21 +5,40 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('logintohome', '0003_customuser1_otp_fld_customuser1_otp_secret_and_more'),
-        ('product_manage', '0007_products_is_listed'),
+        ("logintohome", "0003_customuser1_otp_fld_customuser1_otp_secret_and_more"),
+        ("product_manage", "0007_products_is_listed"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='cart',
+            name="cart",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('product_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='product_manage.products')),
-                ('user_id', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='logintohome.customuser1')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "product_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="product_manage.products",
+                    ),
+                ),
+                (
+                    "user_id",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="logintohome.customuser1",
+                    ),
+                ),
             ],
         ),
     ]

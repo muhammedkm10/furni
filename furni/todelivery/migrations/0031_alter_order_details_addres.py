@@ -5,15 +5,16 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('todelivery', '0030_order_details_after_discount'),
+        ("todelivery", "0030_order_details_after_discount"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='order_details',
-            name='addres',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='todelivery.address'),
+            model_name="order_details",
+            name="addres",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="todelivery.address"
+            ),
         ),
     ]
