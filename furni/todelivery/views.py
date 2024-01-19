@@ -227,18 +227,21 @@ def apply_coupon(request):
                     p.append(i.applied_coupen.id)
          
             if  obj.id not in p:
-                            if coupon == obj.code and copdate < date2 and copdate >= date1:
-                                        detail.discount_amount  = detail.total_amount - obj.cop_price
-                                        if detail.discount_amount  < 0:
-                                            detail.discount_amount = 0
-                                            detail.applyed_coupen = obj
-                                            detail.coupen_applyed = True
-                                            detail.save()
-                                        detail.applyed_coupen = obj
-                                        detail.coupen_applyed = True
-                                        print("amount",detail.discount_amount)
-                                        detail.save()
-                                        return JsonResponse({'success': 'Coupon applied successfully to cancel the coupon press cancel button', 'updatedTotal': detail.discount_amount})
+                            if coupon == obj.code and copdate < date2 and copdate >= date1  :
+                                        if obj.is_listed == False:
+                                             return JsonResponse({'error': 'coupen is removed'}) 
+                                        else:
+                                                detail.discount_amount  = detail.total_amount - obj.cop_price
+                                                if detail.discount_amount  < 0:
+                                                    detail.discount_amount = 0
+                                                    detail.applyed_coupen = obj
+                                                    detail.coupen_applyed = True
+                                                    detail.save()
+                                                detail.applyed_coupen = obj
+                                                detail.coupen_applyed = True
+                                                print("amount",detail.discount_amount)
+                                                detail.save()
+                                                return JsonResponse({'success': 'Coupon applied successfully to cancel the coupon press cancel button', 'updatedTotal': detail.discount_amount})
                             else:
                                         return JsonResponse({'error': 'invalid Coupon'})
             else:

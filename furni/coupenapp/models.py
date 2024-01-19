@@ -7,4 +7,4 @@ class coupons(models.Model):
     code = models.CharField( max_length=50)
     from_date = models.DateField()
     to = models.DateField()
-    
+    is_listed = models.BooleanField(default = True)

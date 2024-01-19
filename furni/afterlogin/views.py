@@ -338,8 +338,10 @@ def whishtocart(request,pro_id,w_id):
     pro = products.objects.get(id = pro_id)
     whish_item = wishlist.objects.get(id = w_id)
     var = variant.objects.get(product_id_id = pro.id,id = whish_item.size.id)
+    print("size id",whish_item.size,"--",whish_item.size.id)
+    print("quantity",var.quantity)
     if var.quantity >= 1:
-        if cart.objects.filter(product_id = pro,size = var).exists():
+        if cart.objects.filter(user_id = user,product_id = pro,size = whish_item.size.id).exists():
                 messages.success(request,"Product is already in cart")
                 return redirect('showcart')
         obj = cart(user_id = user,product_id = pro,quantity = 1,category = pro.category,size  =  var) 

@@ -360,29 +360,11 @@
                         </div>
                         <td>
 							
-                            <a href="#deletecoupon{{i.id}}" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="delete">delete</i></a>
-                            <div id="deletecoupon{{i.id}}" class="modal fade">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form action="/deletecoupon/{{i.id}}/" method='POST'>
-                                            {% csrf_token%}
-                                            <div class="modal-header">
-                                                <h4 class="modal-title">Delete coupon</h4>
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Are you sure you want to delete?</p>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                                <button type="submit" class="btn btn-danger" value="Delete">OK</button>
-                                            </div>
-                            
-                                        </form>
-                                    </div>
-                                </div>
-                            
-                            </div>
+							{% if not i.is_listed %}
+                            <a href="/listcoupen/{{i.id}}" class=" btn btn-success"  data-toggle="modal">list</a>
+							{% else %}
+                            <a href="/unlistcoupen/{{i.id}}" class="btn btn-danger " data-toggle="modal">unlist</a>
+                             {% endif %}
                         </td>
 							
 							

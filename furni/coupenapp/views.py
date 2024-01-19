@@ -52,3 +52,19 @@ def delete_coupon(request,id):
         messages.error(request,'coupon deleted succesfully')
         return redirect('coupenmanage')
         
+
+
+# list coup[en]
+def list_coupen(request,id):
+    obj = coupons.objects.get(id = id)
+    obj.is_listed = True
+    obj.save()
+    return redirect('coupenmanage')
+
+
+# un list category
+def un_list_coupen(request,id):
+    obj = coupons.objects.get(id = id)
+    obj.is_listed = False
+    obj.save()
+    return redirect('coupenmanage')
