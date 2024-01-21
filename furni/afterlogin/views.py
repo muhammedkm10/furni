@@ -123,6 +123,7 @@ def shop(request):
 # product details
 def product_details(request, id):
     obj = products.objects.get(id=id)
+    reviews = product_review.objects.filter(pro_id=obj)
     variants = variant.objects.all()
     if "email" in request.session:
         email = request.session["email"]
@@ -131,11 +132,9 @@ def product_details(request, id):
         no_of_cart = cart.objects.filter(user_id=id1).count()
         no_of_wish = wishlist.objects.filter(user_id=id1).count()
         reviews = product_review.objects.filter(pro_id=obj)
-
     else:
         no_of_wish = 0
         no_of_cart = 0
-
     context = {
         "items": obj,
         "no": no_of_cart,
