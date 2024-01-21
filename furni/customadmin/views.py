@@ -354,7 +354,7 @@ def sales_report(request):
 ############################################             offer management             ########################################################
 
 
-# product offer
+# add product offer
 def product_offers(request):
     pros = products.objects.filter(is_listed=True)
     context = {
@@ -363,7 +363,7 @@ def product_offers(request):
     if request.method == "POST":
         pro = request.POST["pro"]
         persc = int(request.POST["perc"])
-        others = product_offer.objects.filter(pro_id=pro)
+        others = product_offer.objects.filter(pro_id = pro)
         h = []
         for i in others:
             h.append(i.pro_id.id)

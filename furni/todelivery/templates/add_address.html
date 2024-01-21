@@ -42,7 +42,7 @@
 						<li class="nav-item ">
 							<a class="nav-link" href="/">Home</a>
 						</li>
-						<li><a class="nav-link" href="/proceedtocheckout/">back to checkout</a></li>
+						<li><a class="nav-link" href="/proceedtocheckout/{{last_added_address_id}}">back to checkout</a></li>
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -123,7 +123,7 @@
 		              </div>
                       <div class="col-md-6">
 		                <label for="c_postal_zip" class="text-black">Pin<span class="text-danger">*</span></label>
-		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" required>
+		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" placeholder="6-digit pin number"required>
 		              </div>
 		            </div>
 
@@ -134,7 +134,7 @@
 		              </div>
 		              <div class="col-md-6">
 		                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-		                <input type="number" class="form-control no-spinner" id="c_phone" name="phone">
+		                <input type="number" class="form-control no-spinner" id="c_phone" name="phone"placeholder="10-digit phone number">
 		              </div>
 		            </div>
 

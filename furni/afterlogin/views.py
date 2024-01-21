@@ -151,7 +151,7 @@ def show_cart(request):
     email1 = request.session["email"]
     user = CustomUser1.objects.get(email=email1)
     item = (
-        cart.objects.select_related("product_id").filter(user_id=user).order_by("-id")
+ cart.objects.select_related("product_id").filter(user_id=user).order_by("-id")
     )
 
     for i in item:
@@ -229,12 +229,14 @@ def show_cart(request):
         messages.error(request, "add some address here")
         return redirect("userprofile")
     last_added_address_id = last_added_address.id
-
+    no_of_cart = cart.objects.filter(user_id=user).count()
+    
     context = {
         "item": item,
         "total_amount": total_amount,
         "last_added_address_id": last_added_address_id,
         "no_of_wish": no_of_wish,
+        "no":no_of_cart
     }
 
     return render(request, "cart.html", context)
@@ -431,7 +433,11 @@ def show_wish_list(request):
     user = CustomUser1.objects.get(email=email)
     user_id = user.id
     pros = wishlist.objects.filter(user_id=user_id)
-    context = {"items": pros}
+    no_of_wish = wishlist.objects.filter(user_id=user).count()
+
+    context = {"items": pros,
+               'no':no_of_wish
+               }
     return render(request, "wishlist.html", context)
 
 

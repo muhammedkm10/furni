@@ -104,6 +104,16 @@
               <div class="row mb-5">
                 <form class="col-md-12" method="post">
                   <div class="site-blocks-table">
+					{% if no == 0 %}
+					<div class="container text-center">
+					<h1>Your wishlist is empty</h1>
+					<a href="/shop/"
+					   class="fs-5">
+						Go to Shop
+					  </a>
+					
+				  </div>
+					{% else %}
                     <table class="table">
                       <thead>
                         <tr>
@@ -162,6 +172,7 @@
               
             </div>
           </div>
+		  {%endif%}
 		
 
 		<!-- Start Footer Section -->

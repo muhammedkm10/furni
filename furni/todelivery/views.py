@@ -79,6 +79,9 @@ def proceed_to_checkout(request, last_added_address_id):
 
 # add address
 def add_address(request):
+    email1 = request.session["email"]
+    obj = CustomUser1.objects.get(email=email1)
+    add = address.objects.filter(user_id = obj.id).last()
     if request.method == "POST":
         email1 = request.session["email"]
         obj = CustomUser1.objects.get(email=email1)
@@ -117,7 +120,7 @@ def add_address(request):
         else:
             messages.success(request, "phone number should be valid")
             return redirect("addaddressinuser")
-    return render(request, "add_address.html")
+    return render(request, "add_address.html",{'last_added_address_id':add.id}   )
 
 
 # payment using cod

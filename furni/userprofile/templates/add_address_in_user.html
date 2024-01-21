@@ -38,7 +38,8 @@
 		<nav class="custom-navbar navbar navbar navbar-expand-md navbar-dark bg-dark" arial-label="Furni navigation bar">
 
 			<div class="container ">
-				<a class="navbar-brand " href="index.html">Furni<span>.</span></a>
+				<a class="navbar-brand " href="/">Furni<span>.</span></a>
+
 
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsFurni" aria-controls="navbarsFurni" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -49,6 +50,8 @@
 						<li class="nav-item ">
 							<a class="nav-link" href="/">Home</a>
 						</li>
+						<li><a class="nav-link" href="/userprofile/">back to Profile</a></li>
+
 					</ul>
 
 					<ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
@@ -139,7 +142,7 @@
 		              </div>
                       <div class="col-md-6">
 		                <label for="c_postal_zip" class="text-black">Pin<span class="text-danger">*</span></label>
-		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" required>
+		                <input type="number" class="form-control no-spinner" id="c_postal_zip" name="pin" placeholder="6-digit pin number"required>
 		              </div>
 		            </div>
 
@@ -150,7 +153,7 @@
 		              </div>
 		              <div class="col-md-6">
 		                <label for="c_phone" class="text-black">Phone <span class="text-danger">*</span></label>
-		                <input type="number"  class="form-control no-spinner" id="c_phone" name="phone">
+		                <input type="number"  class="form-control no-spinner" id="c_phone" placeholder="10-digits phone number"name="phone">
 		              </div>
 		            </div>
 

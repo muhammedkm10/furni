@@ -121,6 +121,16 @@
         <div class="row mb-5 tablediv" id="tablediv">
           <form class="col-md-12" method="post">
             <div class="site-blocks-table">
+            {% if no == 0 %}
+            <div class="container text-center">
+            <h1>Your cart is empty</h1>
+            <a href="/shop/"
+               class="fs-5">
+                Go to Shop
+              </a>
+            
+          </div>
+            {% else %}
               <table class="table">
                 <thead>
                   <tr>
@@ -192,6 +202,7 @@
                   {%endfor%}
                 </tbody>
               </table>
+              
             </div>
           </form>
         </div>
@@ -244,14 +255,11 @@
         </div>
       </div>
     </div>
-
+    {%endif%}
     <!-- Start Footer Section -->
     <footer class="footer-section">
       <div class="container relative">
-        <div class="sofa-img">
-          <img src={% static "images/sofa.png" %} alt="Image" class="img-fluid">
-        </div>
-
+      
         <div class="row g-5 mb-5">
           <div class="col-lg-4">
             <div class="mb-4 footer-logo-wrap">
