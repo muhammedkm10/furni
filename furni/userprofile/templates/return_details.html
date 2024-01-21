@@ -279,13 +279,18 @@
     <h6 class="fs-3 text-capitalize" >order id  : {{order.id}}</h1>
       <h6 class="fs-3 text-capitalize" >order date : {{order.order_date}}</h1>
       <h6 class="fs-3 text-capitalize" >return reason : {{rtn_details.reason}}</h1>
+        <h6 class="fs-3 text-capitalize " >return requested date : {{rtn_details.return_date}}</h1>
+
         {% if ordered_item.status == "return requested" %}
       <h6 class="fs-3 text-capitalize text-info" >return status : {{ordered_item.status}}</h1>
        {% elif ordered_item.status == "return denied"  %}
        <h6 class="fs-3 text-capitalize text-danger" >return status : {{ordered_item.status}}</h1>
-        {% else %}
+        {% elif ordered_item.status == "return accepted" %}
         <h6 class="fs-3 text-capitalize text-success" >return status : {{ordered_item.status}}</h1>
-            {% endif %}
+        <h6 class="fs-3 text-capitalize text-success" >return expected date : {{ rtn_details.pickup_date}}</h1>
+
+        
+        {% endif %}
 
 
   </div>

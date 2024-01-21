@@ -23,3 +23,6 @@ class return_requests(models.Model):
     order_id = models.ForeignKey(order_details, on_delete=models.CASCADE)
     item_id = models.ForeignKey(ordered_items, on_delete=models.CASCADE)
     reason = models.TextField()
+    return_date = models.DateField(null = True)
+    pickup_date = models.DateField(null = True)
+

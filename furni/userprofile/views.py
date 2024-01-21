@@ -286,12 +286,14 @@ def product_reviews(request, pro_id, order_id):
 # product return
 def return_products(request, item_id, order_id):
     email1 = request.session["email"]
+    current_date = datetime.now().date()
+    
     obj = CustomUser1.objects.get(email=email1)
     ordered_item = ordered_items.objects.get(id=item_id)
     if request.method == "POST":
         reason = request.POST["reason"]
         return_requests.objects.create(
-            user_id=obj, order_id_id=order_id, item_id=ordered_item, reason=reason
+            user_id=obj, order_id_id=order_id, item_id=ordered_item, reason=reason,return_date = current_date,pickup_date = current_date + timedelta(days=7),
         )
         ordered_item.status = "return requested"
         ordered_item.save()
@@ -299,14 +301,16 @@ def return_products(request, item_id, order_id):
     return redirect("moredetails", order_id)
 
 
+
+
 # return details
 def return_details(request, item_id, order_id):
     ordered_item = ordered_items.objects.get(id=item_id)
     order = order_details.objects.get(id=order_id)
-    rtn_details = return_requests.objects.get(item_id=ordered_item)
+    rtn_details1 = return_requests.objects.get(item_id=ordered_item)
     context = {
         "ordered_item": ordered_item,
         "order": order,
-        "rtn_details": rtn_details,
+        "rtn_details": rtn_details1,
     }
     return render(request, "return_details.html", context)
