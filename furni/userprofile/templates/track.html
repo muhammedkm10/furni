@@ -480,7 +480,9 @@
     <a href="/orderdetails" class="btn btn-danger text-decoration-none" >back to orders</a>
     {% if item.status == 'delivered' %}
     <a href="/invoice/{{item.order_id.id}}" class="btn btn-danger text-decoration-none" >invoice</a>
+    {% if review == None%}
     <a href="#review" class="edit" data-toggle="modal"><button class=" btn btn-success"><span>Add your review here</span></button></a>
+    {%endif%}
     <div id="review" class="modal fade">
                             <div class="modal-dialog">
                                 <div class="modal-content">
