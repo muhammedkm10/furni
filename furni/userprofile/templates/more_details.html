@@ -223,7 +223,7 @@
                         <a href="/returndetails/{{i.id}}/{{i.order_id.id}}" class="mt-3 btn btn-danger text-decoration-none" >Return details</a>
 
                        {% else %}
-                       {% if  i.status != "cancelled" %}
+                       {% if  i.status != "cancelled"  and i.status !=  "cancelled by admin"%}
                        <a href="/trakorder/{{i.id}}" class="mt-3 btn btn-danger text-decoration-none" >Track</a>
                        {% endif %}
                         {%endif%}
@@ -258,71 +258,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% if i.status == 'delivered'%}
-                        <a href="#review" class="edit" data-toggle="modal"><button class="mt-3 btn btn-success"><span>Rating</span></button></a>
-                        {% endif %}
-                        <div id="review" class="modal fade">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <form method='POST' action='/productreview/{{i.product_name.id}}/{{i.order_id.id}}'>
-                                        {% csrf_token %}
-                                        
-                                        <div class="modal-header">						
-                                            <h4 class="modal-title">Review about the   product</h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        </div>
-                                        <div class="modal-body">					
-                                            
-                                            <div class="form-group">
-                                                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="write your comments here"name='comment'rows="3"  required ></textarea>
-                                            </div>
-                                            <label>Rate here</label>
-                                            <div class="rating" >
-                                                <i class="rating__star far fa-star"></i>
-                                                <i class="rating__star far fa-star"></i>
-                                                <i class="rating__star far fa-star"></i>
-                                                <i class="rating__star far fa-star"></i>
-                                                <i class="rating__star far fa-star"></i>
-                                          </div>
-                                          <input   type="hidden" name="rating" id="selectedRating" value="0">
-                                        </div>
-                                        <div class="modal-footer">
-                                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                            <button type="submit" class="btn btn-success" value="Add">submit</button>
-                                        </div>
-                                    </form>
-                                
-                                </div>
-                            </div>
-                        </div>
-                        <script>
-                            const ratingStars = [...document.getElementsByClassName("rating__star")];
-                            const selectedRatingInput = document.getElementById("selectedRating");
                         
-                            function executeRating(stars) {
-                                const starClassActive = "rating__star fas fa-star";
-                                const starClassInactive = "rating__star far fa-star";
-                                const starsLength = stars.length;
-                        
-                                stars.map((star) => {
-                                    star.onclick = () => {
-                                        const selectedIndex = stars.indexOf(star);
-                        
-                                        for (let i = 0; i < starsLength; ++i) {
-                                            stars[i].className = i <= selectedIndex ? starClassActive : starClassInactive;
-                                        }
-                        
-                                        // Set the value of the hidden input to the selected index + 1 (1-indexed)
-                                        selectedRatingInput.value = selectedIndex + 1;
-                                    };
-                                });
-                            }
-                        
-                            executeRating(ratingStars);
-                        </script>
-                        
-
-                  
                 </tr>	
 
                 {% endfor %}

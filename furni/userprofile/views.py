@@ -9,7 +9,7 @@ from datetime import timedelta
 from afterlogin.models import cart, wishlist
 from product_manage.models import products, variant
 from .models import wallet, product_review, return_requests
-from django.db.models import Count
+from django.db.models import Count,Q
 from datetime import datetime
 
 
@@ -239,8 +239,17 @@ def cancel_order(request, id):
 
 # track order
 def track_order(request, id):
+    email1 = request.session["email"]
+    user = CustomUser1.objects.get(email=email1)
     obj = ordered_items.objects.get(id=id)
-    context = {"item": obj}
+    try:
+      review = product_review.objects.get(user_id = user.id,pro_id_id = obj.product_name.id)
+    except:
+        review = None
+    context = {
+        "item": obj,
+        "review":review
+        }
 
     return render(request, "track.html", context)
 
@@ -250,6 +259,7 @@ def more_details(request, id):
     email1 = request.session["email"]
     obj = CustomUser1.objects.get(email=email1)
     obj = ordered_items.objects.filter(order_id_id=id)
+
     try:
         no = cart.objects.filter(user_id=obj).count()
     except:
@@ -269,18 +279,37 @@ def invoice(request, id):
 
 
 # product review for delivered products by use
-def product_reviews(request, pro_id, order_id):
+def product_reviews(request, pro_id,item_id):
     email1 = request.session["email"]
-    pro = products.objects.get(id=pro_id)
+    pro = products.objects.get(id = pro_id)
     obj = CustomUser1.objects.get(email=email1)
     if request.method == "POST":
         comment = request.POST["comment"]
         rating = request.POST["rating"]
-        product_review.objects.create(
-            comment=comment, rating=rating, user_id=obj, pro_id=pro
-        )
-        messages.success(request, "Thanks for your valuable review")
-        return redirect("moredetails", order_id)
+        if product_review.objects.filter(Q(user_id = obj) & Q(pro_id=pro)).exists():
+            messages.success(request, "you already added the review for this product")
+            return redirect("trakorder" ,item_id)
+        else:
+            product_review.objects.create(
+                comment=comment, rating=rating, user_id=obj, pro_id=pro
+            )
+            messages.success(request, "Thanks for your valuable review")
+            return redirect("trakorder" ,item_id)
+        
+
+# product review edit 
+def edit_review(request,rev_id,item_id):
+    if request.method == 'POST':
+        comment = request.POST['comment']
+        rating = request.POST['rating']
+        obj = product_review.objects.get(id = rev_id)
+        obj.comment = comment
+        obj.rating = rating
+        obj.save()
+        messages.success(request, "your review edited successfully")
+        return redirect("trakorder", item_id)
+
+
 
 
 # product return

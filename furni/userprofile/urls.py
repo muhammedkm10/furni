@@ -14,19 +14,8 @@ urlpatterns = [
     path("trakorder/<str:id>", views.track_order, name="trakorder"),
     path("moredetails/<str:id>", views.more_details, name="moredetails"),
     path("invoice/<str:id>", views.invoice, name="invoice"),
-    path(
-        "productreview/<str:pro_id>/<str:order_id>",
-        views.product_reviews,
-        name="productreview",
-    ),
-    path(
-        "return/<str:item_id>/<str:order_id>",
-        views.return_products,
-        name="productreview",
-    ),
-    path(
-        "returndetails/<str:item_id>/<str:order_id>",
-        views.return_details,
-        name="returndetails",
-    ),
+    path("productreview/<str:pro_id>/<str:item_id>",views.product_reviews,name="productreview",),
+    path("return/<str:item_id>/<str:order_id>",views.return_products,name="productreview",),
+    path("returndetails/<str:item_id>/<str:order_id>",views.return_details,name="returndetails",),
+    path("editreview/<str:rev_id>/<str:item_id>",views.edit_review,name="editreview",),
 ]

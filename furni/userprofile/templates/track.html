@@ -5,6 +5,19 @@
   <title>Order Tracking</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+               
 
   <style>
     .status-box {
@@ -256,13 +269,21 @@
 </head>
 <body>
 
-<div class="container tracking-container">
+
+<div class="container ">
+  {% if messages %}
+  <div class="alert alert-success mt-3">
+  {% for message in messages %}
+  {{ message }}
+  {% endfor %}
+  </div>
+  {% endif %}
   <h2>Track Your Order</h2>
   
   <!-- Tracking status -->
   <div class="container-fluid ">
   <div class="row">
-    <div class="col-lg-4"><img src="{{item.product_name.img1.url}}" alt="img" style="height: 150px;width: 150px;"></div>
+    <div class="col-lg-6"><img src="{{item.product_name.img1.url}}" alt="img" style="height: 150px;width: 150px;"></div>
   
   <div class="col-lg-6 mt-5 text-danger">
     <h6 class="fs-3 text-capitalize" >Name  : {{item.product_name}}</h1>
@@ -272,8 +293,132 @@
 
 
   </div>
+  {% if item.status == "delivered"%}
+  {% if review != None %}
+  <div class="col-lg-12 mt-5 ">
+  
+    <div class=" container card mb-3">
+      <div class="card-header">
+          <h5 class="card-title text-black">Your review</h5>
+        <a href="#editreview-{{review.id}}-{{item.id}}" data-toggle="modal" class="float-right"><i class="fas fa-edit"></i></a> 
+        <div id="editreview-{{review.id}}-{{item.id}}" class="modal fade">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <form method='POST' action="/editreview/{{review.id}}/{{item.id}}">
+                      {% csrf_token %}
+                      
+                      <div class="modal-header">						
+                          <h4 class="modal-title">Review about the   product</h4>
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      </div>
+                      <div class="modal-body">					
+                          
+                          <div class="form-group">
+                              <textarea class="form-control" value="" id="exampleFormControlTextarea1" name='comment'rows="3"  required >{{review.comment}}</textarea>
+                          </div>
+                          <label>Rate here</label>
+                          <div class="rating" >
+                              <i class="rating__star far fa-star"></i>
+                              <i class="rating__star far fa-star"></i>
+                              <i class="rating__star far fa-star"></i>
+                              <i class="rating__star far fa-star"></i>
+                              <i class="rating__star far fa-star"></i>
+                        </div>
+                        <input   type="hidden" name="rating" id="selectedRating" value="0">
+                      </div>
+                      <div class="modal-footer">
+                          <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                          <button type="submit" class="btn btn-success" value="Add">submit</button>
+                      </div>
+                  </form>
+              
+              </div>
+          </div>
+      </div>
+      <script>
+          const ratingStars1 = [...document.getElementsByClassName("rating__star")];
+          const selectedRatingInput1 = document.getElementById("selectedRating");
+      
+          function executeRating(stars) {
+              const starClassActive = "rating__star fas fa-star";
+              const starClassInactive = "rating__star far fa-star";
+              const starsLength = stars.length;
+      
+              stars.map((star) => {
+                  star.onclick = () => {
+                      const selectedIndex = stars.indexOf(star);
+      
+                      for (let i = 0; i < starsLength; ++i) {
+                          stars[i].className = i <= selectedIndex ? starClassActive : starClassInactive;
+                      }
+      
+                      // Set the value of the hidden input to the selected index + 1 (1-indexed)
+                      selectedRatingInput.value = selectedIndex + 1;
+                  };
+              });
+          }
+      
+          executeRating(ratingStars);
+      </script>
+      
+
+      </div>
+      <div class="card-body ">
+
+          <p class="card-text text-black px-4">Comment : {{review.comment}}</p>
+          <div class="rating px-4 ">
+            {% if review.rating == 1%}
+            <i class="fas fa-star text-warning"></i>
+            {% elif review.rating == 2%}
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            {% elif review.rating == 3%}
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            {% elif review.rating == 4%}
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            {% elif review.rating == 5%}
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning"></i>
+
+            {%else%}
+            no rating added
+            {%endif%}
+              
+          </div>
+          
+          
+      </div>
+      {%else%}
+      <div class="col-lg-12 mt-5 ">
+  
+        <div class=" container card mb-3">
+          <div class="card-header">
+              <h5 class="card-title text-black">Your did not added any review</h5>
+          </div>
+          <div class="card-body">
+              <p>no rating also please add some reviews on this product</p>
+                  
+              </div>
+              
+              
+          </div>
+          {%endif%}
+
+ 
+  </div>
 </div>
+{%endif%}
 </div>
+
+
 
   
   <!-- Tracking details -->
@@ -335,6 +480,69 @@
     <a href="/orderdetails" class="btn btn-danger text-decoration-none" >back to orders</a>
     {% if item.status == 'delivered' %}
     <a href="/invoice/{{item.order_id.id}}" class="btn btn-danger text-decoration-none" >invoice</a>
+    <a href="#review" class="edit" data-toggle="modal"><button class=" btn btn-success"><span>Add your review here</span></button></a>
+    <div id="review" class="modal fade">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method='POST' action="/productreview/{{item.product_name.id}}/{{item.id}}">
+                                        {% csrf_token %}
+                                        
+                                        <div class="modal-header">						
+                                            <h4 class="modal-title">Review about the   product</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        </div>
+                                        <div class="modal-body">					
+                                            
+                                            <div class="form-group">
+                                                <textarea class="form-control" id="exampleFormControlTextarea1" placeholder="write your comments here"name='comment'rows="3"  required ></textarea>
+                                            </div>
+                                            <label>Rate here</label>
+                                            <div class="rating" >
+                                                <i class="rating__star far fa-star"></i>
+                                                <i class="rating__star far fa-star"></i>
+                                                <i class="rating__star far fa-star"></i>
+                                                <i class="rating__star far fa-star"></i>
+                                                <i class="rating__star far fa-star"></i>
+                                          </div>
+                                          <input   type="hidden" name="rating" id="selectedRating" value="0">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                            <button type="submit" class="btn btn-success" value="Add">submit</button>
+                                        </div>
+                                    </form>
+                                
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            const ratingStars = [...document.getElementsByClassName("rating__star")];
+                            const selectedRatingInput = document.getElementById("selectedRating");
+                        
+                            function executeRating(stars) {
+                                const starClassActive = "rating__star fas fa-star";
+                                const starClassInactive = "rating__star far fa-star";
+                                const starsLength = stars.length;
+                        
+                                stars.map((star) => {
+                                    star.onclick = () => {
+                                        const selectedIndex = stars.indexOf(star);
+                        
+                                        for (let i = 0; i < starsLength; ++i) {
+                                            stars[i].className = i <= selectedIndex ? starClassActive : starClassInactive;
+                                        }
+                        
+                                        // Set the value of the hidden input to the selected index + 1 (1-indexed)
+                                        selectedRatingInput.value = selectedIndex + 1;
+                                    };
+                                });
+                            }
+                        
+                            executeRating(ratingStars);
+                        </script>
+                        
+
+                  
     {% endif %}
 
   </div>
@@ -346,6 +554,10 @@
   </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
