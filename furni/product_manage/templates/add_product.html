@@ -358,15 +358,24 @@
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
+                        let cropper;
+
+                            function destroyCropper() {
+                                if (cropper) {
+                                    cropper.destroy();
+                                    cropper = null;
+                                }
+        }
                         const input = document.getElementById('image1');
                         const image = document.getElementById('selectedImage');
-                        let cropper;
+
                 
                         input.addEventListener('change', function (e) {
                             const file = e.target.files[0];
                             const reader = new FileReader();
                 
                             reader.onload = function (event) {
+                                destroyCropper(); // Destroy existing Cropper instance
                                 image.src = event.target.result;
                                 cropper = new Cropper(image, {
                                     aspectRatio: 1, // Set the aspect ratio for cropping as needed
