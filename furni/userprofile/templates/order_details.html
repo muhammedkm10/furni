@@ -162,9 +162,9 @@
                         </ul>
                     </td>
                     {% if i.coupen_applyed%}
-                    <td> coupon applied <br> coupon name : {{i.applied_coupen.cop_name}}</td>
+                    <td class="text-success"> coupon applied <br> coupon name : {{i.applied_coupen.cop_name}}<br>coupen price :{{i.applied_coupen.cop_price}}</td>
                     {% else%}
-                    <td>coupon not applied</td>
+                    <td class="text-danger">coupon not applied</td>
                     {% endif %}
                     <td>{{i.order_date}}</td>
                     
