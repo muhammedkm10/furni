@@ -11,6 +11,7 @@ import uuid
 from product_manage.models import products
 
 
+
 # Create your views here.
 # home
 @never_cache
