@@ -23,11 +23,20 @@ def add_coupon(request):
         code = request.POST["code"]
         fromdate = request.POST["from"]
         todate = request.POST["to"]
-        coupons.objects.create(
-            cop_name=name, cop_price=price, code=code, from_date=fromdate, to=todate
-        )
-        messages.success(request, "your coupen added successfully")
-        return redirect("coupenmanage")
+        if coupons.objects.filter(code = code).exists():
+            messages.success(request, "the coupen code is already exists")
+            return redirect("coupenmanage")
+        else:
+            if int(price) > 0:
+                coupons.objects.create(
+                    cop_name=name, cop_price=price, code=code, from_date=fromdate, to=todate
+                )
+                messages.success(request, "your coupen added successfully")
+                return redirect("coupenmanage")
+            else:
+                messages.success(request, "your price should be positive added ")
+                return redirect("coupenmanage")
+        
 
 
 # edit coupon
@@ -39,14 +48,23 @@ def edit_coupon(request, id):
         fromdate = request.POST["from"]
         todate = request.POST["to"]
         obj = coupons.objects.get(id=id)
-        obj.cop_name = name
-        obj.cop_price = price
-        obj.code = code
-        obj.from_date = fromdate
-        obj.to = todate
-        obj.save()
-        messages.success(request, "your coupen edited successfully")
-        return redirect("coupenmanage")
+        if coupons.objects.filter(code = code).exists():
+            messages.success(request, "the coupen code is already exists")
+            return redirect("coupenmanage")
+        else:
+            if int(price) > 0:
+                obj.cop_name = name
+                obj.cop_price = price
+                obj.code = code
+                obj.from_date = fromdate
+                obj.to = todate
+                obj.save()
+                messages.success(request, "your coupen edited successfully")
+                return redirect("coupenmanage")
+            else:
+                messages.success(request, "your price should be positive added ")
+                return redirect("coupenmanage")
+
 
 
 # delete coupon

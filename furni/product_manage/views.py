@@ -140,7 +140,8 @@ def search_product(request):
     if request.method == "POST":
         query = request.POST["query"]
         obj = products.objects.filter(name__icontains=query)
-        context = {"items": obj}
+        variants = variant.objects.filter(product_id__name__icontains = query)
+        context = {"items": obj,"variants": variants}
         return render(request, "product.html", context)
 
 
