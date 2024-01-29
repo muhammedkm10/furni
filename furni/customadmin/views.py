@@ -503,9 +503,15 @@ def un_list_product_offer(request, id):
 
 # return management
 def return_management(request):
-    returns = return_requests.objects.all().order_by("-id")
-    context = {"returns": returns}
-    return render(request, "return_management.html", context)
+    if "email" not in request.session:
+        if "username" in request.session:
+            returns = return_requests.objects.all().order_by("-id")
+            context = {"returns": returns}
+            return render(request, "return_management.html", context)
+        else:
+            return redirect("adminlogin")
+    else:
+        return render(request, "404.html", status=404)
 
 
 # change return management and incresing wallet and incresing the quantity
