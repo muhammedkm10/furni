@@ -18,9 +18,9 @@ from userprofile.models import product_review
 # shop
 def shop(request):
     obj = products.objects.filter(is_listed=True, category__is_listed=True)
-    data = request.GET["data"] if 'data' else None
-    price1 = request.GET["price1"] if 'price1' else None
-    sort = request.GET["sort"] if 'sort' else None
+    data = request.GET.get("data",'')
+    price1 = request.GET.get("price1",'')
+    sort = request.GET.get("sort",'')
     
     if data == "all":
         obj = products.objects.filter(is_listed=True, category__is_listed=True)
