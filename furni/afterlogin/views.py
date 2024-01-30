@@ -59,35 +59,30 @@ def shop(request):
     if price1 == "b":
         obj = products.objects.filter(
             price__range=(500, 1500),
-            category=7,
             is_listed=True,
             category__is_listed=True,
         )
     if price1 == "c":
         obj = products.objects.filter(
             price__range=(1500, 2500),
-            category=8,
             is_listed=True,
             category__is_listed=True,
         )
     if price1 == "d":
         obj = products.objects.filter(
             price__range=(2500, 5000),
-            category=10,
             is_listed=True,
             category__is_listed=True,
         )
     if price1 == "e":
         obj = products.objects.filter(
             price__range=(5000, 7000),
-            category=12,
             is_listed=True,
             category__is_listed=True,
         )
     if price1 == "f":
         obj = products.objects.filter(
             price__range=(7000, 15000),
-            category=12,
             is_listed=True,
             category__is_listed=True,
         )
