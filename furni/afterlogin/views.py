@@ -17,10 +17,10 @@ from userprofile.models import product_review
 
 # shop
 def shop(request):
-    data = request.GET.get("data")
-    price1 = request.GET.get("price1")
-    sort = request.GET.get("sort")
-    print(sort)
+    data = request.GET.get("data",'')
+    price1 = request.GET.get("price1",'')
+    sort = request.GET.get("sort",'')
+    
 
     obj = products.objects.filter(is_listed=True, category__is_listed=True)
 
