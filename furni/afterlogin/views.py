@@ -30,15 +30,15 @@ def shop(request):
         )
     if data == "sleaping_furniture":
         obj = products.objects.filter(
-            category__name="sleaping furniture", is_listed=True, category__is_listed=True
+            category__name="Sleaping Furniture", is_listed=True, category__is_listed=True
         )
     if data == "tables":
         obj = products.objects.filter(
-           category__name="tables", is_listed=True, category__is_listed=True
+           category__name="Tables", is_listed=True, category__is_listed=True
         )
     if data == "storage_furniture":
         obj = products.objects.filter(
-            category__name="storage furniture", is_listed=True, category__is_listed=True
+            category__name="Storage Furniture", is_listed=True, category__is_listed=True
         )
     if sort == "asc":
         obj = products.objects.filter(
