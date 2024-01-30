@@ -227,45 +227,49 @@ def pay_using_wallet(request):
             orderdate = timezone.now().date()
             wal = wallet.objects.get(user_id=userid)
             wlt_amnt = wal.amount
-            if total <= wlt_amnt:
-                ad = address.objects.get(id=i)
-                ad1 = ad.id
-                order = order_details(
-                    user_id=obj,
-                    pay_method="wallet_pay",
-                    order_date=orderdate,
-                    addres=ad,
-                    total_amount=checkout.total_amount,
-                    applied_coupen=checkout.applyed_coupen,
-                    coupen_applyed=checkout.coupen_applyed,
-                    after_discount=checkout.discount_amount,
-                )
-                order.save()
-                cart_items = cart.objects.filter(user_id=userid)
-                for i in cart_items:
-                    item = ordered_items(
-                        order_id=order,
-                        product_name=i.product_id,
-                        quantity=i.quantity,
-                        total_amount=i.total,
-                        status="ordered",
-                        category=i.category,
-                        user=order.user_id.id,
-                        add=ad,
-                        expected=orderdate + timedelta(days=7),
-                        size=i.size,
+            try:
+                if total <= wlt_amnt:
+                    ad = address.objects.get(id=i)
+                    ad1 = ad.id
+                    order = order_details(
+                        user_id=obj,
+                        pay_method="wallet_pay",
+                        order_date=orderdate,
+                        addres=ad,
+                        total_amount=checkout.total_amount,
+                        applied_coupen=checkout.applyed_coupen,
+                        coupen_applyed=checkout.coupen_applyed,
+                        after_discount=checkout.discount_amount,
                     )
-                    item.save()
-                    item.size.quantity = item.size.quantity - item.quantity
-                    item.size.save()
-                    i.delete()
-                checkout.delete()
-                wal.amount = wal.amount - total
-                wal.save()
+                    order.save()
+                    cart_items = cart.objects.filter(user_id=userid)
+                    for i in cart_items:
+                        item = ordered_items(
+                            order_id=order,
+                            product_name=i.product_id,
+                            quantity=i.quantity,
+                            total_amount=i.total,
+                            status="ordered",
+                            category=i.category,
+                            user=order.user_id.id,
+                            add=ad,
+                            expected=orderdate + timedelta(days=7),
+                            size=i.size,
+                        )
+                        item.save()
+                        item.size.quantity = item.size.quantity - item.quantity
+                        item.size.save()
+                        i.delete()
+                    checkout.delete()
+                    wal.amount = wal.amount - total
+                    wal.save()
+                    response_data = {"success": True, "redirect_url": reverse("thanks")}
+                    return JsonResponse(response_data)
+                else:
+                    response_data = {"success": True, "redirect_url": reverse("sorry")}
+                    return JsonResponse(response_data)
+            except:
                 response_data = {"success": True, "redirect_url": reverse("thanks")}
-                return JsonResponse(response_data)
-            else:
-                response_data = {"success": True, "redirect_url": reverse("sorry")}
                 return JsonResponse(response_data)
     except:
         response_data = {"success": True, "redirect_url": reverse("sorry")}
