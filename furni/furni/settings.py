@@ -25,7 +25,16 @@ SECRET_KEY = "django-insecure-otcykcc@d7(a&_eeb6r%4sfcv4khqqlkfc%dh^!t3!z6)@qm&%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['13.60.16.182','0.0.0.0']
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
+
+
+CSRF_TRUSTED_ORIGINS=['http://13.60.16.182',
+'https://13.60.16.182',
+'http://0.0.0.0',
+'https://0.0.0.0',
+'http://0.0.0.0:9090']
 
 
 # Application definition
@@ -58,6 +67,27 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "furni.urls"
+CORS_ALLOWED_ORIGINS = [
+"http://13.60.16.182",
+"https://13.60.16.182",
+"http://0.0.0.0",
+"https://0.0.0.0",
+"http://0.0.0.0:9090"]
+
+CORS_ALLOW_HEADERS = [
+                 'access-control-allow-headers',
+                   'access-control-allow-methods',
+                  'access-control-allow-origin',
+                    'content-type',
+                     'x-csrftoken']
+
+CORS_ALLOW_METHODS = [
+               'DELETE',
+               'GET',
+               'OPTIONS',
+               'PATCH',
+               'POST',
+               'PUT']
 
 TEMPLATES = [
     {
@@ -100,12 +130,14 @@ WSGI_APPLICATION = "furni.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+STATIC_ROOT = os.path.join(BASE_DIR,'asset')
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "furnidatabase",
-        "USER": "postgres",
-        "PASSWORD": "Rabimammi2906$$$",
+         "NAME": "furni",
+         "USER": "muhammed",
+        "PASSWORD": "123456789",
         "HOST": "localhost",  # or your database host
         "PORT": "5432",  # By default, PostgreSQL uses port 5432
     }
