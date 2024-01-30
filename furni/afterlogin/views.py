@@ -26,19 +26,19 @@ def shop(request):
         obj = products.objects.filter(is_listed=True, category__is_listed=True)
     if data == "seating_furniture":
         obj = products.objects.filter(
-            category=7, is_listed=True, category__is_listed=True
+            category__name="seating furniture", is_listed=True, category__is_listed=True
         )
     if data == "sleaping_furniture":
         obj = products.objects.filter(
-            category=8, is_listed=True, category__is_listed=True
+            category__name="sleaping furniture", is_listed=True, category__is_listed=True
         )
     if data == "tables":
         obj = products.objects.filter(
-            category=10, is_listed=True, category__is_listed=True
+           category__name="tables", is_listed=True, category__is_listed=True
         )
     if data == "storage_furniture":
         obj = products.objects.filter(
-            category=12, is_listed=True, category__is_listed=True
+            category__name="storage furniture", is_listed=True, category__is_listed=True
         )
     if sort == "asc":
         obj = products.objects.filter(
