@@ -120,7 +120,6 @@ def otp_verification(request, id):
         otp1 = CustomUser1.objects.get(id=id)
         p = otp1.otp_fld
         entered_otp = request.POST.get("o1")
-        print(entered_otp)
         p = int(p)
         entered_otp = int(entered_otp)
         if entered_otp == p:
