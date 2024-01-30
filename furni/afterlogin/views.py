@@ -30,7 +30,7 @@ def shop(request):
         )
     if data == "sleaping_furniture":
         obj = products.objects.filter(
-            category__name="Sleaping Furniture", is_listed=True, category__is_listed=True
+            category__name="Sleeping Furniture", is_listed=True, category__is_listed=True
         )
     if data == "tables":
         obj = products.objects.filter(
