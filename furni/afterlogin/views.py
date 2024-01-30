@@ -17,9 +17,9 @@ from userprofile.models import product_review
 
 # shop
 def shop(request):
-    data = request.GET.get("data",'')
-    price1 = request.GET.get("price1",'')
-    sort = request.GET.get("sort",'')
+    data = request.GET["data"]
+    price1 = request.GET["price1"]
+    sort = request.GET["sort"]
     
 
     if data is None and price1 is None and sort is None:
