@@ -100,7 +100,6 @@ def user_signup(request):
             )
             if len(link) == 10:
                 refered_user = CustomUser1.objects.get(referral_link=link)
-                print(refered_user.username)
                 waluser = wallet.objects.get(user_id=refered_user)
                 waluser.amount = waluser.amount + 1000
                 waluser.save()

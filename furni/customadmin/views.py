@@ -54,7 +54,6 @@ def admin_home(request):
             start_week = today - timedelta(days=today.weekday())
             end_week = start_week + timedelta(days=6)
             current_date = datetime.now().date()
-            print("Current Date:", current_date)
             thismonth = ordered_items.objects.filter(
                 Q(status="delivered")
                 | Q(status="return requested")
@@ -309,17 +308,14 @@ def cancel_order(request, id):
     ):
         if obj.order_id.coupen_applyed == True:
             wall = wallet.objects.get(user_id=obj.order_id.user_id)
-            print(obj.order_id.id)
             my_dict = ordered_items.objects.filter(
                 order_id_id=obj.order_id.id
             ).aggregate(no=Count("id"))
             no_orders = my_dict["no"]
             discount = obj.order_id.applied_coupen.cop_price
-            print(discount)
             for_each_pro = int(discount / no_orders)
             rtrn_to_wlt = obj.total_amount - for_each_pro
             wall.amount = wall.amount + rtrn_to_wlt
-            print(wall)
             wall.save()
             messages.success(request, " order cacelled successfully")
             return redirect("ordersmanage")
@@ -336,7 +332,6 @@ def cancel_order(request, id):
 def sales_report(request):
     if request.method == "POST":
         start = request.POST["date1"]
-        print(start)
         end = request.POST["date2"]
         start_date = datetime.strptime(start, "%Y-%m-%d")
         end_date = datetime.strptime(end, "%Y-%m-%d")
@@ -347,7 +342,6 @@ def sales_report(request):
         else:
             messages.error(request, "select valid date....")
             return redirect("adminhome")
-        print(obj)
     return render(request, "sales_report.html", {"orders": obj})
 
 
@@ -367,11 +361,8 @@ def product_offers(request):
         h = []
         for i in others:
             h.append(i.pro_id.id)
-        print("the list is", h)
         if int(pro) not in h:
             if persc <= 100 and persc >= 0:
-                print(pro)
-                print(persc)
                 prod = products.objects.get(id=pro)
                 product_offer.objects.create(pro_id=prod, percentage=persc)
                 messages.success(request, "product offer added successfully")
@@ -397,7 +388,6 @@ def category_offers(request):
         h = []
         for i in others:
             h.append(i.cat_id.id)
-        print("the list is", h)
         if int(pro) not in h:
             if persc <= 100 and persc >= 0:
                 prod = category.objects.get(id=pro)
@@ -517,7 +507,6 @@ def return_management(request):
 # change return management and incresing wallet and incresing the quantity
 def change_return_status(request, id):
     return_obj = return_requests.objects.get(id=id)
-    print(return_obj.reason)
     if request.method == "POST":
         status = request.POST["status"]
         ordered_item = ordered_items.objects.get(id=return_obj.item_id.id)

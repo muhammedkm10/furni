@@ -162,10 +162,8 @@ def order_confirmation(request):
                 size=i.size,
             )
             item.save()
-            print(item.size.quantity)
             item.size.quantity = item.size.quantity - item.quantity
             item.size.save()
-            print(item.size.quantity)
             i.delete()
         checkout.delete()
         return render(request, "thank_you.html")
@@ -208,10 +206,8 @@ def ordered_by_razor(request):
                 size=i.size,
             )
             item.save()
-            print(item.size.quantity)
             item.size.quantity = item.size.quantity - item.quantity
             item.size.save()
-            print(item.size.quantity)
             i.delete()
         checkout.delete()
         response_data = {"success": True, "redirect_url": reverse("thanks")}
@@ -228,7 +224,6 @@ def pay_using_wallet(request):
         total = int(request.POST["total2"])
         i = request.POST.get("address_id")
         orderdate = timezone.now().date()
-        print("hai", total)
         wal = wallet.objects.get(user_id=userid)
         wlt_amnt = wal.amount
         if total <= wlt_amnt:
@@ -260,10 +255,8 @@ def pay_using_wallet(request):
                     size=i.size,
                 )
                 item.save()
-                print(item.size.quantity)
                 item.size.quantity = item.size.quantity - item.quantity
                 item.size.save()
-                print(item.size.quantity)
                 i.delete()
             checkout.delete()
             wal.amount = wal.amount - total
@@ -312,7 +305,6 @@ def apply_coupon(request):
                             detail.save()
                         detail.applyed_coupen = obj
                         detail.coupen_applyed = True
-                        print("amount", detail.discount_amount)
                         detail.save()
                         return JsonResponse(
                             {

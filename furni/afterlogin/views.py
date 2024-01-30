@@ -224,7 +224,6 @@ def show_cart(request):
     total_amount = cart.objects.filter(user_id=user.id).aggregate(sum=Sum("total"))
     no_of_wish = wishlist.objects.filter(user_id=user).count()
     last_added_address = address.objects.filter(user_id=user).order_by("-id").first()
-    print(last_added_address)
     if last_added_address == None:
         messages.error(request, "add some address here")
         return redirect("userprofile")
@@ -244,19 +243,12 @@ def show_cart(request):
 
 # quantity updation
 def quantity_updation(request):
-    print("hai")
     if request.method == "POST":
         cart_id = int(request.POST["cart_id"])
-        print("cart", cart_id)
         action = request.POST["action"]
         obj = cart.objects.get(id=cart_id)
-        print(obj.product_id)
-        print(obj.size.id)
         pro = products.objects.get(name=obj.product_id)
-        print(pro)
         size_qnty = variant.objects.get(product_id__name=pro, id=obj.size.id)
-        print(size_qnty.id)
-        print(size_qnty.quantity)
         if action == "plus":
             if obj.quantity < 5 and obj.quantity < size_qnty.quantity:
                 obj.quantity += 1
@@ -284,7 +276,6 @@ def add_to_cart(request, id):
             obj = variant.objects.get(product_id=id, size=size)
             pro = products.objects.get(id=id)
             email1 = request.session["email"]
-            print(size)
             try:
                 quantity = int(request.POST["qnty"])
             except:
@@ -352,7 +343,6 @@ def add_to_wishlist(request, id):
         messages.success(request, "sorry product is out of stock")
         return redirect("productdetails", id)
     var = variant.objects.get(size=size, product_id_id=id)
-    print(size)
     pro = products.objects.get(id=id)
     if wishlist.objects.filter(product_id=pro, size__id=var.id).exists():
         messages.success(request, "Product is already in wishlist")
@@ -406,8 +396,6 @@ def whishtocart(request, pro_id, w_id):
     pro = products.objects.get(id=pro_id)
     whish_item = wishlist.objects.get(id=w_id)
     var = variant.objects.get(product_id_id=pro.id, id=whish_item.size.id)
-    print("size id", whish_item.size, "--", whish_item.size.id)
-    print("quantity", var.quantity)
     if var.quantity >= 1:
         if cart.objects.filter(
             user_id=user, product_id=pro, size=whish_item.size.id

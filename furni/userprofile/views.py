@@ -38,8 +38,6 @@ def show_user_profile(request):
 # removing the addresses user added
 def remove_address(request, id):
     add = address.objects.get(id=id)
-    print(add)
-    print(add.user_id.id)
     add.is_cancelled = True
     add.save()
     return redirect("userprofile")
@@ -213,17 +211,14 @@ def cancel_order(request, id):
     ):
         if obj.order_id.coupen_applyed == True:
             wall = wallet.objects.get(user_id=user)
-            print(obj.order_id.id)
             my_dict = ordered_items.objects.filter(
                 order_id_id=obj.order_id.id
             ).aggregate(no=Count("id"))
             no_orders = my_dict["no"]
             discount = obj.order_id.applied_coupen.cop_price
-            print(discount)
             for_each_pro = int(discount / no_orders)
             rtrn_to_wlt = obj.total_amount - for_each_pro
             wall.amount = wall.amount + rtrn_to_wlt
-            print(wall)
             wall.save()
             messages.success(request, "your order cacelled successfully")
             return redirect("orderdetails")
@@ -272,8 +267,6 @@ def more_details(request, id):
 def invoice(request, id):
     obj = ordered_items.objects.get(order_id_id=id)
     current_date = datetime.now().date()
-    print(current_date)
-
     context = {"item": obj, "date": current_date}
     return render(request, "invoice.html", context)
 
