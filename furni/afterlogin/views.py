@@ -17,14 +17,11 @@ from userprofile.models import product_review
 
 # shop
 def shop(request):
-    data = request.GET["data"]
-    price1 = request.GET["price1"]
-    sort = request.GET["sort"]
+    obj = products.objects.filter(is_listed=True, category__is_listed=True)
+    data = request.GET["data"] if 'data' else None
+    price1 = request.GET["price1"] if 'price1' else None
+    sort = request.GET["sort"] if 'sort' else None
     
-
-    if data is None and price1 is None and sort is None:
-           obj = products.objects.filter(is_listed=True, category__is_listed=True)
-
     if data == "all":
         obj = products.objects.filter(is_listed=True, category__is_listed=True)
     if data == "seating_furniture":
