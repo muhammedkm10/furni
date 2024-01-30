@@ -22,7 +22,8 @@ def shop(request):
     sort = request.GET.get("sort",'')
     
 
-    obj = products.objects.filter(is_listed=True, category__is_listed=True)
+    if data is None and price1 is None and sort is None:
+           obj = products.objects.filter(is_listed=True, category__is_listed=True)
 
     if data == "all":
         obj = products.objects.filter(is_listed=True, category__is_listed=True)
