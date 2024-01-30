@@ -135,7 +135,7 @@ STATIC_ROOT = os.path.join(BASE_DIR,'asset')
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-         "NAME": "furni",
+         "NAME": "new_db_furni",
          "USER": "muhammed",
         "PASSWORD": "123456789",
         "HOST": "localhost",  # or your database host
