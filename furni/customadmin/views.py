@@ -60,7 +60,7 @@ def admin_home(request):
                 | Q(status="return denied"),
                 order_id__order_date__month=date.today().month,
             ).aggregate(sum=Sum("total_amount"))
-            today = ordered_items.objects.filter(
+            today1 = ordered_items.objects.filter(
                 Q(status="delivered")
                 | Q(status="return requested")
                 | Q(status="return denied"),
@@ -153,8 +153,8 @@ def admin_home(request):
 
             if thismonth["sum"] is None:
                 thismonth["sum"] = 0
-            if today["sum"] is None:
-                today["sum"] = 0
+            if today1["sum"] is None:
+                today1["sum"] = 0
             if thisyear["sum"] is None:
                 thisyear["sum"] = 0
             if thisweek["sum"] is None:
@@ -174,7 +174,7 @@ def admin_home(request):
 
             context = {
                 "thismonth": thismonth,
-                "today": today,
+                "today": today1,
                 "thisyear": thisyear,
                 "thisweek": thisweek,
                 "jan": jan,
