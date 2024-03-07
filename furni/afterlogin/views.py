@@ -336,7 +336,7 @@ def add_to_wishlist(request, id):
         return redirect("productdetails", id)
     var = variant.objects.get(size=size, product_id_id=id)
     pro = products.objects.get(id=id)
-    if wishlist.objects.filter(product_id=pro, size__id=var.id).exists():
+    if wishlist.objects.filter(user_id = user,product_id=pro, size__id=var.id).exists():
         messages.success(request, "Product is already in wishlist")
         return redirect("showwishlist")
     else:

@@ -65,29 +65,31 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+ALLOWED_HOSTS = ['localhost',
+                  '127.0.0.1']
 
 ROOT_URLCONF = "furni.urls"
-CORS_ALLOWED_ORIGINS = [
-"http://13.60.16.182",
-"https://13.60.16.182",
-"http://0.0.0.0",
-"https://0.0.0.0",
-"http://0.0.0.0:9090"]
+# CORS_ALLOWED_ORIGINS = [
+# "http://13.60.16.182",
+# "https://13.60.16.182",
+# "http://0.0.0.0",
+# "https://0.0.0.0",
+# "http://0.0.0.0:9090"]
 
-CORS_ALLOW_HEADERS = [
-                 'access-control-allow-headers',
-                   'access-control-allow-methods',
-                  'access-control-allow-origin',
-                    'content-type',
-                     'x-csrftoken']
+# CORS_ALLOW_HEADERS = [
+#                  'access-control-allow-headers',
+#                    'access-control-allow-methods',
+#                   'access-control-allow-origin',
+#                     'content-type',
+#                      'x-csrftoken']
 
-CORS_ALLOW_METHODS = [
-               'DELETE',
-               'GET',
-               'OPTIONS',
-               'PATCH',
-               'POST',
-               'PUT']
+# CORS_ALLOW_METHODS = [
+#                'DELETE',
+#                'GET',
+#                'OPTIONS',
+#                'PATCH',
+#                'POST',
+#                'PUT']
 
 TEMPLATES = [
     {
@@ -135,9 +137,9 @@ STATIC_ROOT = os.path.join(BASE_DIR,'asset')
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-         "NAME": "new_db_furni",
-         "USER": "muhammed",
-        "PASSWORD": "123456789",
+         "NAME": "furnidatabase",
+         "USER": "postgres",
+        "PASSWORD": "Rabimammi2906$$$",
         "HOST": "localhost",  # or your database host
         "PORT": "5432",  # By default, PostgreSQL uses port 5432
     }
