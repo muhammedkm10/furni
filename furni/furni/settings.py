@@ -23,14 +23,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-otcykcc@d7(a&_eeb6r%4sfcv4khqqlkfc%dh^!t3!z6)@qm&%"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['13.60.16.182','0.0.0.0']
+ALLOWED_HOSTS = ['34.227.92.4','0.0.0.0',"*"]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
 
 
-CSRF_TRUSTED_ORIGINS=['http://13.60.16.182',
+CSRF_TRUSTED_ORIGINS=['http://34.227.92.4/',
 'https://13.60.16.182',
 'http://0.0.0.0',
 'https://0.0.0.0',
@@ -122,7 +122,7 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "muhammedmamu2906@gmail.com"
-EMAIL_HOST_PASSWORD = "yfbc qxdt vvst lvqh"
+EMAIL_HOST_PASSWORD = "grab xgdk npul bals"
 EMAIL_USE_TLS = True  # Set it to False if your email server doesn't support TLS
 
 

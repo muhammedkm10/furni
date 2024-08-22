@@ -104,8 +104,9 @@ def user_signup(request):
                 waluser.amount = waluser.amount + 1000
                 waluser.save()
             user1.save()
-            wallet.objects.create(user_id_id=user1.id, amount=0)
-            return redirect("otpverification", id=user1.id)
+            wallet.objects.create(user_id_id = user1.id, amount=0)
+            print(wallet.objects.get(user_id_id = user1.id))
+            return redirect("otpverification", id = user1.id)
         else:
             messages.error(request, "the phone number should valid")
             return render(request, "user_signup.html", context)
