@@ -25,16 +25,13 @@ SECRET_KEY = "django-insecure-otcykcc@d7(a&_eeb6r%4sfcv4khqqlkfc%dh^!t3!z6)@qm&%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['34.227.92.4','0.0.0.0']
+ALLOWED_HOSTS = ["*"]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
 
 
-CSRF_TRUSTED_ORIGINS=['http://3.237.182.41',
-'https://13.60.16.182',
-'http://0.0.0.0',
-'https://0.0.0.0',
-'http://0.0.0.0:9090']
+CSRF_TRUSTED_ORIGINS=['http://3.237.182.41']
+
 
 
 # Application definition
@@ -65,31 +62,29 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-ALLOWED_HOSTS = ['localhost',
-                  '127.0.0.1']
+
 
 ROOT_URLCONF = "furni.urls"
-# CORS_ALLOWED_ORIGINS = [
-# "http://13.60.16.182",
-# "https://13.60.16.182",
-# "http://0.0.0.0",
-# "https://0.0.0.0",
-# "http://0.0.0.0:9090"]
+CORS_ALLOWED_ORIGINS = [
+'http://3.237.182.41',
+"http://0.0.0.0",
+"https://0.0.0.0",
+"http://0.0.0.0:9090"]
 
-# CORS_ALLOW_HEADERS = [
-#                  'access-control-allow-headers',
-#                    'access-control-allow-methods',
-#                   'access-control-allow-origin',
-#                     'content-type',
-#                      'x-csrftoken']
+CORS_ALLOW_HEADERS = [
+                 'access-control-allow-headers',
+                   'access-control-allow-methods',
+                  'access-control-allow-origin',
+                    'content-type',
+                     'x-csrftoken']
 
-# CORS_ALLOW_METHODS = [
-#                'DELETE',
-#                'GET',
-#                'OPTIONS',
-#                'PATCH',
-#                'POST',
-#                'PUT']
+CORS_ALLOW_METHODS = [
+               'DELETE',
+               'GET',
+               'OPTIONS',
+               'PATCH',
+               'POST',
+               'PUT']
 
 TEMPLATES = [
     {
