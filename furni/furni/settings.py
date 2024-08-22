@@ -127,7 +127,7 @@ WSGI_APPLICATION = "furni.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-STATIC_ROOT = os.path.join(BASE_DIR,'asset')
+STATIC_ROOT = os.path.join(BASE_DIR,'static/')
 
 DATABASES = {
     "default": {
