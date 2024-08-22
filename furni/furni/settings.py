@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['34.227.92.4','0.0.0.0',"*"]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
 
 
-CSRF_TRUSTED_ORIGINS=['http://34.227.92.4/',
+CSRF_TRUSTED_ORIGINS=['http://3.237.182.41',
 'https://13.60.16.182',
 'http://0.0.0.0',
 'https://0.0.0.0',
