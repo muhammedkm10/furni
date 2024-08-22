@@ -138,7 +138,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
          "NAME": "furnidatabase",
-         "USER": "postgres",
+         "USER": "muhammed",
         "PASSWORD": "Rabimammi2906$$$",
         "HOST": "localhost",  # or your database host
         "PORT": "5432",  # By default, PostgreSQL uses port 5432
